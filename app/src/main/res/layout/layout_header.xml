@@ -3,55 +3,42 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <RelativeLayout
+        android:id="@+id/header"
         android:layout_width="match_parent"
-        android:layout_height="46dp">
+        android:layout_height="66dp">
 
         <RelativeLayout
-            android:id="@+id/btn_back"
+            android:id="@+id/back_button"
             android:layout_width="76dp"
             android:layout_height="match_parent">
 
             <ImageView
-                android:layout_width="22dp"
-                android:layout_height="15dp"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
-                android:layout_marginStart="20dp"
                 android:contentDescription="@string/image_description"
-                android:background="@mipmap/nav_back"
+                android:background="@drawable/back"
                 android:button="@android:color/transparent" />
 
         </RelativeLayout>
 
         <TextView
-            android:id="@+id/txt_title"
+            android:id="@+id/text_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:textColor="@color/include_header"
-            android:textSize="21dp"
+            android:textSize="18sp"
             android:textStyle="bold"
-            tools:text="제목" />
+            tools:text="제목"/>
 
-        <RelativeLayout
-            android:id="@+id/btn_menu"
-            android:layout_width="76dp"
-            android:layout_height="match_parent"
-            android:layout_alignParentEnd="true">
-
-            <!-- height : 9dp-->
-            <ImageView
-                android:id="@+id/layout_header_menu"
-                android:layout_width="20dp"
-                android:layout_height="15dp"
-                android:contentDescription="@string/image_description"
-                android:layout_centerVertical="true"
-                android:layout_alignParentEnd="true"
-                android:layout_marginEnd="20dp"
-                android:background="@mipmap/nav_menu"
-                android:button="@android:color/transparent" />
-
-        </RelativeLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="6dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/include_header_line"/>
 
     </RelativeLayout>
 

@@ -7,4 +7,20 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <color name="include_header">#010101</color>
+    <color name="include_header_line">#EFEFEF</color>
+
+    <color name="under_line">#EFEFEF</color>
+
+    <color name="transparent">#00000000</color>
+
+    <color name="color_EEEEEEF">#EEEEEF</color>
+
+    <color name="color_blue">#3498DB</color>
+    <color name="color_plain_text">#010101</color>
+    <color name="color_white_gray">#BDBDBD</color>
+
+
+    <color name="star_mark">#E4513D</color>
 </resources>

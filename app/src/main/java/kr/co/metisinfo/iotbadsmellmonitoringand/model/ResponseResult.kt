@@ -1,6 +1,6 @@
 package kr.co.metisinfo.iotbadsmellmonitoringand.model
 
-data class LoginResult(
+data class ResponseResult(
     private val result: String,
-    private val data: String
+    private val data: LoginResult
 )
