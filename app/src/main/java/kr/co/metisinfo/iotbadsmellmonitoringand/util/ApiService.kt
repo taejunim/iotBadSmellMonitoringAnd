@@ -2,6 +2,7 @@ package kr.co.metisinfo.iotbadsmellmonitoringand.util
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import kr.co.metisinfo.iotbadsmellmonitoringand.model.LoginResult
 import kr.co.metisinfo.iotbadsmellmonitoringand.model.ResponseResult
 import kr.co.metisinfo.iotbadsmellmonitoringand.model.UserModel
 import retrofit2.Call
@@ -20,6 +21,16 @@ interface ApiService {
         "Content-Type: application/json"
     )
     fun userLogin(
+        @Body body: UserModel
+    ): Call<LoginResult>
+
+    //회원가입
+    @POST("/api/userJoinInsert")
+    @Headers(
+        "Accept: application/json",
+        "Content-Type: application/json"
+    )
+    fun signIn(
         @Body body: UserModel
     ): Call<ResponseResult>
 

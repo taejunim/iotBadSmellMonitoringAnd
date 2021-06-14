@@ -1,29 +1,20 @@
 package kr.co.metisinfo.iotbadsmellmonitoringand
 
-import android.os.Bundle
 import android.util.Log
-import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import kr.co.metisinfo.iotbadsmellmonitoringand.databinding.ActivityMainBinding
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        //setContentView(R.layout.activity_main)
-
+    override fun initLayout() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
-        val test: String? = "ab"
+        Log.d("metis","MainActivity 시작")
+    }
 
-        var test2 = when {
-            test == "aa" -> "aa"
-            else -> "else문"
-        }
-
-        Log.d("metis", test2)
+    override fun setOnClickListener() {
 
     }
 }

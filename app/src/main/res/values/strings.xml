@@ -13,6 +13,10 @@
     <string name="sign_up_age">나이</string>
     <string name="sign_up_gender">성별</string>
 
+    <string name="blank_user_id">아이디를 입력해주세요.</string>
+    <string name="blank_user_password">비밀번호를 입력해주세요.</string>
+    <string name="incorrect_data">아이디 혹은 비밀번호가 일치하지 않습니다.</string>
+
     <string name="registration">등록</string>
     <string name="star_text">*</string>
 
