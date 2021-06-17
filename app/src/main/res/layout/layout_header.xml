@@ -5,12 +5,13 @@
     <RelativeLayout
         android:id="@+id/header"
         android:layout_width="match_parent"
-        android:layout_height="66dp">
+        android:layout_height="72dp">
 
         <RelativeLayout
             android:id="@+id/back_button"
             android:layout_width="76dp"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:visibility="gone">
 
             <ImageView
                 android:layout_width="36dp"
@@ -19,18 +20,32 @@
                 android:layout_centerVertical="true"
                 android:contentDescription="@string/image_description"
                 android:background="@drawable/back"
-                android:button="@android:color/transparent" />
+                android:button="@android:color/transparent"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/side_menu_button"
+            android:layout_width="76dp"
+            android:layout_height="match_parent"
+            android:visibility="visible"
+            android:layout_marginLeft="10dp">
+
+            <ImageView
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_centerVertical="true"
+                android:contentDescription="@string/image_description"
+                android:background="@drawable/side_menu"
+                android:button="@android:color/transparent"/>
 
         </RelativeLayout>
 
         <TextView
             android:id="@+id/text_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/titleText"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:textColor="@color/include_header"
-            android:textSize="18sp"
             android:textStyle="bold"
             tools:text="제목"/>
 

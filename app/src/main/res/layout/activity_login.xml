@@ -20,6 +20,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:hint="@string/sign_up_password"
+            android:inputType="textPassword"
             style="@style/hint_edit_text"
             android:layout_marginBottom="20dp"/>
 

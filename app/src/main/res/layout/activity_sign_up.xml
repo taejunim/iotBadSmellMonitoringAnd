@@ -9,7 +9,7 @@
             android:id="@+id/include_header"
             layout="@layout/layout_header"
             android:layout_width="match_parent"
-            android:layout_height="54dp" />
+            android:layout_height="60dp" />
 
         <ScrollView
             android:layout_width="match_parent"
@@ -20,14 +20,14 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                style="@style/margin_left_right_20">
+                style="@style/marginLeftRight_20">
 
                 <!-- 이름-->
                 <TextView
                     android:id="@+id/sign_up_user_id_text"
                     android:layout_marginTop="30dp"
                     android:text="@string/sign_up_user_id"
-                    style="@style/plain_text"/>
+                    style="@style/plainText"/>
 
                 <TextView
                     android:layout_toEndOf="@id/sign_up_user_id_text"
@@ -62,7 +62,7 @@
                     android:layout_below="@id/sign_up_user_id_input"
                     android:layout_marginTop="20dp"
                     android:text="@string/sign_up_password"
-                    style="@style/plain_text"/>
+                    style="@style/plainText"/>
 
                 <TextView
                     android:layout_toEndOf="@id/sign_up_password_text"
@@ -82,7 +82,7 @@
                     android:layout_below="@id/sign_up_password_input"
                     android:layout_marginTop="20dp"
                     android:text="@string/sign_up_password_confirm"
-                    style="@style/plain_text"/>
+                    style="@style/plainText"/>
 
                 <TextView
                     android:layout_toEndOf="@id/sign_up_password_confirm_text"
@@ -102,7 +102,7 @@
                     android:layout_below="@id/sign_up_password_confirm_input"
                     android:layout_marginTop="20dp"
                     android:text="@string/sign_up_user_name"
-                    style="@style/plain_text"/>
+                    style="@style/plainText"/>
 
                 <TextView
                     android:layout_toEndOf="@id/sign_up_user_name_text"
@@ -118,20 +118,20 @@
                     style="@style/hint_edit_text"/>
 
                 <TextView
-                    android:id="@+id/sign_up_age_text"
+                    android:id="@+id/sign_up_user_age_text"
                     android:layout_below="@id/sign_up_user_name_input"
                     android:layout_marginTop="20dp"
-                    android:text="@string/sign_up_age"
-                    style="@style/plain_text"/>
+                    android:text="@string/sign_up_user_age"
+                    style="@style/plainText"/>
 
                 <TextView
-                    android:layout_toEndOf="@id/sign_up_age_text"
-                    android:layout_alignTop="@id/sign_up_age_text"
+                    android:layout_toEndOf="@id/sign_up_user_age_text"
+                    android:layout_alignTop="@id/sign_up_user_age_text"
                     style="@style/star_mark"/>
 
                 <EditText
                     android:id="@+id/sign_up_user_age_input"
-                    android:layout_below="@id/sign_up_age_text"
+                    android:layout_below="@id/sign_up_user_age_text"
                     android:hint="@string/age_hint"
                     android:importantForAutofill="no"
                     android:inputType="text"
@@ -142,7 +142,7 @@
                     android:layout_below="@id/sign_up_user_age_input"
                     android:layout_marginTop="20dp"
                     android:text="@string/sign_up_gender"
-                    style="@style/plain_text"/>
+                    style="@style/plainText"/>
 
                 <TextView
                     android:layout_toEndOf="@id/sign_up_gender_text"

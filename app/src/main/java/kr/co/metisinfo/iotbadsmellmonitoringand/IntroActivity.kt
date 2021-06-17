@@ -11,9 +11,10 @@ class IntroActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_intro)
 
-        var handler = Handler(Looper.getMainLooper())
+        val handler = Handler(Looper.getMainLooper())
         handler.postDelayed ({
-            var intent = Intent(this, LoginActivity::class.java)
+            val intent = Intent(this, LoginActivity::class.java)
+            //val intent = Intent(this, MainActivity::class.java)
             startActivity (intent)
         }, 500)
     }

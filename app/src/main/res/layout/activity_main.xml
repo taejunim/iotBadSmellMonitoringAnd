@@ -2,9 +2,347 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp">
+        android:layout_height="match_parent">
+
+        <include
+            android:id="@+id/include_header"
+            layout="@layout/layout_header"
+            android:layout_width="match_parent"
+            android:layout_height="60dp" />
+
+        <LinearLayout
+            android:id="@+id/top"
+            android:layout_below="@+id/include_header"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/weather_layout"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/current_weather_text"
+                        style="@style/plainText"
+                        android:layout_alignParentTop="true"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:text="@string/main_current_weather"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="84dp"
+                        android:layout_below="@+id/current_weather_text"
+                        android:layout_marginTop="3dp"
+                        android:layout_marginBottom="5dp"
+                        android:background="@color/color_white_gray">
+
+                    </LinearLayout>
+
+                    <ImageView
+                        android:layout_width="84dp"
+                        android:layout_height="84dp"
+                        android:layout_below="@+id/current_weather_text"
+                        android:layout_centerVertical="true"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginLeft="30dp"
+                        android:contentDescription="@string/image_description"
+                        android:background="@drawable/weather_cloud"
+                        android:button="@android:color/transparent"/>
+
+                    <TextView
+                        android:id="@+id/temperature_text"
+                        style="@style/itemText"
+                        android:layout_below="@+id/current_weather_text"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="15dp"
+                        android:text="@string/main_temperature"/>
+
+                    <TextView
+                        android:id="@+id/humidity_text"
+                        style="@style/itemText"
+                        android:layout_below="@+id/current_weather_text"
+                        android:layout_toRightOf="@+id/temperature_text"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="15dp"
+                        android:text="@string/main_humidity"/>
+
+                    <TextView
+                        android:id="@+id/wind_text"
+                        style="@style/itemText"
+                        android:layout_below="@+id/temperature_text"
+                        android:layout_alignLeft="@+id/temperature_text"
+                        android:layout_marginTop="15dp"
+                        android:text="@string/main_wind"/>
+
+                    <TextView
+                        android:id="@+id/wind_speed_text"
+                        style="@style/itemText"
+                        android:layout_below="@+id/humidity_text"
+                        android:layout_alignLeft="@+id/humidity_text"
+                        android:layout_marginTop="15dp"
+                        android:text="@string/main_wind_speed"/>
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                style="@style/marginLeftRight_20"
+                android:background="@color/include_header_line"/>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/report_status_text"
+                        style="@style/plainText"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginBottom="10dp"
+                        android:text="@string/main_report_status"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_below="@id/report_status_text"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1">
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent">
+
+                                <ImageView
+                                    android:id="@+id/report_first_time_image"
+                                    android:layout_width="60dp"
+                                    android:layout_height="60dp"
+                                    android:layout_centerHorizontal="true"
+                                    android:contentDescription="@string/image_description"
+                                    android:background="@drawable/done"
+                                    android:button="@android:color/transparent"/>
+
+                                <TextView
+                                    android:id="@+id/report_first_time_text"
+                                    style="@style/tinyText"
+                                    android:layout_below="@+id/report_first_time_image"
+                                    android:layout_centerInParent="true"
+                                    android:layout_marginTop="5dp"
+                                    android:singleLine="true"
+                                    android:text="08:00 ~ 10:00" />
+
+                            </RelativeLayout>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1">
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent">
+
+                                <ImageView
+                                    android:id="@+id/report_second_time_image"
+                                    android:layout_width="60dp"
+                                    android:layout_height="60dp"
+                                    android:layout_centerHorizontal="true"
+                                    android:contentDescription="@string/image_description"
+                                    android:background="@drawable/done"
+                                    android:button="@android:color/transparent"/>
+
+                                <TextView
+                                    android:id="@+id/report_second_time_text"
+                                    style="@style/tinyText"
+                                    android:layout_below="@+id/report_second_time_image"
+                                    android:layout_centerInParent="true"
+                                    android:layout_marginTop="5dp"
+                                    android:singleLine="true"
+                                    android:text="08:00 ~ 10:00" />
+
+                            </RelativeLayout>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1">
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent">
+
+                                <ImageView
+                                    android:id="@+id/report_third_time_image"
+                                    android:layout_width="60dp"
+                                    android:layout_height="60dp"
+                                    android:layout_centerHorizontal="true"
+                                    android:contentDescription="@string/image_description"
+                                    android:background="@drawable/done"
+                                    android:button="@android:color/transparent"/>
+
+                                <TextView
+                                    android:id="@+id/report_third_time_text"
+                                    style="@style/tinyText"
+                                    android:layout_below="@+id/report_third_time_image"
+                                    android:layout_centerInParent="true"
+                                    android:layout_marginTop="5dp"
+                                    android:singleLine="true"
+                                    android:text="08:00 ~ 10:00" />
+
+                            </RelativeLayout>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1">
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent">
+
+                                <ImageView
+                                    android:id="@+id/report_fourth_time_image"
+                                    android:layout_width="60dp"
+                                    android:layout_height="60dp"
+                                    android:layout_centerHorizontal="true"
+                                    android:contentDescription="@string/image_description"
+                                    android:background="@drawable/done"
+                                    android:button="@android:color/transparent"/>
+
+                                <TextView
+                                    android:id="@+id/report_fourth_time_text"
+                                    style="@style/tinyText"
+                                    android:layout_below="@+id/report_fourth_time_image"
+                                    android:layout_centerInParent="true"
+                                    android:layout_marginTop="5dp"
+                                    android:singleLine="true"
+                                    android:text="08:00 ~ 10:00" />
+
+                            </RelativeLayout>
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                style="@style/marginLeftRight_20"
+                android:background="@color/include_header_line"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="2">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/choose_smell_intensity_text"
+                        style="@style/plainText"
+                        android:layout_alignParentTop="true"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:text="@string/main_choose_smell_intensity"/>
+
+                    <ScrollView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_below="@+id/choose_smell_intensity_text">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <Button
+                                android:id="@+id/intensity_0_button"
+                                style="@style/intensityText"
+                                android:background="@drawable/intensity_0_button"
+                                android:text="0도 - 무취 / 평상시에 감지하지 못함"/>
+
+                            <Button
+                                android:id="@+id/intensity_1_button"
+                                style="@style/intensityText"
+                                android:layout_below="@+id/intensity_0_button"
+                                android:background="@drawable/intensity_1_button"
+                                android:text="1도 - 무취 / 평상시에 감지하지 못함"/>
+
+                            <Button
+                                android:id="@+id/intensity_2_button"
+                                style="@style/intensityText"
+                                android:layout_below="@+id/intensity_1_button"
+                                android:background="@drawable/intensity_2_button"
+                                android:text="2도 - 보통 취기 / 냄새 구분이 가능한 수준"/>
+
+                            <Button
+                                android:id="@+id/intensity_3_button"
+                                style="@style/intensityText"
+                                android:layout_below="@+id/intensity_2_button"
+                                android:background="@drawable/intensity_3_button"
+                                android:text="3도 - 강한 취기 / 감지 가능한 강한 냄새"/>
+
+                            <Button
+                                android:id="@+id/intensity_4_button"
+                                style="@style/intensityText"
+                                android:layout_below="@+id/intensity_3_button"
+                                android:background="@drawable/intensity_4_button"
+                                android:text="4도 - 극심한 취기 / 아주 강한 냄새 수준"/>
+
+                            <Button
+                                android:id="@+id/intensity_5_button"
+                                style="@style/intensityText"
+                                android:layout_marginBottom="10dp"
+                                android:layout_below="@+id/intensity_4_button"
+                                android:background="@drawable/intensity_5_button"
+                                android:text="5도 - 참기 어려운 취기 / 호흡 불가능 수준"/>
+
+                        </RelativeLayout>
+
+                    </ScrollView>
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
 
     </RelativeLayout>
 </layout>
