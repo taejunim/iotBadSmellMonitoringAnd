@@ -22,18 +22,22 @@
 
         </activity>
 
+        <!--로그인-->
         <activity android:name=".LoginActivity">
 
         </activity>
 
+        <!--회원가입-->
         <activity android:name=".SignUpActivity">
 
         </activity>
 
+        <!--MAIN-->
         <activity android:name=".MainActivity">
 
         </activity>
 
+        <!--악취 접수 이력-->
         <activity android:name=".HistoryActivity">
 
         </activity>
