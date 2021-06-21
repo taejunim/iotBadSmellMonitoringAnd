@@ -64,7 +64,7 @@
                         android:layout_below="@+id/search_text"
                         android:layout_alignStart="@id/search_satart_date_text"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="85dp"
+                        android:layout_marginLeft="95dp"
                         android:layout_marginTop="5dp"
                         android:text="~" />
 
@@ -114,7 +114,7 @@
             android:id="@+id/history_layout"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="6">
+            android:layout_weight="5">
 
             <RelativeLayout
                 android:layout_width="match_parent"
