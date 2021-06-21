@@ -33,6 +33,11 @@
         <activity android:name=".MainActivity">
 
         </activity>
+
+        <activity android:name=".HistoryActivity">
+
+        </activity>
+
     </application>
 
 </manifest>

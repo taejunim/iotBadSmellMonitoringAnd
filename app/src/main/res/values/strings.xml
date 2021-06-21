@@ -6,6 +6,7 @@
     <string name="login">로그인</string>
     <string name="sign_up">회원가입</string>
     <string name="main">냄새 접수</string>
+    <string name="history">냄새 접수 이력</string>
 
     <string name="sign_up_user_id">아이디</string>
     <string name="sign_up_check_duplicate">중복 확인</string>
