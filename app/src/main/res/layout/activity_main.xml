@@ -142,7 +142,7 @@
                                     android:layout_height="60dp"
                                     android:layout_centerHorizontal="true"
                                     android:contentDescription="@string/image_description"
-                                    android:background="@drawable/done"
+                                    android:background="@drawable/not_yet"
                                     android:button="@android:color/transparent"/>
 
                                 <TextView
@@ -173,7 +173,7 @@
                                     android:layout_height="60dp"
                                     android:layout_centerHorizontal="true"
                                     android:contentDescription="@string/image_description"
-                                    android:background="@drawable/done"
+                                    android:background="@drawable/not_yet"
                                     android:button="@android:color/transparent"/>
 
                                 <TextView
@@ -204,7 +204,7 @@
                                     android:layout_height="60dp"
                                     android:layout_centerHorizontal="true"
                                     android:contentDescription="@string/image_description"
-                                    android:background="@drawable/done"
+                                    android:background="@drawable/not_yet"
                                     android:button="@android:color/transparent"/>
 
                                 <TextView
@@ -235,7 +235,7 @@
                                     android:layout_height="60dp"
                                     android:layout_centerHorizontal="true"
                                     android:contentDescription="@string/image_description"
-                                    android:background="@drawable/done"
+                                    android:background="@drawable/not_yet"
                                     android:button="@android:color/transparent"/>
 
                                 <TextView

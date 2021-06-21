@@ -1,25 +1,21 @@
 package kr.co.metisinfo.iotbadsmellmonitoringand.model
 
 data class WeatherResponse (
-    val response : RESPONSE
+    val response : ResponseObject
 )
-data class RESPONSE (
-    val header : HEADER,
-    val body : BODY
+data class ResponseObject (
+    val body : ResponseBody
 )
-data class HEADER(
-    val resultCode : Int,
-    val resultMsg : String
+data class ResponseBody(
+    val items : Items
 )
-data class BODY(
-    val dataType : String,
-    val items : ITEMS
+data class Items(
+    val item : List<Item>
 )
-data class ITEMS(
-    val item : List<ITEM>
-)
-data class ITEM(
+data class Item(
     val baseData : Int,
     val baseTime : Int,
-    val category : String
+    val category : String,
+    val fcstTime : String,
+    val fcstValue : String
 )
