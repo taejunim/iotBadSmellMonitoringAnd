@@ -5,8 +5,8 @@
 
     <string name="login">로그인</string>
     <string name="sign_up">회원가입</string>
-    <string name="main">냄새 접수</string>
-    <string name="history">냄새 접수 이력</string>
+    <string name="main">악취 접수</string>
+    <string name="history">악 접수 이력</string>
 
     <string name="sign_up_user_id">아이디</string>
     <string name="sign_up_check_duplicate">중복 확인</string>
@@ -44,7 +44,12 @@
     <string name="main_humidity">습도 : %1$s %%</string>
     <string name="main_wind">풍향 : %1$s</string>
     <string name="main_wind_speed">풍속 : %1$s m&#47;s</string>
-    <string name="main_report_status">금일 냄새 접수 현황</string>
+    <string name="main_report_status">금일 악취 접수 현황</string>
     <string name="main_choose_smell_intensity">악취 강도를 선택해주세요.</string>
+
+    <string name="history_search_text">조회</string>
+    <string name="histroy_search_date_text">일자</string>
+    <string name="histroy_search_smell_value_text">악취 강도</string>
+    <string name="history_text">이력</string>
 
 </resources>
