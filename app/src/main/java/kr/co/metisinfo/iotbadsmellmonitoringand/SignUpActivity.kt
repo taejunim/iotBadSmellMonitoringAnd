@@ -39,7 +39,7 @@ class SignUpActivity : BaseActivity() {
 
                 val data = UserModel(userId,userPassword,userAge,userName,userGender,"","001","")
 
-                apiService.signIn(data).enqueue(object : Callback<ResponseResult> {
+                MainApplication.instance.apiService.signIn(data).enqueue(object : Callback<ResponseResult> {
                     override fun onResponse(call: Call<ResponseResult>, response: Response<ResponseResult>) {
                         Log.d("metis",response.toString())
                         Log.d("metis", "회원가입 결과 -> " + response.body().toString())

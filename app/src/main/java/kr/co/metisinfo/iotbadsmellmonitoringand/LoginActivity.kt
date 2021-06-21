@@ -29,7 +29,7 @@ class LoginActivity : BaseActivity() {
                 val userPassword = binding.userPassword.text.toString()
                 val data = UserModel(userId,userPassword,"","","","","","")
 
-                apiService.userLogin(data).enqueue(object : Callback<LoginResult> {
+                MainApplication.instance.apiService.userLogin(data).enqueue(object : Callback<LoginResult> {
                     override fun onResponse(call: Call<LoginResult>, response: Response<LoginResult>) {
                         Log.d("metis",response.toString())
                         Log.d("metis", "결과 -> " + response.body().toString())
