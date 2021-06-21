@@ -13,9 +13,12 @@ abstract class BaseActivity : AppCompatActivity(){
 
         initLayout()
         setOnClickListener()
+        initData()
     }
 
     abstract fun initLayout()
 
     abstract fun setOnClickListener()
+
+    abstract fun initData()
 }

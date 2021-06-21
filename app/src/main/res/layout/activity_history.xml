@@ -99,6 +99,30 @@
                         android:layout_marginBottom="10dp"
                         android:text="전체" />
 
+                    <Spinner
+                        android:id="@+id/spinner_search_smell_value"
+                        android:layout_width="100dp"
+                        android:layout_height="1dp"
+                        android:layout_alignStart="@+id/search_smell_value"
+                        android:spinnerMode="dialog"
+                        android:textSize="17dp"
+                        android:textStyle="bold"
+                        android:layout_marginTop="80dp"
+                        android:visibility="invisible" />
+                    <ImageView
+                        android:id="@+id/search_smell_value_dropdown"
+                        android:layout_below="@+id/search_date_text"
+                        android:layout_alignStart="@id/search_smell_value"
+                        android:layout_marginLeft="40dp"
+                        android:layout_marginTop="12dp"
+                        android:layout_width="18dp"
+                        android:layout_height="10dp"
+                        android:rotationX="180"
+                        android:background="@drawable/btn_dropdown"
+                        android:button="@android:color/transparent"
+                        android:contentDescription="@string/image_description"
+                         />
+
                 </RelativeLayout>
 
             </LinearLayout>

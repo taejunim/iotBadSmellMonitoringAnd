@@ -65,6 +65,10 @@ class SignUpActivity : BaseActivity() {
         }
     }
 
+    override fun initData() {
+        TODO("Not yet implemented")
+    }
+
     //선택된 성별 가져오기
     private fun getGender() : String {
 

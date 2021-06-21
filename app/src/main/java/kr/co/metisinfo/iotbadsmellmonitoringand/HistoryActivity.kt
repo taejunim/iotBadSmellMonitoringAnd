@@ -52,6 +52,10 @@ class HistoryActivity : BaseActivity() {
         binding.searchEndDateText.setOnClickListener(this::clickDatePicker)
     }
 
+    override fun initData() {
+        TODO("Not yet implemented")
+    }
+
     /**
      * START / END CLICK DATE PICKER EVENT
      */

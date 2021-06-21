@@ -63,6 +63,10 @@ class LoginActivity : BaseActivity() {
         }
     }
 
+    override fun initData() {
+        TODO("Not yet implemented")
+    }
+
     //빈칸 체크
     private fun checkBlank(): Boolean {
 
