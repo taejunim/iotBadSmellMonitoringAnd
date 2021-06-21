@@ -25,10 +25,10 @@ import java.util.*
 class HistoryActivity : BaseActivity() {
 
     private lateinit var binding: ActivityHistoryBinding
-    private var selectYYYY      = 0
-    private var selectMM        = 0
-    private var selectDD        = 0
-    private var selectDateGbn   = ""
+    private var selectYYYY      = 0                                                                 //조회 일자 선택 - 연도
+    private var selectMM        = 0                                                                 //조회 일자 선택 - 월
+    private var selectDD        = 0                                                                 //조회 일자 선택 - 일
+    private var selectDateGbn   = ""                                                                //조회 일자 시작 또는 종료 구분을 위한 변수
 
     /**
      * ACTIVITY INIT
