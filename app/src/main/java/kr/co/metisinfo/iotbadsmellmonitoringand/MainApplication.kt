@@ -4,8 +4,8 @@ import android.app.Application
 import android.content.Context
 import android.util.Log
 import kr.co.metisinfo.iotbadsmellmonitoringand.model.CodeModel
+import kr.co.metisinfo.iotbadsmellmonitoringand.model.CodeResult
 import kr.co.metisinfo.iotbadsmellmonitoringand.model.WeatherResponse
-import kr.co.metisinfo.iotbadsmellmonitoringand.model.WindDirectionCodeResult
 import kr.co.metisinfo.iotbadsmellmonitoringand.util.ApiService
 import retrofit2.Call
 import retrofit2.Callback
@@ -27,7 +27,6 @@ class MainApplication : Application() {
         Log.d("metis","1")
         instance = this
         getApiData()
-
     }
 
     companion object {
@@ -43,8 +42,8 @@ class MainApplication : Application() {
         for (i in codeGroupArray.indices) {
 
             //풍향 코드 API
-            apiService.getWindDirectionCode(codeGroupArray[i]).enqueue(object : Callback<WindDirectionCodeResult> {
-                override fun onResponse(call: Call<WindDirectionCodeResult>, response: Response<WindDirectionCodeResult>) {
+            apiService.getWindDirectionCode(codeGroupArray[i]).enqueue(object : Callback<CodeResult> {
+                override fun onResponse(call: Call<CodeResult>, response: Response<CodeResult>) {
                     Log.d("metis",response.toString())
                     Log.d("metis", codeGroupArray[i] + " getWindDirectionCode 결과 -> " + response.body().toString())
 
@@ -74,7 +73,7 @@ class MainApplication : Application() {
                     }
                 }
 
-                override fun onFailure(call: Call<WindDirectionCodeResult>, t: Throwable) {
+                override fun onFailure(call: Call<CodeResult>, t: Throwable) {
                     Log.d("metis",t.message.toString())
                     Log.d("metis", "onFailure : fail")
                 }
