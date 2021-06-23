@@ -9,7 +9,9 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.SpinnerAdapter
 import androidx.databinding.DataBindingUtil
+import kr.co.metisinfo.iotbadsmellmonitoringand.adapter.ItemRegisterHistroyRecyclerViewAdapter
 import kr.co.metisinfo.iotbadsmellmonitoringand.databinding.ActivityHistoryBinding
+import kr.co.metisinfo.iotbadsmellmonitoringand.model.HistoryModel
 import java.util.*
 
 /**
@@ -33,7 +35,12 @@ class HistoryActivity : BaseActivity(), AdapterView.OnItemSelectedListener {
     private var selectDD        = 0                                                                 // 조회 일자 선택 - 일
     private var selectDateGbn   = ""                                                                // 조회 일자 시작 또는 종료 구분을 위한 변수
 
+    private lateinit var historyList: List<HistoryModel>
+    private lateinit var adapter: ItemRegisterHistroyRecyclerViewAdapter
+
     var distanceEntry: List<CharSequence> = ArrayList()
+
+
 
     /**
      * ACTIVITY INIT
@@ -66,10 +73,7 @@ class HistoryActivity : BaseActivity(), AdapterView.OnItemSelectedListener {
 
         distanceEntry = resources.getStringArray(R.array.array_distance_radius).toList()
         val lengthAdapter: Any = ArrayAdapter<Any?>(this, android.R.layout.simple_spinner_dropdown_item, distanceEntry)
-
-        Log.d("metis", "lengthAdapter :"+resources.getStringArray(R.array.array_distance_radius))
-
-        binding.spinnerSearchSmellValue.adapter = lengthAdapter as SpinnerAdapter?
+        binding.spinnerSearchSmellValue.adapter                = lengthAdapter as SpinnerAdapter?
         binding.spinnerSearchSmellValue.onItemSelectedListener = this
     }
 
@@ -84,8 +88,8 @@ class HistoryActivity : BaseActivity(), AdapterView.OnItemSelectedListener {
         dialog                        = DatePickerDialog(this@HistoryActivity, datePickerListener, nowCal[Calendar.YEAR],nowCal[Calendar.MONTH], nowCal[Calendar.DATE])
         selectDateGbn                 = view.resources.getResourceEntryName(view.id);               // 시작 또는 종료 날짜를 구분하기 위한 ID SET.
 
-        dialog.setCancelable(false);
-        dialog.show();
+        dialog.setCancelable(false)
+        dialog.show()
     }
 
     /**
@@ -102,13 +106,13 @@ class HistoryActivity : BaseActivity(), AdapterView.OnItemSelectedListener {
             binding.searchSatartDateText.text = String.format("%04d",selectYYYY)+"-"+ String.format("%02d",selectMM)+"-"+String.format("%02d",selectDD)
 
         else
-            binding.searchSatartDateText.text = String.format("%04d",selectYYYY)+"-"+ String.format("%02d",selectMM)+"-"+String.format("%02d",selectDD)
+            binding.searchEndDateText.text = String.format("%04d",selectYYYY)+"-"+ String.format("%02d",selectMM)+"-"+String.format("%02d",selectDD)
     }
 
-
+    /**
+     * DROPBOX SELECTED EVENT.
+     */
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-
-        Log.d("metis", "position :$position")
 
         binding.searchSmellValue.text = distanceEntry[position].toString()
     }

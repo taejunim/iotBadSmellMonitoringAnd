@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <RelativeLayout
+        android:id="@+id/history_layout"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_marginBottom="10dp">
+
+        <TextView
+            android:id="@+id/reg_dt_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_white_gray"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="15dp"
+            android:text="2021-05-29 21:23:21"/>
+
+        <Button
+            android:id="@+id/history_list_smell_value"
+            style="@style/intensityText"
+            android:layout_below="@+id/reg_dt_txt"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/intensity_0_button"
+            android:text="0도 - 무취 / 평상시에 감지하지 못함"/>
+
+        <ImageView
+            android:id="@+id/search_smell_value_dropdown"
+            android:layout_below="@+id/reg_dt_txt"
+            android:layout_marginLeft="385dp"
+            android:layout_marginTop="20dp"
+            android:layout_width="18dp"
+            android:layout_height="10dp"
+            android:rotationX="180"
+            android:background="@drawable/btn_dropdown"
+            android:button="@android:color/transparent"
+            android:contentDescription="@string/image_description"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="15dp"
+            android:layout_below="@+id/history_list_smell_value"
+            style="@style/marginLeftRight_20"
+            android:background="@color/include_header_line"/>
+
+        <LinearLayout
+            android:id="@+id/layout_expand"
+            android:visibility="gone"
+            android:background="#F1F1F1"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:text="askdjflkajsdflkjaslkdjf"/>
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</layout>

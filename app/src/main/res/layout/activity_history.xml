@@ -113,15 +113,14 @@
                         android:id="@+id/search_smell_value_dropdown"
                         android:layout_below="@+id/search_date_text"
                         android:layout_alignStart="@id/search_smell_value"
-                        android:layout_marginLeft="40dp"
+                        android:layout_marginLeft="50dp"
                         android:layout_marginTop="12dp"
                         android:layout_width="18dp"
                         android:layout_height="10dp"
                         android:rotationX="180"
                         android:background="@drawable/btn_dropdown"
                         android:button="@android:color/transparent"
-                        android:contentDescription="@string/image_description"
-                         />
+                        android:contentDescription="@string/image_description"/>
 
                 </RelativeLayout>
 
@@ -154,6 +153,14 @@
                     android:layout_marginBottom="10dp"
                     android:text="@string/history_text"
                     android:textStyle="bold" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/register_history_recycler"
+                    android:layout_below="@+id/history_text"
+                    android:padding="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+
 
             </RelativeLayout>
 
