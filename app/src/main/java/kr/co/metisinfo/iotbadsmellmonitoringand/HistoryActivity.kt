@@ -5,6 +5,8 @@ import android.app.DatePickerDialog
 import android.app.DatePickerDialog.OnDateSetListener
 import android.util.Log
 import android.view.View
+import android.widget.ArrayAdapter
+import android.widget.SpinnerAdapter
 import androidx.databinding.DataBindingUtil
 import kr.co.metisinfo.iotbadsmellmonitoringand.databinding.ActivityHistoryBinding
 import java.util.*
@@ -30,6 +32,8 @@ class HistoryActivity : BaseActivity() {
     private var selectDD        = 0                                                                 //조회 일자 선택 - 일
     private var selectDateGbn   = ""                                                                //조회 일자 시작 또는 종료 구분을 위한 변수
 
+    var distanceEntry: List<CharSequence> = ArrayList()
+
     /**
      * ACTIVITY INIT
      */
@@ -50,10 +54,18 @@ class HistoryActivity : BaseActivity() {
 
         binding.searchSatartDateText.setOnClickListener(this::clickDatePicker)
         binding.searchEndDateText.setOnClickListener(this::clickDatePicker)
+        binding.searchSmellValueDropdown.setOnClickListener { binding.spinnerSearchSmellValue.performClick() }
     }
 
     override fun initData() {
-        TODO("Not yet implemented")
+
+        distanceEntry = resources.getStringArray(R.array.array_distance_radius).toList()
+        val lengthAdapter: Any = ArrayAdapter<Any?>(this, android.R.layout.simple_spinner_dropdown_item, distanceEntry)
+
+        Log.d("metis", "lengthAdapter :"+resources.getStringArray(R.array.array_distance_radius))
+
+        binding.spinnerSearchSmellValue.adapter = lengthAdapter as SpinnerAdapter?
+        binding.spinnerSearchSmellValue.onItemSelectedListener
     }
 
     /**
