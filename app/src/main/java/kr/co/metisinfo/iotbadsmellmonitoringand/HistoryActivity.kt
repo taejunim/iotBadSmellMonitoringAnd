@@ -5,6 +5,7 @@ import android.app.DatePickerDialog
 import android.app.DatePickerDialog.OnDateSetListener
 import android.util.Log
 import android.view.View
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.SpinnerAdapter
 import androidx.databinding.DataBindingUtil
@@ -24,13 +25,13 @@ import java.util.*
  * @
  **/
 
-class HistoryActivity : BaseActivity() {
+class HistoryActivity : BaseActivity(), AdapterView.OnItemSelectedListener {
 
     private lateinit var binding: ActivityHistoryBinding
-    private var selectYYYY      = 0                                                                 //조회 일자 선택 - 연도
-    private var selectMM        = 0                                                                 //조회 일자 선택 - 월
-    private var selectDD        = 0                                                                 //조회 일자 선택 - 일
-    private var selectDateGbn   = ""                                                                //조회 일자 시작 또는 종료 구분을 위한 변수
+    private var selectYYYY      = 0                                                                 // 조회 일자 선택 - 연도
+    private var selectMM        = 0                                                                 // 조회 일자 선택 - 월
+    private var selectDD        = 0                                                                 // 조회 일자 선택 - 일
+    private var selectDateGbn   = ""                                                                // 조회 일자 시작 또는 종료 구분을 위한 변수
 
     var distanceEntry: List<CharSequence> = ArrayList()
 
@@ -39,7 +40,7 @@ class HistoryActivity : BaseActivity() {
      */
     override fun initLayout() {
 
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_history)           //XML BIND
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_history)           // XML BIND
 
         Log.d("metis","HistoryActivity 시작")
         binding.includeHeader.textTitle.setText(R.string.history)                                   // 타이틀 제목
@@ -54,9 +55,13 @@ class HistoryActivity : BaseActivity() {
 
         binding.searchSatartDateText.setOnClickListener(this::clickDatePicker)
         binding.searchEndDateText.setOnClickListener(this::clickDatePicker)
+        binding.searchSmellValue.setOnClickListener { binding.spinnerSearchSmellValue.performClick() }
         binding.searchSmellValueDropdown.setOnClickListener { binding.spinnerSearchSmellValue.performClick() }
     }
 
+    /**
+     * ACTIVITY INIT DATA
+     */
     override fun initData() {
 
         distanceEntry = resources.getStringArray(R.array.array_distance_radius).toList()
@@ -65,7 +70,7 @@ class HistoryActivity : BaseActivity() {
         Log.d("metis", "lengthAdapter :"+resources.getStringArray(R.array.array_distance_radius))
 
         binding.spinnerSearchSmellValue.adapter = lengthAdapter as SpinnerAdapter?
-        binding.spinnerSearchSmellValue.onItemSelectedListener
+        binding.spinnerSearchSmellValue.onItemSelectedListener = this
     }
 
     /**
@@ -83,7 +88,6 @@ class HistoryActivity : BaseActivity() {
         dialog.show();
     }
 
-
     /**
      * START / END CALENDAR DATE PICKER LISTENER
      */
@@ -99,6 +103,18 @@ class HistoryActivity : BaseActivity() {
 
         else
             binding.searchSatartDateText.text = String.format("%04d",selectYYYY)+"-"+ String.format("%02d",selectMM)+"-"+String.format("%02d",selectDD)
+    }
+
+
+    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+
+        Log.d("metis", "position :$position")
+
+        binding.searchSmellValue.text = distanceEntry[position].toString()
+    }
+
+    override fun onNothingSelected(parent: AdapterView<*>?) {
+        TODO("Not yet implemented")
     }
 
 }
