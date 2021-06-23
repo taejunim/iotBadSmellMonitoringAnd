@@ -44,7 +44,7 @@
     <string name="main_humidity">습도 : %1$s %%</string>
     <string name="main_wind">풍향 : %1$s</string>
     <string name="main_wind_speed">풍속 : %1$s m&#47;s</string>
-    <string name="main_report_status">금일 악취 접수 현황</string>
+    <string name="main_register_status">금일 악취 접수 현황</string>
     <string name="main_choose_smell_intensity">악취 강도를 선택해주세요.</string>
 
     <string name="history_search_text">조회</string>

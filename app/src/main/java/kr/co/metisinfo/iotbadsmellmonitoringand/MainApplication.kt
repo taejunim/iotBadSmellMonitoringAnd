@@ -3,9 +3,7 @@ package kr.co.metisinfo.iotbadsmellmonitoringand
 import android.app.Application
 import android.content.Context
 import android.util.Log
-import kr.co.metisinfo.iotbadsmellmonitoringand.model.CodeModel
-import kr.co.metisinfo.iotbadsmellmonitoringand.model.CodeResult
-import kr.co.metisinfo.iotbadsmellmonitoringand.model.WeatherResponse
+import kr.co.metisinfo.iotbadsmellmonitoringand.model.*
 import kr.co.metisinfo.iotbadsmellmonitoringand.util.ApiService
 import retrofit2.Call
 import retrofit2.Callback
@@ -21,7 +19,8 @@ class MainApplication : Application() {
     val apiService = ApiService.create()
     val codeGroupArray = arrayOf("WND", "REN")
     val windDirectionMap: MutableMap<String, String> = mutableMapOf() //풍향 코드
-    val reportTimeZoneMap: MutableMap<String, String> = mutableMapOf() //신고 시간대
+    val registerTimeZoneMap: MutableMap<String, String> = mutableMapOf() //신고 시간대
+    var registerStatusList: List<RegisterModel> = mutableListOf()
     
     init {
         Log.d("metis","1")
@@ -62,14 +61,15 @@ class MainApplication : Application() {
 
                         //신고 시간대
                         else if (i == 1) {
-                            reportTimeZoneMap.put(dataList[j].codeId,dataList[j].codeIdName)
-                            Log.d("metis", "reportTimeZoneMap : " + reportTimeZoneMap)
+                            registerTimeZoneMap.put(dataList[j].codeId,dataList[j].codeIdName)
+                            Log.d("metis", "registerTimeZoneMap : " + registerTimeZoneMap)
                         }
                     }
 
                     if (i == codeGroupArray.indices.last) {
                         Log.d("metis","codeGroupArray.indices.last : " + codeGroupArray.indices.last)
                         getWeatherApiData()
+                        getUserTodayRegisterInfo()
                     }
                 }
 
@@ -153,5 +153,49 @@ class MainApplication : Application() {
         val windDirectionText = String.format("%.0f", (originalValue + 22.5 * 0.5) / 22.5)
 
         return windDirectionMap[windDirectionText].toString()
+    }
+
+    fun getUserTodayRegisterInfo() {
+
+        val userId = "test2"
+
+        apiService.getUserTodayRegisterInfo(userId).enqueue(object : Callback<RegisterResult> {
+            override fun onResponse(call: Call<RegisterResult>, response: Response<RegisterResult>) {
+                Log.d("metis",response.toString())
+                Log.d("metis", userId + " getUserTodayRegisterInfo 결과 -> " + response.body().toString())
+
+                registerStatusList = response.body()!!.data
+
+                for (j in registerStatusList.indices) {
+
+                    Log.d("metis", "smellRegisterTimeName : " + registerStatusList[j].smellRegisterTimeName)
+                    Log.d("metis", "resultCode : " + registerStatusList[j].resultCode)
+                    Log.d("metis", "regDt : " + registerStatusList[j].regDt)
+                    Log.d("metis", "smellRegisterTime : " + registerStatusList[j].smellRegisterTime)
+
+                    //풍향 코드
+                    /*if (i == 0 ) {
+                        val convertedValue = (Integer.parseInt(dataList[j].codeId) - 1).toString() //풍향 변환값 => CODE_ID를 정수로 변환후 -1 한 값
+                        val directionName = dataList[j].codeIdName //풍향
+
+                        windDirectionMap.put(convertedValue,directionName)
+                        Log.d("metis", "windDirectionMap : " + windDirectionMap)
+                    }
+
+                    //신고 시간대
+                    else if (i == 1) {
+                        registerTimeZoneMap.put(dataList[j].codeId,dataList[j].codeIdName)
+                        Log.d("metis", "registerTimeZoneMap : " + registerTimeZoneMap)
+                    }*/
+                }
+
+
+            }
+
+            override fun onFailure(call: Call<RegisterResult>, t: Throwable) {
+                Log.d("metis",t.message.toString())
+                Log.d("metis", "onFailure : fail")
+            }
+        })
     }
 }

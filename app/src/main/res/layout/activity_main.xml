@@ -112,19 +112,19 @@
                     android:layout_height="match_parent">
 
                     <TextView
-                        android:id="@+id/report_status_text"
+                        android:id="@+id/register_status_text"
                         style="@style/plainText"
                         android:layout_alignParentTop="true"
                         android:layout_alignParentLeft="true"
                         android:layout_marginTop="10dp"
                         android:layout_marginLeft="20dp"
                         android:layout_marginBottom="10dp"
-                        android:text="@string/main_report_status"/>
+                        android:text="@string/main_register_status"/>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_below="@id/report_status_text"
+                        android:layout_below="@id/register_status_text"
                         android:orientation="horizontal">
 
                         <LinearLayout
@@ -137,7 +137,7 @@
                                 android:layout_height="match_parent">
 
                                 <ImageView
-                                    android:id="@+id/report_first_time_image"
+                                    android:id="@+id/register_first_time_image"
                                     android:layout_width="60dp"
                                     android:layout_height="60dp"
                                     android:layout_centerHorizontal="true"
@@ -146,13 +146,13 @@
                                     android:button="@android:color/transparent"/>
 
                                 <TextView
-                                    android:id="@+id/report_first_time_text"
+                                    android:id="@+id/register_first_time_text"
                                     style="@style/tinyText"
-                                    android:layout_below="@+id/report_first_time_image"
+                                    android:layout_below="@+id/register_first_time_image"
                                     android:layout_centerInParent="true"
                                     android:layout_marginTop="5dp"
                                     android:singleLine="true"
-                                    android:text="07:00 ~ 09:00" />
+                                    android:text="-" />
 
                             </RelativeLayout>
 
@@ -168,7 +168,7 @@
                                 android:layout_height="match_parent">
 
                                 <ImageView
-                                    android:id="@+id/report_second_time_image"
+                                    android:id="@+id/register_second_time_image"
                                     android:layout_width="60dp"
                                     android:layout_height="60dp"
                                     android:layout_centerHorizontal="true"
@@ -177,13 +177,13 @@
                                     android:button="@android:color/transparent"/>
 
                                 <TextView
-                                    android:id="@+id/report_second_time_text"
+                                    android:id="@+id/register_second_time_text"
                                     style="@style/tinyText"
-                                    android:layout_below="@+id/report_second_time_image"
+                                    android:layout_below="@+id/register_second_time_image"
                                     android:layout_centerInParent="true"
                                     android:layout_marginTop="5dp"
                                     android:singleLine="true"
-                                    android:text="12:00 ~ 14:00" />
+                                    android:text="-" />
 
                             </RelativeLayout>
 
@@ -199,7 +199,7 @@
                                 android:layout_height="match_parent">
 
                                 <ImageView
-                                    android:id="@+id/report_third_time_image"
+                                    android:id="@+id/register_third_time_image"
                                     android:layout_width="60dp"
                                     android:layout_height="60dp"
                                     android:layout_centerHorizontal="true"
@@ -208,13 +208,13 @@
                                     android:button="@android:color/transparent"/>
 
                                 <TextView
-                                    android:id="@+id/report_third_time_text"
+                                    android:id="@+id/register_third_time_text"
                                     style="@style/tinyText"
-                                    android:layout_below="@+id/report_third_time_image"
+                                    android:layout_below="@+id/register_third_time_image"
                                     android:layout_centerInParent="true"
                                     android:layout_marginTop="5dp"
                                     android:singleLine="true"
-                                    android:text="18:00 ~ 20:00" />
+                                    android:text="-" />
 
                             </RelativeLayout>
 
@@ -230,7 +230,7 @@
                                 android:layout_height="match_parent">
 
                                 <ImageView
-                                    android:id="@+id/report_fourth_time_image"
+                                    android:id="@+id/register_fourth_time_image"
                                     android:layout_width="60dp"
                                     android:layout_height="60dp"
                                     android:layout_centerHorizontal="true"
@@ -239,13 +239,13 @@
                                     android:button="@android:color/transparent"/>
 
                                 <TextView
-                                    android:id="@+id/report_fourth_time_text"
+                                    android:id="@+id/register_fourth_time_text"
                                     style="@style/tinyText"
-                                    android:layout_below="@+id/report_fourth_time_image"
+                                    android:layout_below="@+id/register_fourth_time_image"
                                     android:layout_centerInParent="true"
                                     android:layout_marginTop="5dp"
                                     android:singleLine="true"
-                                    android:text="22:00 ~ 00:00" />
+                                    android:text="-" />
 
                             </RelativeLayout>
 

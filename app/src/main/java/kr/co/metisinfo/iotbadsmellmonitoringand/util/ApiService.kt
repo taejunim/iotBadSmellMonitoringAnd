@@ -39,7 +39,7 @@ interface ApiService {
     )
     fun getWindDirectionCode(
         @Query("codeGroup") codeGroup: String
-    ): Call<WindDirectionCodeResult>
+    ): Call<CodeResult>
 
     //현재 날씨
     @GET("getUltraSrtFcst?serviceKey=${Constants.serviceKey}")
@@ -51,6 +51,16 @@ interface ApiService {
         @Query("dataType") dataType : String,
         @Query("numOfRows") numOfRows : String
     ): Call<WeatherResponse>
+
+    //금일 접수 현황
+    @GET("/api/userTodayRegisterInfo")
+    @Headers(
+        "Accept: application/json",
+        "Content-Type: application/json"
+    )
+    fun getUserTodayRegisterInfo(
+        @Query("userId") userId: String
+    ): Call<RegisterResult>
 
     companion object { // static 처럼 공유객체로 사용가능함. 모든 인스턴스가 공유하는 객체로서 동작함.
 
