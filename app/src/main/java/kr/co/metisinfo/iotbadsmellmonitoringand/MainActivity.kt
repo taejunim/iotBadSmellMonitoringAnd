@@ -1,11 +1,18 @@
 package kr.co.metisinfo.iotbadsmellmonitoringand
 
+import android.content.Intent
+import android.graphics.Color
 import android.util.Log
+import android.util.TypedValue
+import android.view.Gravity
 import android.view.View
+import android.widget.Button
 import android.widget.ImageView
+import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import kr.co.metisinfo.iotbadsmellmonitoringand.databinding.ActivityMainBinding
+import kr.co.metisinfo.iotbadsmellmonitoringand.util.Utils.Companion.convertToDp
 
 class MainActivity : BaseActivity() {
 
@@ -27,6 +34,9 @@ class MainActivity : BaseActivity() {
 
         //접수 현황 레이아웃 그리기
         drawRegisterStatusLayout()
+
+        //악취 강도 레이아웃 그리기
+        drawSmellIntensityLayout()
     }
 
     override fun setOnClickListener() {
@@ -74,6 +84,37 @@ class MainActivity : BaseActivity() {
             }
 
             textView?.text = registerStatusList[i].smellRegisterTimeName
+        }
+    }
+
+    //악취 강도 레이아웃 그리기
+    private fun drawSmellIntensityLayout() {
+
+        val smellTypeList = instance.smellTypeList
+        var tempButton = Button(this)
+        for (i in smellTypeList.indices) {
+
+            val intensityButton = Button(this)
+
+            val layoutParams = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, convertToDp(30F))
+
+            layoutParams.addRule(RelativeLayout.BELOW, tempButton!!.id)
+            layoutParams.setMargins(convertToDp(30F),convertToDp(10F),convertToDp(30F),0)
+            intensityButton.id = i+1
+            intensityButton.layoutParams = layoutParams
+            intensityButton.gravity = Gravity.LEFT or Gravity.CENTER
+            intensityButton.setPadding(convertToDp(20F),0,0,0)
+            intensityButton.setTextSize(TypedValue.COMPLEX_UNIT_SP,16F)
+            intensityButton.setTextColor(Color.WHITE)
+            intensityButton.setBackgroundResource(resource.getIdentifier("intensity_"+i+"_button", "drawable", "kr.co.metisinfo.iotbadsmellmonitoringand"))
+            intensityButton.setOnClickListener {
+                Log.d("metis", "text : " + smellTypeList[i].codeIdName + " / " + smellTypeList[i].codeComment)
+                val intent = Intent(this, RegisterActivity::class.java)
+                startActivity (intent)
+            }
+            intensityButton.text = smellTypeList[i].codeIdName + " / " + smellTypeList[i].codeComment
+            binding.intensityButtonLayout.addView(intensityButton)
+            tempButton = intensityButton
         }
     }
 }

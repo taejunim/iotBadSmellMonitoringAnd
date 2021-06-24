@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <include
+            android:id="@+id/include_header"
+            layout="@layout/layout_header"
+            android:layout_width="match_parent"
+            android:layout_height="60dp" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/include_header">
+
+            <LinearLayout
+                android:layout_below="@+id/include_header"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_marginBottom="20dp">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:id="@+id/current_weather_text"
+                            style="@style/plainText"
+                            android:layout_alignParentTop="true"
+                            android:layout_centerHorizontal="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="10dp"
+                            android:text="@string/register_selected_data_text"/>
+
+                        <RelativeLayout
+                            android:id="@+id/smell_type_layout"
+                            android:layout_width="120dp"
+                            android:layout_height="120dp"
+                            android:layout_below="@+id/current_weather_text"
+                            android:layout_centerHorizontal="true"
+                            android:background="@drawable/smell_type_button">
+
+                            <ImageView
+                                android:id="@+id/smell_type_image"
+                                android:layout_width="60dp"
+                                android:layout_height="60dp"
+                                android:layout_centerVertical="true"
+                                android:layout_centerHorizontal="true"
+                                android:contentDescription="@string/image_description"
+                                android:background="@drawable/not_yet"
+                                android:button="@android:color/transparent"/>
+
+                            <TextView
+                                android:id="@+id/smell_type_text"
+                                style="@style/plainText"
+                                android:layout_alignParentBottom="true"
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginTop="50dp"
+                                android:layout_marginBottom="10dp"
+                                android:text="구린 냄새"/>
+
+                        </RelativeLayout>
+
+                        <Button
+                            android:id="@+id/intensity_button"
+                            style="@style/intensityButton"
+                            android:layout_below="@+id/smell_type_layout"
+                            android:background="@drawable/intensity_0_button"
+                            android:text="0도 - 무취 / 평상시에 감지하지 못함"/>
+
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    style="@style/marginLeftRight_20"
+                    android:background="@color/include_header_line"/>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:id="@+id/register_memo_text"
+                            style="@style/plainText"
+                            android:layout_alignParentTop="true"
+                            android:layout_centerHorizontal="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="10dp"
+                            android:text="@string/register_upload_image_text"/>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_below="@id/register_memo_text"
+                            android:orientation="horizontal">
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1">
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent">
+
+                                    <ImageView
+                                        android:id="@+id/register_first_time_image"
+                                        android:layout_width="60dp"
+                                        android:layout_height="60dp"
+                                        android:layout_centerHorizontal="true"
+                                        android:contentDescription="@string/image_description"
+                                        android:background="@drawable/not_yet"
+                                        android:button="@android:color/transparent"/>
+
+                                    <TextView
+                                        android:id="@+id/register_first_time_text"
+                                        style="@style/tinyText"
+                                        android:layout_below="@+id/register_first_time_image"
+                                        android:layout_centerInParent="true"
+                                        android:layout_marginTop="5dp"
+                                        android:singleLine="true"
+                                        android:text="-" />
+
+                                </RelativeLayout>
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1">
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent">
+
+                                    <ImageView
+                                        android:id="@+id/register_second_time_image"
+                                        android:layout_width="60dp"
+                                        android:layout_height="60dp"
+                                        android:layout_centerHorizontal="true"
+                                        android:contentDescription="@string/image_description"
+                                        android:background="@drawable/not_yet"
+                                        android:button="@android:color/transparent"/>
+
+                                    <TextView
+                                        android:id="@+id/register_second_time_text"
+                                        style="@style/tinyText"
+                                        android:layout_below="@+id/register_second_time_image"
+                                        android:layout_centerInParent="true"
+                                        android:layout_marginTop="5dp"
+                                        android:singleLine="true"
+                                        android:text="-" />
+
+                                </RelativeLayout>
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1">
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent">
+
+                                    <ImageView
+                                        android:id="@+id/register_third_time_image"
+                                        android:layout_width="60dp"
+                                        android:layout_height="60dp"
+                                        android:layout_centerHorizontal="true"
+                                        android:contentDescription="@string/image_description"
+                                        android:background="@drawable/not_yet"
+                                        android:button="@android:color/transparent"/>
+
+                                    <TextView
+                                        android:id="@+id/register_third_time_text"
+                                        style="@style/tinyText"
+                                        android:layout_below="@+id/register_third_time_image"
+                                        android:layout_centerInParent="true"
+                                        android:layout_marginTop="5dp"
+                                        android:singleLine="true"
+                                        android:text="-" />
+
+                                </RelativeLayout>
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1">
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent">
+
+                                    <ImageView
+                                        android:id="@+id/register_fourth_time_image"
+                                        android:layout_width="60dp"
+                                        android:layout_height="60dp"
+                                        android:layout_centerHorizontal="true"
+                                        android:contentDescription="@string/image_description"
+                                        android:background="@drawable/not_yet"
+                                        android:button="@android:color/transparent"/>
+
+                                    <TextView
+                                        android:id="@+id/register_fourth_time_text"
+                                        style="@style/tinyText"
+                                        android:layout_below="@+id/register_fourth_time_image"
+                                        android:layout_centerInParent="true"
+                                        android:layout_marginTop="5dp"
+                                        android:singleLine="true"
+                                        android:text="-" />
+
+                                </RelativeLayout>
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    style="@style/marginLeftRight_20"
+                    android:background="@color/include_header_line"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="400dp">
+
+
+
+                </LinearLayout>
+
+            </LinearLayout>
+        </ScrollView>
+
+
+
+
+    </RelativeLayout>
+</layout>

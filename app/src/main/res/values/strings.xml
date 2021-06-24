@@ -6,6 +6,7 @@
     <string name="login">로그인</string>
     <string name="sign_up">회원가입</string>
     <string name="main">악취 접수</string>
+    <string name="register">악취 접수 등록</string>
     <string name="history">악취 접수 이력</string>
 
     <string name="sign_up_user_id">아이디</string>
@@ -46,6 +47,10 @@
     <string name="main_wind_speed">풍속 : %1$s m&#47;s</string>
     <string name="main_register_status">금일 악취 접수 현황</string>
     <string name="main_choose_smell_intensity">악취 강도를 선택해주세요.</string>
+
+    <string name="register_selected_data_text">선택한 취기 및 악취강도</string>
+    <string name="register_upload_image_text">촬영한 사진이 있다면 첨부해주세요</string>
+    <string name="register_memo_text">추가 전달 사항이 있다면 입력해주세요</string>
 
     <string name="history_search_text">조회</string>
     <string name="histroy_search_date_text">일자</string>

@@ -288,50 +288,9 @@
                         android:layout_below="@+id/choose_smell_intensity_text">
 
                         <RelativeLayout
+                            android:id="@+id/intensity_button_layout"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent">
-
-                            <Button
-                                android:id="@+id/intensity_0_button"
-                                style="@style/intensityText"
-                                android:background="@drawable/intensity_0_button"
-                                android:text="0도 - 무취 / 평상시에 감지하지 못함"/>
-
-                            <Button
-                                android:id="@+id/intensity_1_button"
-                                style="@style/intensityText"
-                                android:layout_below="@+id/intensity_0_button"
-                                android:background="@drawable/intensity_1_button"
-                                android:text="1도 - 무취 / 평상시에 감지하지 못함"/>
-
-                            <Button
-                                android:id="@+id/intensity_2_button"
-                                style="@style/intensityText"
-                                android:layout_below="@+id/intensity_1_button"
-                                android:background="@drawable/intensity_2_button"
-                                android:text="2도 - 보통 취기 / 냄새 구분이 가능한 수준"/>
-
-                            <Button
-                                android:id="@+id/intensity_3_button"
-                                style="@style/intensityText"
-                                android:layout_below="@+id/intensity_2_button"
-                                android:background="@drawable/intensity_3_button"
-                                android:text="3도 - 강한 취기 / 감지 가능한 강한 냄새"/>
-
-                            <Button
-                                android:id="@+id/intensity_4_button"
-                                style="@style/intensityText"
-                                android:layout_below="@+id/intensity_3_button"
-                                android:background="@drawable/intensity_4_button"
-                                android:text="4도 - 극심한 취기 / 아주 강한 냄새 수준"/>
-
-                            <Button
-                                android:id="@+id/intensity_5_button"
-                                style="@style/intensityText"
-                                android:layout_marginBottom="10dp"
-                                android:layout_below="@+id/intensity_4_button"
-                                android:background="@drawable/intensity_5_button"
-                                android:text="5도 - 참기 어려운 취기 / 호흡 불가능 수준"/>
 
                         </RelativeLayout>
 

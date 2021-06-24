@@ -42,6 +42,11 @@
 
         </activity>
 
+        <!--악취 접수 등록-->
+        <activity android:name=".RegisterActivity">
+
+        </activity>
+
     </application>
 
 </manifest>
