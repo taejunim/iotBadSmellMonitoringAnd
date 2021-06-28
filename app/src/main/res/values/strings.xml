@@ -37,8 +37,8 @@
     <string name="age_hint">나이 입력</string>
     <string name="gender_hint">성별 선택</string>
 
-    <string name="male">남</string>
-    <string name="female">여</string>
+    <string name="male">남성</string>
+    <string name="female">여성</string>
 
     <string name="main_current_weather">현재 날씨</string>
     <string name="main_temperature">기온 : %1$s °C</string>
