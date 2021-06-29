@@ -8,5 +8,6 @@ data class UserModel(
     private val userSex: String,
     private val userSexName: String,
     private val userType: String,
-    private val userTypeName: String
+    private val userTypeName: String,
+    private val userRegion: String
 )

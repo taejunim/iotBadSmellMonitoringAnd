@@ -150,8 +150,9 @@
                     style="@style/star_mark"/>
 
                 <LinearLayout
+                    android:id="@+id/gender_toggle_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="30dp"
                     android:layout_below="@id/sign_up_gender_text"
                     android:layout_marginTop="15dp">
 
@@ -176,6 +177,29 @@
                             android:text="@string/female"/>
 
                     </RadioGroup>
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/sign_up_region_text"
+                    android:layout_below="@id/gender_toggle_layout"
+                    android:layout_marginTop="20dp"
+                    android:text="@string/sign_up_region"
+                    style="@style/plainText"/>
+
+                <TextView
+                    android:layout_toEndOf="@id/sign_up_region_text"
+                    android:layout_alignTop="@id/sign_up_region_text"
+                    style="@style/star_mark"/>
+
+                <LinearLayout
+                    android:id="@+id/region_toggle_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_below="@id/sign_up_region_text"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="30dp">
 
                 </LinearLayout>
 

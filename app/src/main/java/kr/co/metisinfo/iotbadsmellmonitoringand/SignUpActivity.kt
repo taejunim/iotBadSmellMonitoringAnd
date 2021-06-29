@@ -1,12 +1,16 @@
 package kr.co.metisinfo.iotbadsmellmonitoringand
 
+import android.graphics.Color
+import android.graphics.drawable.StateListDrawable
 import android.util.Log
+import android.view.Gravity
 import android.view.View
-import android.widget.Toast
+import android.widget.*
 import androidx.databinding.DataBindingUtil
 import kr.co.metisinfo.iotbadsmellmonitoringand.databinding.ActivitySignUpBinding
 import kr.co.metisinfo.iotbadsmellmonitoringand.model.ResponseResult
 import kr.co.metisinfo.iotbadsmellmonitoringand.model.UserModel
+import kr.co.metisinfo.iotbadsmellmonitoringand.util.Utils.Companion.convertToDp
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -15,6 +19,8 @@ import retrofit2.Response
 class SignUpActivity : BaseActivity() {
 
     private lateinit var binding: ActivitySignUpBinding
+    private val instance = MainApplication.instance
+    private var selectedRegionCode = ""
 
     override fun initLayout() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_sign_up)
@@ -22,6 +28,9 @@ class SignUpActivity : BaseActivity() {
         binding.includeHeader.textTitle.setText(R.string.sign_up)
         binding.includeHeader.backButton.visibility = View.VISIBLE
         binding.includeHeader.sideMenuButton.visibility = View.GONE
+
+        //지역 레이아웃 그리기
+        drawRegionGroup()
     }
     override fun setOnClickListener() {
 
@@ -36,10 +45,11 @@ class SignUpActivity : BaseActivity() {
                 val userName = binding.signUpUserNameInput.text.toString()
                 val userAge = binding.signUpUserAgeInput.text.toString()
                 val userGender = getGender()
+                val userRegion = selectedRegionCode
 
-                val data = UserModel(userId,userPassword,userAge,userName,userGender,"","001","")
+                val data = UserModel(userId,userPassword,userAge,userName,userGender,"","001","", userRegion)
 
-                MainApplication.instance.apiService.signIn(data).enqueue(object : Callback<ResponseResult> {
+                instance.apiService.signIn(data).enqueue(object : Callback<ResponseResult> {
                     override fun onResponse(call: Call<ResponseResult>, response: Response<ResponseResult>) {
                         Log.d("metis",response.toString())
                         Log.d("metis", "회원가입 결과 -> " + response.body().toString())
@@ -66,7 +76,6 @@ class SignUpActivity : BaseActivity() {
     }
 
     override fun initData() {
-        TODO("Not yet implemented")
     }
 
     //선택된 성별 가져오기
@@ -144,6 +153,59 @@ class SignUpActivity : BaseActivity() {
             return false
         }
 
+        //지역
+        else if (selectedRegionCode == "") {
+
+            Toast.makeText(this, resource.getString(R.string.blank_user_region), Toast.LENGTH_SHORT).show()
+            return false
+        }
+
         return true
+    }
+
+    //지역 레이아웃 그리기
+    private fun drawRegionGroup() {
+
+        val radioGroupParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT)
+
+        val regionRadioGroup = RadioGroup(this)
+        regionRadioGroup.layoutParams = radioGroupParams
+        regionRadioGroup.setBackgroundResource(R.drawable.toggle_background)
+        regionRadioGroup.orientation = RadioGroup.HORIZONTAL
+
+        val radioButtonParams = LinearLayout.LayoutParams(convertToDp(0F), LinearLayout.LayoutParams.MATCH_PARENT)
+        radioButtonParams.weight = 1F
+        radioButtonParams.setMargins(convertToDp(2F),convertToDp(2F),0,convertToDp(2F))
+
+        var firstRadioButton: RadioButton? = null
+
+        val regionList = instance.regionList
+
+        for (i in regionList.indices) {
+
+            val regionRadioButton = RadioButton(this)
+
+            regionRadioButton.id = i+1
+            regionRadioButton.layoutParams = radioButtonParams
+            regionRadioButton.setBackgroundResource(R.drawable.toggle_selected_button)
+            regionRadioButton.gravity = Gravity.CENTER
+            regionRadioButton.setTextColor(Color.WHITE)
+            regionRadioButton.text = regionList[i].codeIdName
+            regionRadioButton.buttonDrawable = StateListDrawable()
+            regionRadioButton.setOnClickListener {
+                selectedRegionCode = regionList[i].codeId
+            }
+
+            regionRadioGroup.addView(regionRadioButton)
+
+            if (i == 0) {
+                firstRadioButton = regionRadioButton
+            }
+        }
+
+        regionRadioGroup.check(firstRadioButton!!.id)
+        selectedRegionCode = regionList[0].codeId
+
+        binding.regionToggleLayout.addView(regionRadioGroup)
     }
 }

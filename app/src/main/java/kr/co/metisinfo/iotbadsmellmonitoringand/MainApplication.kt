@@ -17,11 +17,12 @@ class MainApplication : Application() {
     val weatherDataMap: MutableMap<String, String> = mutableMapOf() //날씨 데이터
 
     val apiService = ApiService.create()
-    val codeGroupArray = arrayOf("WND", "REN", "SMT")
+    val codeGroupArray = arrayOf("WND", "REN", "SMT", "RGN")
     val windDirectionMap: MutableMap<String, String> = mutableMapOf() //풍향 코드
     val registerTimeZoneMap: MutableMap<String, String> = mutableMapOf() //신고 시간대
     var registerStatusList: List<RegisterModel> = mutableListOf() //접수 현황
     var smellTypeList: List<CodeModel> = mutableListOf() //접수 현황
+    var regionList: List<CodeModel> = mutableListOf() //접수 현황
     
     init {
         Log.d("metis","1")
@@ -65,12 +66,18 @@ class MainApplication : Application() {
                             registerTimeZoneMap.put(dataList[j].codeId,dataList[j].codeIdName)
                             Log.d("metis", "registerTimeZoneMap : " + registerTimeZoneMap)
                         }
+                    }
 
-                        //냄새 타입
-                        else if (i == 2) {
-                            smellTypeList = response.body()!!.data
-                            Log.d("metis", "registerTimeZoneMap : " + smellTypeList)
-                        }
+                    //냄새 타입
+                    if (i == 2) {
+                        smellTypeList = response.body()!!.data
+                        Log.d("metis", "smellTypeList : " + smellTypeList)
+                    }
+
+                    //지역
+                    else if (i == 3) {
+                        regionList = response.body()!!.data
+                        Log.d("metis", "regionList : " + regionList)
                     }
 
                     if (i == codeGroupArray.indices.last) {

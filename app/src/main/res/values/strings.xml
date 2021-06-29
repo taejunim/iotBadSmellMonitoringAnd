@@ -25,6 +25,7 @@
     <string name="blank_user_age">나이를 입력해주세요.</string>
     <string name="blank_user_incorrect_password">비밀번호가 서로 일치하지 않습니다.</string>
     <string name="blank_user_gender">성별을 선택해주세요.</string>
+    <string name="blank_user_region">지역을 선택해주세요.</string>
 
     <string name="incorrect_data">아이디 혹은 비밀번호가 일치하지 않습니다.</string>
 

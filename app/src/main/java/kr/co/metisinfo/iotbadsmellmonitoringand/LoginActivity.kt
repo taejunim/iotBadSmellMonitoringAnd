@@ -15,6 +15,7 @@ import retrofit2.Response
 class LoginActivity : BaseActivity() {
 
     private lateinit var binding: ActivityLoginBinding
+    private val instance = MainApplication.instance
 
     override fun initLayout() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_login)
@@ -27,9 +28,9 @@ class LoginActivity : BaseActivity() {
 
                 val userId = binding.userId.text.toString()
                 val userPassword = binding.userPassword.text.toString()
-                val data = UserModel(userId,userPassword,"","","","","","")
+                val data = UserModel(userId,userPassword,"","","","","","","")
 
-                MainApplication.instance.apiService.userLogin(data).enqueue(object : Callback<LoginResult> {
+                instance.apiService.userLogin(data).enqueue(object : Callback<LoginResult> {
                     override fun onResponse(call: Call<LoginResult>, response: Response<LoginResult>) {
                         Log.d("metis",response.toString())
                         Log.d("metis", "결과 -> " + response.body().toString())

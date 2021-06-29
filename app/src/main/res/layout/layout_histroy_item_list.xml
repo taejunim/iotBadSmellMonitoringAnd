@@ -19,7 +19,7 @@
 
         <Button
             android:id="@+id/history_list_smell_value"
-            style="@style/intensityText"
+            style="@style/intensityButton"
             android:layout_below="@+id/reg_dt_txt"
             android:layout_marginLeft="10dp"
             android:background="@drawable/intensity_0_button"
