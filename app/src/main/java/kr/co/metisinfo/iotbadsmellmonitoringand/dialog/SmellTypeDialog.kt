@@ -15,6 +15,7 @@ import kr.co.metisinfo.iotbadsmellmonitoringand.MainApplication
 import kr.co.metisinfo.iotbadsmellmonitoringand.R
 import kr.co.metisinfo.iotbadsmellmonitoringand.databinding.DialogSmellTypeBinding
 import kr.co.metisinfo.iotbadsmellmonitoringand.util.Utils.Companion.convertToDp
+import kr.co.metisinfo.iotbadsmellmonitoringand.util.Utils.Companion.radioButtonColorStateList
 import kotlin.math.ceil
 
 class SmellTypeDialog : DialogFragment() {
@@ -54,18 +55,31 @@ class SmellTypeDialog : DialogFragment() {
         val smellTypeCount = smellTypeList.count()
         val smellTypeLineCount = ceil(smellTypeCount.toDouble() / 3).toInt()
 
-        val totalLayoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT)
+        val totalLayoutParams = LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            LinearLayout.LayoutParams.MATCH_PARENT
+        )
         val totalLayout = LinearLayout(context)
         totalLayout.layoutParams = totalLayoutParams
         totalLayout.orientation = LinearLayout.VERTICAL
 
-        val lineLayoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, convertToDp(130F))
-        lineLayoutParams.setMargins(0,0,0,convertToDp(30F))
+        val lineLayoutParams = LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT, convertToDp(
+                130F
+            )
+        )
+        lineLayoutParams.setMargins(0, 0, 0, convertToDp(30F))
 
-        val itemLayoutParams = LinearLayout.LayoutParams(convertToDp(0F), RelativeLayout.LayoutParams.MATCH_PARENT)
+        val itemLayoutParams = LinearLayout.LayoutParams(
+            convertToDp(0F),
+            RelativeLayout.LayoutParams.MATCH_PARENT
+        )
         itemLayoutParams.weight = 1F
 
-        val totalAreaLayoutParams = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT)
+        val totalAreaLayoutParams = RelativeLayout.LayoutParams(
+            RelativeLayout.LayoutParams.MATCH_PARENT,
+            RelativeLayout.LayoutParams.MATCH_PARENT
+        )
 
         val areaLayoutParams = RelativeLayout.LayoutParams(convertToDp(90F), convertToDp(90F))
         areaLayoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL)
@@ -73,14 +87,20 @@ class SmellTypeDialog : DialogFragment() {
         val imageLayoutParams = RelativeLayout.LayoutParams(convertToDp(50F), convertToDp(50F))
         imageLayoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL)
         imageLayoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP)
-        imageLayoutParams.setMargins(0,convertToDp(10F),0,0)
+        imageLayoutParams.setMargins(0, convertToDp(10F), 0, 0)
 
-        val textLayoutParams = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT)
+        val textLayoutParams = RelativeLayout.LayoutParams(
+            RelativeLayout.LayoutParams.MATCH_PARENT,
+            RelativeLayout.LayoutParams.WRAP_CONTENT
+        )
         textLayoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM)
         textLayoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL)
-        textLayoutParams.setMargins(0,0,0,convertToDp(10F))
+        textLayoutParams.setMargins(0, 0, 0, convertToDp(10F))
 
-        val radioButtonParams = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT)
+        val radioButtonParams = RelativeLayout.LayoutParams(
+            RelativeLayout.LayoutParams.WRAP_CONTENT,
+            RelativeLayout.LayoutParams.WRAP_CONTENT
+        )
         radioButtonParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM)
         radioButtonParams.addRule(RelativeLayout.CENTER_HORIZONTAL)
 
@@ -111,6 +131,7 @@ class SmellTypeDialog : DialogFragment() {
                 val smellRadioButton = RadioButton(context)
                 smellRadioButton.layoutParams = radioButtonParams
                 smellRadioButton.id = codeIndex + 1
+                smellRadioButton.buttonTintList = radioButtonColorStateList
 
                 when (codeIndex) {
                     0 -> {
@@ -154,13 +175,19 @@ class SmellTypeDialog : DialogFragment() {
 
                 val smellTypeImage = ImageView(context)
                 smellTypeImage.layoutParams = imageLayoutParams
-                smellTypeImage.setImageResource(resource.getIdentifier("smell_00$imageIndex", "drawable", "kr.co.metisinfo.iotbadsmellmonitoringand"))
+                smellTypeImage.setImageResource(
+                    resource.getIdentifier(
+                        "smell_00$imageIndex",
+                        "drawable",
+                        "kr.co.metisinfo.iotbadsmellmonitoringand"
+                    )
+                )
 
                 val smellTypeText = TextView(context)
                 smellTypeText.layoutParams = textLayoutParams
                 smellTypeText.gravity = Gravity.CENTER
                 smellTypeText.setTextColor(Color.BLACK)
-                smellTypeText.setTextSize(TypedValue.COMPLEX_UNIT_SP,14F)
+                smellTypeText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14F)
                 smellTypeText.text = smellTypeList[codeIndex].codeIdName
 
                 areaLayout.addView(smellTypeImage)

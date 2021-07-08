@@ -21,6 +21,7 @@
     <color name="color_blue">#3498DB</color>
     <color name="color_plain_text">#010101</color>
     <color name="color_white_gray">#BDBDBD</color>
+    <color name="color_gray">#8E8E93</color>
 
     <color name="unselected_color">#DFDFDF</color>
 
