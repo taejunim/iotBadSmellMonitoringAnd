@@ -38,16 +38,19 @@
                         android:text="@string/main_current_weather"/>
 
                     <LinearLayout
+                        android:id="@+id/weather_background"
                         android:layout_width="match_parent"
                         android:layout_height="84dp"
                         android:layout_below="@+id/current_weather_text"
                         android:layout_marginTop="3dp"
                         android:layout_marginBottom="5dp"
-                        android:background="@color/color_white_gray">
+                        android:background="@drawable/weather_background_day"
+                        android:orientation="horizontal">
 
                     </LinearLayout>
 
                     <ImageView
+                        android:id="@+id/current_weather_image"
                         android:layout_width="84dp"
                         android:layout_height="84dp"
                         android:layout_below="@+id/current_weather_text"
@@ -55,7 +58,7 @@
                         android:layout_marginTop="5dp"
                         android:layout_marginLeft="30dp"
                         android:contentDescription="@string/image_description"
-                        android:background="@drawable/weather_cloud"
+                        android:background="@drawable/weather_shower_moon"
                         android:button="@android:color/transparent"/>
 
                     <TextView
@@ -100,7 +103,6 @@
                 android:layout_height="1dp"
                 style="@style/marginLeftRight_20"
                 android:background="@color/include_header_line"/>
-
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -302,6 +304,6 @@
 
         </LinearLayout>
 
-
     </RelativeLayout>
+
 </layout>

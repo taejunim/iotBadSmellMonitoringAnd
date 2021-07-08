@@ -40,7 +40,16 @@ class HistoryActivity : BaseActivity(), AdapterView.OnItemSelectedListener {
 
     var distanceEntry: List<CharSequence> = ArrayList()
 
+    /**
+     * ACTIVITY INIT DATA
+     */
+    override fun initData() {
 
+        distanceEntry = resources.getStringArray(R.array.array_distance_radius).toList()
+        val lengthAdapter: Any = ArrayAdapter<Any?>(this, android.R.layout.simple_spinner_dropdown_item, distanceEntry)
+        binding.spinnerSearchSmellValue.adapter                = lengthAdapter as SpinnerAdapter?
+        binding.spinnerSearchSmellValue.onItemSelectedListener = this
+    }
 
     /**
      * ACTIVITY INIT
@@ -67,14 +76,10 @@ class HistoryActivity : BaseActivity(), AdapterView.OnItemSelectedListener {
     }
 
     /**
-     * ACTIVITY INIT DATA
+     * DATA CALLBACK
      */
-    override fun initData() {
-
-        distanceEntry = resources.getStringArray(R.array.array_distance_radius).toList()
-        val lengthAdapter: Any = ArrayAdapter<Any?>(this, android.R.layout.simple_spinner_dropdown_item, distanceEntry)
-        binding.spinnerSearchSmellValue.adapter                = lengthAdapter as SpinnerAdapter?
-        binding.spinnerSearchSmellValue.onItemSelectedListener = this
+    override fun callback(data: Any) {
+        Log.d("metis", "callback data : $data")
     }
 
     /**

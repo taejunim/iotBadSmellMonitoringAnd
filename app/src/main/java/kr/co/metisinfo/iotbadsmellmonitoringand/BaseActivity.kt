@@ -2,18 +2,39 @@ package kr.co.metisinfo.iotbadsmellmonitoringand
 
 import android.content.res.Resources
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import kr.co.metisinfo.iotbadsmellmonitoringand.Constants.TIME_00
+import kr.co.metisinfo.iotbadsmellmonitoringand.Constants.TIME_06
+import kr.co.metisinfo.iotbadsmellmonitoringand.Constants.TIME_09
+import kr.co.metisinfo.iotbadsmellmonitoringand.Constants.TIME_18
+import kr.co.metisinfo.iotbadsmellmonitoringand.Constants.TIME_21
+import kr.co.metisinfo.iotbadsmellmonitoringand.model.WeatherModel
+import kr.co.metisinfo.iotbadsmellmonitoringand.model.WeatherResponse
+import kr.co.metisinfo.iotbadsmellmonitoringand.util.ApiService
+import kr.co.metisinfo.iotbadsmellmonitoringand.util.Utils.Companion.dateFormatter
+import kr.co.metisinfo.iotbadsmellmonitoringand.util.Utils.Companion.ymdFormatter
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import java.text.SimpleDateFormat
+import java.util.*
 
 abstract class BaseActivity : AppCompatActivity(){
 
     val resource: Resources = MainApplication.getContext().resources
+    private val weatherApiService = ApiService.weatherApiCreate()
+
+    val instance = MainApplication.instance
+
+    val calendar: Calendar = Calendar.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        initData()
         initLayout()
         setOnClickListener()
-        initData()
     }
 
     abstract fun initLayout()
@@ -21,4 +42,118 @@ abstract class BaseActivity : AppCompatActivity(){
     abstract fun setOnClickListener()
 
     abstract fun initData()
+
+    abstract fun callback(dataMap: Any)
+
+    //날씨 API
+    fun getWeatherApiData() {
+
+        var weatherModel = WeatherModel("-","-","-","-","-","-")
+
+        val parameterMap = getParameters() // 날씨 API를 위한 Parameter
+
+        weatherApiService.getCurrentWeather(parameterMap["base_date"].toString(), parameterMap["base_time"].toString(), Constants.nx,Constants.ny,
+            Constants.dataType, Constants.numOfRows).enqueue(object : Callback<WeatherResponse> {
+            override fun onResponse(call: Call<WeatherResponse>, response: Response<WeatherResponse>) {
+
+                Log.d("metis","weatherApiService response.body() : " + response.body())
+                if (response.isSuccessful){
+
+                    val nearestTime = parameterMap["nearestTime"]
+                    val itemList = response.body()!!.response.body.items.item
+
+                    for (i in itemList.indices) {
+
+                        // 가까운 시간대의 데이터 가져오기
+                        if (itemList[i].fcstTime == nearestTime) {
+
+                            val category = itemList[i].category
+
+                            if (category == "T1H") {
+                                weatherModel.temperature = itemList[i].fcstValue
+                            } else if (category == "REH") {
+                                weatherModel.humidity = itemList[i].fcstValue
+                            } else if (category == "VEC") {
+                                weatherModel.windDirection = getWindDirectionText(itemList[i].fcstValue)
+                            } else if (category == "WSD") {
+                                weatherModel.windSpeed = itemList[i].fcstValue
+                            } else if (category == "PTY") {
+                                weatherModel.precipitationStatus = itemList[i].fcstValue
+                            } else if (category == "SKY") {
+                                weatherModel.skyStatus = itemList[i].fcstValue
+                            }
+                        }
+                    }
+
+                    callback(weatherModel) //날씨 데이터 콜백
+                }
+            }
+
+            override fun onFailure(call: Call<WeatherResponse>, t: Throwable) {
+                Log.d("metis",t.message.toString())
+                Log.d("metis", "onFailure : fail")
+                callback(weatherModel)
+            }
+        })
+    }
+
+    //날씨 API 파라미터 구하기
+    private fun getParameters() : Map<String, String> {
+        val baseDateformatter = SimpleDateFormat("yyyyMMdd")
+        val baseTimeformatter = SimpleDateFormat("HH30")
+        val timeformatter = SimpleDateFormat("HH00")
+        val currentDate = Date()
+
+        calendar.time = currentDate
+
+        calendar.add(Calendar.MINUTE, -30)
+
+        val baseDate = baseDateformatter.format(calendar.time) //기준일자
+        val baseTime = baseTimeformatter.format(calendar.time) //기준일시
+
+        calendar.add(Calendar.MINUTE, 60)
+
+        val nearestTime = timeformatter.format(calendar.time)
+
+        return mapOf("base_date" to baseDate, "base_time" to baseTime, "nearestTime" to nearestTime)
+    }
+
+    //풍향 구하기
+    private fun getWindDirectionText(windDirectionValue: String): String {
+
+        val originalValue = Integer.parseInt(windDirectionValue)
+        val windDirectionText = String.format("%.0f", (originalValue + 22.5 * 0.5) / 22.5)
+
+        return instance.windDirectionMap[windDirectionText].toString()
+    }
+
+    //날짜 배경색 가져오기
+    fun getTimeForWeatherBackground() : Int {
+
+        calendar.time = Date()
+
+        val today = ymdFormatter.format(calendar.time)
+        val currentTime = calendar.time.time
+
+        calendar.add(Calendar.DATE, 1)
+        val tomorrow = ymdFormatter.format(calendar.time)
+
+        val time00 = dateFormatter.parse("$today $TIME_00").time
+        val time06 = dateFormatter.parse("$today $TIME_06").time
+        val time09 = dateFormatter.parse("$today $TIME_09").time
+        val time18 = dateFormatter.parse("$today $TIME_18").time
+        val time21 = dateFormatter.parse("$today $TIME_21").time
+        val time24 = dateFormatter.parse("$tomorrow $TIME_00").time
+
+        var timeValue = 0
+        when (currentTime) {
+            in time00 .. time06 -> timeValue = 0
+            in time06 .. time09 -> timeValue = 1
+            in time09 .. time18 -> timeValue = 2
+            in time18 .. time21 -> timeValue = 3
+            in time21 .. time24 -> timeValue = 4
+        }
+
+        return timeValue
+    }
 }

@@ -2,7 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="kr.co.metisinfo.iotbadsmellmonitoringand">
 
+    <!-- 네트워크 권한 퍼미션 -->
     <uses-permission android:name="android.permission.INTERNET"/>
+    <!-- 위치 권한 퍼미션 -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
 
     <application
         android:allowBackup="true"

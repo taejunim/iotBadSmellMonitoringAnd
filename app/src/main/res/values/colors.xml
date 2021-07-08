@@ -17,10 +17,14 @@
 
     <color name="color_EEEEEEF">#EEEEEF</color>
 
+    <color name="color_red">#E4513D</color>
     <color name="color_blue">#3498DB</color>
     <color name="color_plain_text">#010101</color>
     <color name="color_white_gray">#BDBDBD</color>
 
+    <color name="unselected_color">#DFDFDF</color>
 
     <color name="star_mark">#E4513D</color>
+
+    <color name="gray_round_line">#EFEFEF</color>
 </resources>

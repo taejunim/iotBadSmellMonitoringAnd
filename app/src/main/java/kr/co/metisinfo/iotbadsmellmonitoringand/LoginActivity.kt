@@ -15,7 +15,9 @@ import retrofit2.Response
 class LoginActivity : BaseActivity() {
 
     private lateinit var binding: ActivityLoginBinding
-    private val instance = MainApplication.instance
+
+    override fun initData() {
+    }
 
     override fun initLayout() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_login)
@@ -38,6 +40,8 @@ class LoginActivity : BaseActivity() {
                         val result = response.body()?.result
 
                         if (result == "success") {
+
+                            MainApplication.prefs.setString("userId", userId)
 
                             var intent = Intent(this@LoginActivity, MainActivity::class.java)
                             startActivity(intent)
@@ -64,7 +68,11 @@ class LoginActivity : BaseActivity() {
         }
     }
 
-    override fun initData() {
+    /**
+     * DATA CALLBACK
+     */
+    override fun callback(data: Any) {
+        Log.d("metis", "callback data : $data")
     }
 
     //빈칸 체크

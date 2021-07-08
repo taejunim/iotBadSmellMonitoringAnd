@@ -2,6 +2,8 @@ package kr.co.metisinfo.iotbadsmellmonitoringand
 
 import android.graphics.Color
 import android.graphics.drawable.StateListDrawable
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.Gravity
 import android.view.View
@@ -19,8 +21,11 @@ import retrofit2.Response
 class SignUpActivity : BaseActivity() {
 
     private lateinit var binding: ActivitySignUpBinding
-    private val instance = MainApplication.instance
+
     private var selectedRegionCode = ""
+
+    override fun initData() {
+    }
 
     override fun initLayout() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_sign_up)
@@ -58,7 +63,12 @@ class SignUpActivity : BaseActivity() {
 
                         if (result == "success") {
 
-                            finish()
+                            Toast.makeText(this@SignUpActivity, resource.getString(R.string.register_success_text), Toast.LENGTH_SHORT).show()
+
+                            val handler = Handler(Looper.getMainLooper())
+                            handler.postDelayed ({
+                                finish()
+                            }, 2000)
 
                         } else if (result == "fail") {
                             Toast.makeText(this@SignUpActivity, resource.getString(R.string.incorrect_data), Toast.LENGTH_SHORT).show()
@@ -75,7 +85,11 @@ class SignUpActivity : BaseActivity() {
         }
     }
 
-    override fun initData() {
+    /**
+     * DATA CALLBACK
+     */
+    override fun callback(data: Any) {
+        Log.d("metis", "callback data : $data")
     }
 
     //선택된 성별 가져오기

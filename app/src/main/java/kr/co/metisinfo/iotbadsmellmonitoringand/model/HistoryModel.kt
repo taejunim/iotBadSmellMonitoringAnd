@@ -18,7 +18,7 @@ data class HistoryModel(
     var smellRegisterNo            : String = "",                                                   // 냄새_접수_번호(SR+YYYYMMDDHHMISS+SEQ(2자리))
     var smellType                  : String = "",                                                   // 냄새 타입(코드 테이블 참고)
     var smellValue                 : String = "",                                                   // 냄새 강도(코드 테이블 참고)
-    var weaterState                : String = "",                                                   // 날씨 상태(코드 테이블 참고)
+    var weatherState                : String = "",                                                   // 날씨 상태(코드 테이블 참고)
     var temperatureValue           : String = "",                                                   // 온도
     var humidityValue              : String = "",                                                   // 습도
     var wind_directionValue        : String = "",                                                   // 풍향
