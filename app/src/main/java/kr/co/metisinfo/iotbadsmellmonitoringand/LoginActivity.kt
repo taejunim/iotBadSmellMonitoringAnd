@@ -1,6 +1,8 @@
 package kr.co.metisinfo.iotbadsmellmonitoringand
 
 import android.content.Intent
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
@@ -38,14 +40,23 @@ class LoginActivity : BaseActivity() {
                         Log.d("metis", "결과 -> " + response.body().toString())
 
                         val result = response.body()?.result
+                        val userData: UserModel = response.body()!!.data
 
                         if (result == "success") {
 
-                            MainApplication.prefs.setString("userId", userId)
+                            MainApplication.prefs.setBoolean("isLogin", true)
+                            MainApplication.prefs.setString("userId", userData.userId)
+                            MainApplication.prefs.setString("userName", userData.userName)
+                            MainApplication.prefs.setString("userPassword", userPassword)
 
-                            var intent = Intent(this@LoginActivity, MainActivity::class.java)
-                            startActivity(intent)
-                            finish()
+                            Toast.makeText(this@LoginActivity, resource.getString(R.string.sign_in_welcome_text), Toast.LENGTH_SHORT).show()
+
+                            val handler = Handler(Looper.getMainLooper())
+                            handler.postDelayed ({
+                                var intent = Intent(this@LoginActivity, MainActivity::class.java)
+                                startActivity(intent)
+                                finish()
+                            }, 2000)
 
                         } else if (result == "fail") {
                             Toast.makeText(this@LoginActivity, resource.getString(R.string.incorrect_data), Toast.LENGTH_SHORT).show()
@@ -71,7 +82,7 @@ class LoginActivity : BaseActivity() {
     /**
      * DATA CALLBACK
      */
-    override fun callback(data: Any) {
+    override fun callback(apiName: String, data: Any) {
         Log.d("metis", "callback data : $data")
     }
 

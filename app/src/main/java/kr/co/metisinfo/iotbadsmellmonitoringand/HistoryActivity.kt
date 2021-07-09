@@ -61,7 +61,7 @@ class HistoryActivity : BaseActivity(), AdapterView.OnItemSelectedListener {
         Log.d("metis","HistoryActivity 시작")
         binding.includeHeader.textTitle.setText(R.string.history)                                   // 타이틀 제목
         binding.includeHeader.backButton.visibility = View.GONE                                     // 뒤로가기 버튼 안보이게
-        binding.includeHeader.sideMenuButton.visibility = View.VISIBLE                              // 사이드 메뉴 버튼 보이게
+        binding.includeHeader.navigationViewButton.visibility = View.VISIBLE                              // 사이드 메뉴 버튼 보이게
     }
 
     /**
@@ -78,7 +78,7 @@ class HistoryActivity : BaseActivity(), AdapterView.OnItemSelectedListener {
     /**
      * DATA CALLBACK
      */
-    override fun callback(data: Any) {
+    override fun callback(apiName: String, data: Any) {
         Log.d("metis", "callback data : $data")
     }
 

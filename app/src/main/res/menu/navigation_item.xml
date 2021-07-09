@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/navigation_view_history"
+        android:title="@string/history" />
+    <item
+        android:id="@+id/navigation_view_my_page"
+        android:title="@string/my_page" />
+    <item
+        android:id="@+id/navigation_view_logout"
+        android:title="@string/logout" />
+</menu>

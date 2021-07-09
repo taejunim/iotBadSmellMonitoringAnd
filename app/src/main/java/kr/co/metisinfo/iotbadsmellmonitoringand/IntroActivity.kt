@@ -13,9 +13,14 @@ class IntroActivity : AppCompatActivity() {
 
         val handler = Handler(Looper.getMainLooper())
         handler.postDelayed ({
-            //val intent = Intent(this, LoginActivity::class.java)
+
+            var intent: Intent? = when (MainApplication.prefs.getBoolean("isLogin", false)) {
+                true -> Intent(this, MainActivity::class.java)
+                false -> Intent(this, LoginActivity::class.java)
+            }
+
             //val intent = Intent(this, HistoryActivity::class.java)
-            val intent = Intent(this, MainActivity::class.java)
+            //val intent = Intent(this, MainActivity::class.java)
             startActivity (intent)
         }, 500)
     }

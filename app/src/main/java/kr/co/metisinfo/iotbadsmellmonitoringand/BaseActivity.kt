@@ -9,6 +9,8 @@ import kr.co.metisinfo.iotbadsmellmonitoringand.Constants.TIME_06
 import kr.co.metisinfo.iotbadsmellmonitoringand.Constants.TIME_09
 import kr.co.metisinfo.iotbadsmellmonitoringand.Constants.TIME_18
 import kr.co.metisinfo.iotbadsmellmonitoringand.Constants.TIME_21
+import kr.co.metisinfo.iotbadsmellmonitoringand.model.RegisterModel
+import kr.co.metisinfo.iotbadsmellmonitoringand.model.RegisterResult
 import kr.co.metisinfo.iotbadsmellmonitoringand.model.WeatherModel
 import kr.co.metisinfo.iotbadsmellmonitoringand.model.WeatherResponse
 import kr.co.metisinfo.iotbadsmellmonitoringand.util.ApiService
@@ -24,6 +26,7 @@ abstract class BaseActivity : AppCompatActivity(){
 
     val resource: Resources = MainApplication.getContext().resources
     private val weatherApiService = ApiService.weatherApiCreate()
+    var registerStatusList: List<RegisterModel> = mutableListOf() //접수 현황
 
     val instance = MainApplication.instance
 
@@ -43,7 +46,7 @@ abstract class BaseActivity : AppCompatActivity(){
 
     abstract fun initData()
 
-    abstract fun callback(dataMap: Any)
+    abstract fun callback(apiName: String, data: Any)
 
     //날씨 API
     fun getWeatherApiData() {
@@ -85,14 +88,14 @@ abstract class BaseActivity : AppCompatActivity(){
                         }
                     }
 
-                    callback(weatherModel) //날씨 데이터 콜백
+                    callback("weather", weatherModel) //날씨 데이터 콜백
                 }
             }
 
             override fun onFailure(call: Call<WeatherResponse>, t: Throwable) {
                 Log.d("metis",t.message.toString())
                 Log.d("metis", "onFailure : fail")
-                callback(weatherModel)
+                callback("weather", weatherModel)
             }
         })
     }
@@ -155,5 +158,35 @@ abstract class BaseActivity : AppCompatActivity(){
         }
 
         return timeValue
+    }
+
+    //접수 현황 가져오기
+    fun getUserTodayRegisterInfo() {
+
+        val userId = MainApplication.prefs.getString("userId", "")
+
+        instance.apiService.getUserTodayRegisterInfo(userId).enqueue(object : Callback<RegisterResult> {
+            override fun onResponse(call: Call<RegisterResult>, response: Response<RegisterResult>) {
+                Log.d("metis",response.toString())
+                Log.d("metis", userId + " getUserTodayRegisterInfo 결과 -> " + response.body().toString())
+
+                registerStatusList= response.body()!!.data //접수 현황
+
+                for (j in registerStatusList.indices) {
+
+                    Log.d("metis", "smellRegisterTimeName : " + registerStatusList[j].smellRegisterTimeName)
+                    Log.d("metis", "resultCode : " + registerStatusList[j].resultCode)
+                    Log.d("metis", "regDt : " + registerStatusList[j].regDt)
+                    Log.d("metis", "smellRegisterTime : " + registerStatusList[j].smellRegisterTime)
+                }
+
+                callback("registerStatus", registerStatusList)
+            }
+
+            override fun onFailure(call: Call<RegisterResult>, t: Throwable) {
+                Log.d("metis",t.message.toString())
+                Log.d("metis", "onFailure : fail")
+            }
+        })
     }
 }

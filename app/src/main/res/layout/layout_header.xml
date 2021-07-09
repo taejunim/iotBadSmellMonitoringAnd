@@ -25,7 +25,7 @@
         </RelativeLayout>
 
         <RelativeLayout
-            android:id="@+id/side_menu_button"
+            android:id="@+id/navigation_view_button"
             android:layout_width="76dp"
             android:layout_height="match_parent"
             android:visibility="visible"
@@ -36,7 +36,7 @@
                 android:layout_height="32dp"
                 android:layout_centerVertical="true"
                 android:contentDescription="@string/image_description"
-                android:background="@drawable/side_menu"
+                android:background="@drawable/navigation_view"
                 android:button="@android:color/transparent"/>
 
         </RelativeLayout>

@@ -5,22 +5,26 @@ import android.graphics.Color
 import android.util.Log
 import android.util.TypedValue
 import android.view.Gravity
+import android.view.MenuItem
 import android.view.View
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.RelativeLayout
-import android.widget.TextView
+import android.widget.*
+import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
+import com.google.android.material.navigation.NavigationView
 import kr.co.metisinfo.iotbadsmellmonitoringand.databinding.ActivityMainBinding
+import kr.co.metisinfo.iotbadsmellmonitoringand.databinding.NavigationViewHeaderBinding
+import kr.co.metisinfo.iotbadsmellmonitoringand.model.RegisterModel
 import kr.co.metisinfo.iotbadsmellmonitoringand.model.WeatherModel
 import kr.co.metisinfo.iotbadsmellmonitoringand.util.Utils.Companion.convertToDp
 
-class MainActivity : BaseActivity() {
+class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     private lateinit var binding: ActivityMainBinding
-    //private val instance = MainApplication.instance
+    private lateinit var navigationView: NavigationView
+    private lateinit var navigationBinding: NavigationViewHeaderBinding
 
     override fun initData() {
+        getUserTodayRegisterInfo() //접수 현황
         getWeatherApiData() //현재 날씨 API
     }
 
@@ -30,32 +34,42 @@ class MainActivity : BaseActivity() {
         Log.d("metis","MainActivity 시작")
         binding.includeHeader.textTitle.setText(R.string.main) // 타이틀 제목
         binding.includeHeader.backButton.visibility = View.GONE // 뒤로가기 버튼 안보이게
-        binding.includeHeader.sideMenuButton.visibility = View.VISIBLE // 사이드 메뉴 버튼 보이게
+        binding.includeHeader.navigationViewButton.visibility = View.VISIBLE // 사이드 메뉴 버튼 보이게
 
         //현재 날씨 레이아웃 그리기
         drawWeatherLayout("-", "-", "-", "-", "", "")
 
-        //접수 현황 레이아웃 그리기
-        drawRegisterStatusLayout()
-
         //악취 강도 레이아웃 그리기
         drawSmellIntensityLayout()
+
+        //네비게이션 뷰 그리기
+        drawNavigationView()
     }
 
     override fun setOnClickListener() {
-        binding.includeHeader.sideMenuButton.setOnClickListener {
+        binding.includeHeader.navigationViewButton.setOnClickListener {
             Log.d("metis","MainActivity - Side Menu 구현해야 ")
+            binding.navigationViewLayout.openDrawer(GravityCompat.START)
         }
     }
 
     /**
      * DATA CALLBACK
      */
-    override fun callback(data: Any) {
-        val weatherModel = data as WeatherModel
+    override fun callback(apiName: String, data: Any) {
+
         Log.d("metis", "callback data : $data")
 
-        drawWeatherLayout(weatherModel.temperature, weatherModel.humidity, weatherModel.windDirection, weatherModel.windSpeed, weatherModel.precipitationStatus, weatherModel.skyStatus)
+        when (apiName) {
+            "weather" -> {
+                val weatherModel = data as WeatherModel
+                drawWeatherLayout(weatherModel.temperature, weatherModel.humidity, weatherModel.windDirection, weatherModel.windSpeed, weatherModel.precipitationStatus, weatherModel.skyStatus)
+            }
+            "registerStatus" -> {
+                val registerStatusList = data as List<RegisterModel>
+                drawRegisterStatusLayout(registerStatusList) //접수 현황 레이아웃 그리기
+            }
+        }
     }
 
     //현재 날씨 레이아웃 그리기
@@ -83,10 +97,10 @@ class MainActivity : BaseActivity() {
                     "1" -> {
                         when (timeValue) {
                             in 1 .. 2 -> { //낮
-                                binding.currentWeatherImage.setImageResource(R.drawable.weather_sun) //맑음
+                                binding.currentWeatherImage.setBackgroundResource(R.drawable.weather_sun) //맑음
                             }
                             else -> { //밤
-                                binding.currentWeatherImage.setImageResource(R.drawable.weather_moon) //맑음
+                                binding.currentWeatherImage.setBackgroundResource(R.drawable.weather_moon) //맑음
                             }
                         }
                     }
@@ -94,10 +108,10 @@ class MainActivity : BaseActivity() {
                     "3" -> {
                         when (timeValue) {
                             in 1 .. 2 -> { //낮
-                                binding.currentWeatherImage.setImageResource(R.drawable.weather_cloud_sun) //구름많음
+                                binding.currentWeatherImage.setBackgroundResource(R.drawable.weather_cloud_sun) //구름많음
                             }
                             else -> { //밤
-                                binding.currentWeatherImage.setImageResource(R.drawable.weather_cloud_moon) //맑음
+                                binding.currentWeatherImage.setBackgroundResource(R.drawable.weather_cloud_moon) //맑음
                             }
                         }
                     }
@@ -137,9 +151,9 @@ class MainActivity : BaseActivity() {
     }
 
     //접수 현황 레이아웃 그리기
-    private fun drawRegisterStatusLayout() {
+    private fun drawRegisterStatusLayout(registerStatusList : List<RegisterModel>) {
 
-        val registerStatusList = instance.registerStatusList
+        val registerStatusList = registerStatusList
 
         var imageView : ImageView? = null
         var textView : TextView? = null
@@ -188,7 +202,7 @@ class MainActivity : BaseActivity() {
 
             val layoutParams = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, convertToDp(30F))
 
-            layoutParams.addRule(RelativeLayout.BELOW, tempButton!!.id)
+            layoutParams.addRule(RelativeLayout.BELOW, tempButton.id)
             layoutParams.setMargins(convertToDp(30F),convertToDp(10F),convertToDp(30F),0)
             intensityButton.id = i+1
             intensityButton.layoutParams = layoutParams
@@ -209,5 +223,34 @@ class MainActivity : BaseActivity() {
             binding.intensityButtonLayout.addView(intensityButton)
             tempButton = intensityButton
         }
+    }
+
+    //네비게이션 뷰 그리기
+    private fun drawNavigationView() {
+        navigationView = binding.navigationView
+        navigationBinding = DataBindingUtil.inflate(layoutInflater, R.layout.navigation_view_header, navigationView, true)
+        navigationBinding.navigationUserName.text = MainApplication.prefs.getString("userName", "")
+        navigationBinding.navigationUserId.text = MainApplication.prefs.getString("userId", "")
+        navigationView.setNavigationItemSelectedListener(this)
+    }
+
+    //네비게이션 아이템 선택
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+            R.id.navigation_view_history-> Toast.makeText(this,"account clicked",Toast.LENGTH_SHORT).show()
+            R.id.navigation_view_my_page-> Toast.makeText(this,"item2 clicked",Toast.LENGTH_SHORT).show()
+            R.id.navigation_view_logout-> {
+
+                MainApplication.prefs.setBoolean("isLogin", false)
+                MainApplication.prefs.setString("userId", "")
+                MainApplication.prefs.setString("userName", "")
+                MainApplication.prefs.setString("userPassword", "")
+
+                var intent = Intent(this@MainActivity, LoginActivity::class.java)
+                startActivity(intent)
+                finish()
+            }
+        }
+        return false
     }
 }

@@ -7,6 +7,7 @@
         <!-- Customize your theme here. -->
 <!--        <item name="colorPrimary">@color/white</item>-->
 <!--        <item name="colorPrimaryDark">@color/white</item>-->
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
 
     </style>
 
@@ -40,6 +41,11 @@
     <style name="tinyText" parent="plainText">
         <item name="android:textSize">13sp</item>
         <item name="android:textColor">@color/color_white_gray</item>
+    </style>
+
+    <style name="navigationItemText" >
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/color_plain_text</item>
     </style>
 
     <style name="intensityButton">

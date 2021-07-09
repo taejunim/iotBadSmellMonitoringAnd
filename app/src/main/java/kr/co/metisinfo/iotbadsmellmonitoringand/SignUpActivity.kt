@@ -32,7 +32,7 @@ class SignUpActivity : BaseActivity() {
 
         binding.includeHeader.textTitle.setText(R.string.sign_up)
         binding.includeHeader.backButton.visibility = View.VISIBLE
-        binding.includeHeader.sideMenuButton.visibility = View.GONE
+        binding.includeHeader.navigationViewButton.visibility = View.GONE
 
         //지역 레이아웃 그리기
         drawRegionGroup()
@@ -88,7 +88,7 @@ class SignUpActivity : BaseActivity() {
     /**
      * DATA CALLBACK
      */
-    override fun callback(data: Any) {
+    override fun callback(apiName: String, data: Any) {
         Log.d("metis", "callback data : $data")
     }
 

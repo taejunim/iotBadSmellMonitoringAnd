@@ -1,309 +1,329 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
-    <RelativeLayout
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <androidx.drawerlayout.widget.DrawerLayout
+        android:id="@+id/navigation_view_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <include
-            android:id="@+id/include_header"
-            layout="@layout/layout_header"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="60dp" />
+            android:layout_height="match_parent">
 
-        <LinearLayout
-            android:id="@+id/top"
-            android:layout_below="@+id/include_header"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            <include
+                android:id="@+id/include_header"
+                layout="@layout/layout_header"
+                android:layout_width="match_parent"
+                android:layout_height="60dp" />
 
             <LinearLayout
-                android:id="@+id/weather_layout"
+                android:id="@+id/top"
+                android:layout_below="@+id/include_header"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1">
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-                <RelativeLayout
+                <LinearLayout
+                    android:id="@+id/weather_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="0dp"
+                    android:layout_weight="1">
 
-                    <TextView
-                        android:id="@+id/current_weather_text"
-                        style="@style/plainText"
-                        android:layout_alignParentTop="true"
-                        android:layout_centerHorizontal="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginBottom="10dp"
-                        android:text="@string/main_current_weather"/>
-
-                    <LinearLayout
-                        android:id="@+id/weather_background"
+                    <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="84dp"
-                        android:layout_below="@+id/current_weather_text"
-                        android:layout_marginTop="3dp"
-                        android:layout_marginBottom="5dp"
-                        android:background="@drawable/weather_background_day"
-                        android:orientation="horizontal">
+                        android:layout_height="match_parent">
 
-                    </LinearLayout>
-
-                    <ImageView
-                        android:id="@+id/current_weather_image"
-                        android:layout_width="84dp"
-                        android:layout_height="84dp"
-                        android:layout_below="@+id/current_weather_text"
-                        android:layout_centerVertical="true"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginLeft="30dp"
-                        android:contentDescription="@string/image_description"
-                        android:background="@drawable/weather_shower_moon"
-                        android:button="@android:color/transparent"/>
-
-                    <TextView
-                        android:id="@+id/temperature_text"
-                        style="@style/itemText"
-                        android:layout_below="@+id/current_weather_text"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginTop="15dp"
-                        android:text="@string/main_temperature"/>
-
-                    <TextView
-                        android:id="@+id/humidity_text"
-                        style="@style/itemText"
-                        android:layout_below="@+id/current_weather_text"
-                        android:layout_toRightOf="@+id/temperature_text"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginTop="15dp"
-                        android:text="@string/main_humidity"/>
-
-                    <TextView
-                        android:id="@+id/wind_direction_text"
-                        style="@style/itemText"
-                        android:layout_below="@+id/temperature_text"
-                        android:layout_alignLeft="@+id/temperature_text"
-                        android:layout_marginTop="15dp"
-                        android:text="@string/main_wind"/>
-
-                    <TextView
-                        android:id="@+id/wind_speed_text"
-                        style="@style/itemText"
-                        android:layout_below="@+id/humidity_text"
-                        android:layout_alignLeft="@+id/humidity_text"
-                        android:layout_marginTop="15dp"
-                        android:text="@string/main_wind_speed"/>
-
-                </RelativeLayout>
-
-            </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                style="@style/marginLeftRight_20"
-                android:background="@color/include_header_line"/>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1">
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <TextView
-                        android:id="@+id/register_status_text"
-                        style="@style/plainText"
-                        android:layout_alignParentTop="true"
-                        android:layout_alignParentLeft="true"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginBottom="10dp"
-                        android:text="@string/main_register_status"/>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_below="@id/register_status_text"
-                        android:orientation="horizontal">
+                        <TextView
+                            android:id="@+id/current_weather_text"
+                            style="@style/plainText"
+                            android:layout_alignParentTop="true"
+                            android:layout_centerHorizontal="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="10dp"
+                            android:text="@string/main_current_weather"/>
 
                         <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1">
-
-                            <RelativeLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent">
-
-                                <ImageView
-                                    android:id="@+id/register_first_time_image"
-                                    android:layout_width="60dp"
-                                    android:layout_height="60dp"
-                                    android:layout_centerHorizontal="true"
-                                    android:contentDescription="@string/image_description"
-                                    android:background="@drawable/not_yet"
-                                    android:button="@android:color/transparent"/>
-
-                                <TextView
-                                    android:id="@+id/register_first_time_text"
-                                    style="@style/tinyText"
-                                    android:layout_below="@+id/register_first_time_image"
-                                    android:layout_centerInParent="true"
-                                    android:layout_marginTop="5dp"
-                                    android:singleLine="true"
-                                    android:text="-" />
-
-                            </RelativeLayout>
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1">
-
-                            <RelativeLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent">
-
-                                <ImageView
-                                    android:id="@+id/register_second_time_image"
-                                    android:layout_width="60dp"
-                                    android:layout_height="60dp"
-                                    android:layout_centerHorizontal="true"
-                                    android:contentDescription="@string/image_description"
-                                    android:background="@drawable/not_yet"
-                                    android:button="@android:color/transparent"/>
-
-                                <TextView
-                                    android:id="@+id/register_second_time_text"
-                                    style="@style/tinyText"
-                                    android:layout_below="@+id/register_second_time_image"
-                                    android:layout_centerInParent="true"
-                                    android:layout_marginTop="5dp"
-                                    android:singleLine="true"
-                                    android:text="-" />
-
-                            </RelativeLayout>
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1">
-
-                            <RelativeLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent">
-
-                                <ImageView
-                                    android:id="@+id/register_third_time_image"
-                                    android:layout_width="60dp"
-                                    android:layout_height="60dp"
-                                    android:layout_centerHorizontal="true"
-                                    android:contentDescription="@string/image_description"
-                                    android:background="@drawable/not_yet"
-                                    android:button="@android:color/transparent"/>
-
-                                <TextView
-                                    android:id="@+id/register_third_time_text"
-                                    style="@style/tinyText"
-                                    android:layout_below="@+id/register_third_time_image"
-                                    android:layout_centerInParent="true"
-                                    android:layout_marginTop="5dp"
-                                    android:singleLine="true"
-                                    android:text="-" />
-
-                            </RelativeLayout>
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1">
-
-                            <RelativeLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent">
-
-                                <ImageView
-                                    android:id="@+id/register_fourth_time_image"
-                                    android:layout_width="60dp"
-                                    android:layout_height="60dp"
-                                    android:layout_centerHorizontal="true"
-                                    android:contentDescription="@string/image_description"
-                                    android:background="@drawable/not_yet"
-                                    android:button="@android:color/transparent"/>
-
-                                <TextView
-                                    android:id="@+id/register_fourth_time_text"
-                                    style="@style/tinyText"
-                                    android:layout_below="@+id/register_fourth_time_image"
-                                    android:layout_centerInParent="true"
-                                    android:layout_marginTop="5dp"
-                                    android:singleLine="true"
-                                    android:text="-" />
-
-                            </RelativeLayout>
-
-                        </LinearLayout>
-
-                    </LinearLayout>
-
-                </RelativeLayout>
-
-            </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                style="@style/marginLeftRight_20"
-                android:background="@color/include_header_line"/>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="2">
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <TextView
-                        android:id="@+id/choose_smell_intensity_text"
-                        style="@style/plainText"
-                        android:layout_alignParentTop="true"
-                        android:layout_centerHorizontal="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginBottom="10dp"
-                        android:text="@string/main_choose_smell_intensity"/>
-
-                    <ScrollView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_below="@+id/choose_smell_intensity_text">
-
-                        <RelativeLayout
-                            android:id="@+id/intensity_button_layout"
+                            android:id="@+id/weather_background"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent">
+                            android:layout_height="84dp"
+                            android:layout_below="@+id/current_weather_text"
+                            android:layout_marginTop="3dp"
+                            android:layout_marginBottom="5dp"
+                            android:background="@drawable/weather_background_day"
+                            android:orientation="horizontal">
 
-                        </RelativeLayout>
+                        </LinearLayout>
 
-                    </ScrollView>
+                        <ImageView
+                            android:id="@+id/current_weather_image"
+                            android:layout_width="84dp"
+                            android:layout_height="84dp"
+                            android:layout_below="@+id/current_weather_text"
+                            android:layout_centerVertical="true"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginLeft="30dp"
+                            android:contentDescription="@string/image_description"
+                            android:background="@drawable/weather_shower_moon"
+                            android:button="@android:color/transparent"/>
 
-                </RelativeLayout>
+                        <TextView
+                            android:id="@+id/temperature_text"
+                            style="@style/itemText"
+                            android:layout_below="@+id/current_weather_text"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="15dp"
+                            android:text="@string/main_temperature"/>
+
+                        <TextView
+                            android:id="@+id/humidity_text"
+                            style="@style/itemText"
+                            android:layout_below="@+id/current_weather_text"
+                            android:layout_toRightOf="@+id/temperature_text"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginTop="15dp"
+                            android:text="@string/main_humidity"/>
+
+                        <TextView
+                            android:id="@+id/wind_direction_text"
+                            style="@style/itemText"
+                            android:layout_below="@+id/temperature_text"
+                            android:layout_alignLeft="@+id/temperature_text"
+                            android:layout_marginTop="15dp"
+                            android:text="@string/main_wind"/>
+
+                        <TextView
+                            android:id="@+id/wind_speed_text"
+                            style="@style/itemText"
+                            android:layout_below="@+id/humidity_text"
+                            android:layout_alignLeft="@+id/humidity_text"
+                            android:layout_marginTop="15dp"
+                            android:text="@string/main_wind_speed"/>
+
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    style="@style/marginLeftRight_20"
+                    android:background="@color/include_header_line"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:id="@+id/register_status_text"
+                            style="@style/plainText"
+                            android:layout_alignParentTop="true"
+                            android:layout_alignParentLeft="true"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginBottom="10dp"
+                            android:text="@string/main_register_status"/>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_below="@id/register_status_text"
+                            android:orientation="horizontal">
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1">
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent">
+
+                                    <ImageView
+                                        android:id="@+id/register_first_time_image"
+                                        android:layout_width="60dp"
+                                        android:layout_height="60dp"
+                                        android:layout_centerHorizontal="true"
+                                        android:contentDescription="@string/image_description"
+                                        android:background="@drawable/not_yet"
+                                        android:button="@android:color/transparent"/>
+
+                                    <TextView
+                                        android:id="@+id/register_first_time_text"
+                                        style="@style/tinyText"
+                                        android:layout_below="@+id/register_first_time_image"
+                                        android:layout_centerInParent="true"
+                                        android:layout_marginTop="5dp"
+                                        android:singleLine="true"
+                                        android:text="-" />
+
+                                </RelativeLayout>
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1">
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent">
+
+                                    <ImageView
+                                        android:id="@+id/register_second_time_image"
+                                        android:layout_width="60dp"
+                                        android:layout_height="60dp"
+                                        android:layout_centerHorizontal="true"
+                                        android:contentDescription="@string/image_description"
+                                        android:background="@drawable/not_yet"
+                                        android:button="@android:color/transparent"/>
+
+                                    <TextView
+                                        android:id="@+id/register_second_time_text"
+                                        style="@style/tinyText"
+                                        android:layout_below="@+id/register_second_time_image"
+                                        android:layout_centerInParent="true"
+                                        android:layout_marginTop="5dp"
+                                        android:singleLine="true"
+                                        android:text="-" />
+
+                                </RelativeLayout>
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1">
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent">
+
+                                    <ImageView
+                                        android:id="@+id/register_third_time_image"
+                                        android:layout_width="60dp"
+                                        android:layout_height="60dp"
+                                        android:layout_centerHorizontal="true"
+                                        android:contentDescription="@string/image_description"
+                                        android:background="@drawable/not_yet"
+                                        android:button="@android:color/transparent"/>
+
+                                    <TextView
+                                        android:id="@+id/register_third_time_text"
+                                        style="@style/tinyText"
+                                        android:layout_below="@+id/register_third_time_image"
+                                        android:layout_centerInParent="true"
+                                        android:layout_marginTop="5dp"
+                                        android:singleLine="true"
+                                        android:text="-" />
+
+                                </RelativeLayout>
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1">
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent">
+
+                                    <ImageView
+                                        android:id="@+id/register_fourth_time_image"
+                                        android:layout_width="60dp"
+                                        android:layout_height="60dp"
+                                        android:layout_centerHorizontal="true"
+                                        android:contentDescription="@string/image_description"
+                                        android:background="@drawable/not_yet"
+                                        android:button="@android:color/transparent"/>
+
+                                    <TextView
+                                        android:id="@+id/register_fourth_time_text"
+                                        style="@style/tinyText"
+                                        android:layout_below="@+id/register_fourth_time_image"
+                                        android:layout_centerInParent="true"
+                                        android:layout_marginTop="5dp"
+                                        android:singleLine="true"
+                                        android:text="-" />
+
+                                </RelativeLayout>
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    style="@style/marginLeftRight_20"
+                    android:background="@color/include_header_line"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="2">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:id="@+id/choose_smell_intensity_text"
+                            style="@style/plainText"
+                            android:layout_alignParentTop="true"
+                            android:layout_centerHorizontal="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="10dp"
+                            android:text="@string/main_choose_smell_intensity"/>
+
+                        <ScrollView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_below="@+id/choose_smell_intensity_text">
+
+                            <RelativeLayout
+                                android:id="@+id/intensity_button_layout"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent">
+
+                            </RelativeLayout>
+
+                        </ScrollView>
+
+                    </RelativeLayout>
+
+                </LinearLayout>
 
             </LinearLayout>
 
-        </LinearLayout>
+        </RelativeLayout>
 
-    </RelativeLayout>
+        <!--자식 레이아웃. Navigation Drawer-->
+        <com.google.android.material.navigation.NavigationView
+            android:id="@+id/navigation_view"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="left"
+            app:theme="@style/navigationItemText"
+            app:headerLayout="@layout/navigation_view_header"
+            app:menu="@menu/navigation_item">
+
+        </com.google.android.material.navigation.NavigationView>
+
+    </androidx.drawerlayout.widget.DrawerLayout>
 
 </layout>

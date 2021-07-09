@@ -5,8 +5,6 @@ import android.content.Context
 import android.util.Log
 import kr.co.metisinfo.iotbadsmellmonitoringand.model.CodeModel
 import kr.co.metisinfo.iotbadsmellmonitoringand.model.CodeResult
-import kr.co.metisinfo.iotbadsmellmonitoringand.model.RegisterModel
-import kr.co.metisinfo.iotbadsmellmonitoringand.model.RegisterResult
 import kr.co.metisinfo.iotbadsmellmonitoringand.util.ApiService
 import kr.co.metisinfo.iotbadsmellmonitoringand.util.PreferenceUtil
 import retrofit2.Call
@@ -19,7 +17,7 @@ class MainApplication : Application() {
     val codeGroupArray = arrayOf("WND", "REN", "SMT", "RGN", "STY")
     val windDirectionMap: MutableMap<String, String> = mutableMapOf() //풍향 코드
     val registerTimeZoneMap: MutableMap<String, String> = mutableMapOf() //신고 시간대
-    var registerStatusList: List<RegisterModel> = mutableListOf() //접수 현황
+
     var intensityList: List<CodeModel> = mutableListOf() //강도
     var regionList: List<CodeModel> = mutableListOf() //지역
     var smellTypeList: List<CodeModel> = mutableListOf() //취기
@@ -91,11 +89,6 @@ class MainApplication : Application() {
                         smellTypeList = response.body()!!.data
                         Log.d("metis", "smellTypeList : " + smellTypeList)
                     }
-
-                    if (i == codeGroupArray.indices.last) {
-                        Log.d("metis","codeGroupArray.indices.last : " + codeGroupArray.indices.last)
-                        getUserTodayRegisterInfo()
-                    }
                 }
 
                 override fun onFailure(call: Call<CodeResult>, t: Throwable) {
@@ -104,32 +97,5 @@ class MainApplication : Application() {
                 }
             })
         }
-    }
-
-    fun getUserTodayRegisterInfo() {
-
-        val userId = MainApplication.prefs.getString("userId", "")
-
-        apiService.getUserTodayRegisterInfo(userId).enqueue(object : Callback<RegisterResult> {
-            override fun onResponse(call: Call<RegisterResult>, response: Response<RegisterResult>) {
-                Log.d("metis",response.toString())
-                Log.d("metis", userId + " getUserTodayRegisterInfo 결과 -> " + response.body().toString())
-
-                registerStatusList = response.body()!!.data
-
-                for (j in registerStatusList.indices) {
-
-                    Log.d("metis", "smellRegisterTimeName : " + registerStatusList[j].smellRegisterTimeName)
-                    Log.d("metis", "resultCode : " + registerStatusList[j].resultCode)
-                    Log.d("metis", "regDt : " + registerStatusList[j].regDt)
-                    Log.d("metis", "smellRegisterTime : " + registerStatusList[j].smellRegisterTime)
-                }
-            }
-
-            override fun onFailure(call: Call<RegisterResult>, t: Throwable) {
-                Log.d("metis",t.message.toString())
-                Log.d("metis", "onFailure : fail")
-            }
-        })
     }
 }

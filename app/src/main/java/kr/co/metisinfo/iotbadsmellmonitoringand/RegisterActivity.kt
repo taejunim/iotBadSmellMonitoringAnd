@@ -29,7 +29,6 @@ class RegisterActivity : BaseActivity(), SmellTypeDialog.SmellTypeDialogListener
     private lateinit var binding: ActivityRegisterBinding
 
     private val smellTypeList = instance.smellTypeList
-    private val registerStatusList = instance.registerStatusList
 
     private var selectedSmellTypeId = ""
 
@@ -65,7 +64,7 @@ class RegisterActivity : BaseActivity(), SmellTypeDialog.SmellTypeDialogListener
         Log.d("metis", "MainActivity 시작")
         binding.includeHeader.textTitle.setText(R.string.register) // 타이틀 제목
         binding.includeHeader.backButton.visibility = View.VISIBLE // 뒤로가기 버튼 보이게
-        binding.includeHeader.sideMenuButton.visibility = View.GONE // 사이드 메뉴 버튼 안보이게
+        binding.includeHeader.navigationViewButton.visibility = View.GONE // 사이드 메뉴 버튼 안보이게
 
         drawSmellTypeButton("001", 0)
 
@@ -98,7 +97,7 @@ class RegisterActivity : BaseActivity(), SmellTypeDialog.SmellTypeDialogListener
     /**
      * DATA CALLBACK
      */
-    override fun callback(data: Any) {
+    override fun callback(apiName: String, data: Any) {
         val weatherModel = data as WeatherModel
         Log.d("metis", "등록 callback data : $weatherModel")
 
