@@ -237,7 +237,11 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     //네비게이션 아이템 선택
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
-            R.id.navigation_view_history-> Toast.makeText(this,"account clicked",Toast.LENGTH_SHORT).show()
+            R.id.navigation_view_history-> {
+                Log.d("metis", "MyPageActivity clicked")
+                var intent = Intent(this@MainActivity, HistoryActivity::class.java)
+                startActivity(intent)
+            }
             R.id.navigation_view_my_page-> {
                 Log.d("metis", "MyPageActivity clicked")
                 var intent = Intent(this@MainActivity, MyPageActivity::class.java)
