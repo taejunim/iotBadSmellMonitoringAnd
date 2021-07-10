@@ -3,8 +3,11 @@ package kr.co.metisinfo.iotbadsmellmonitoringand
 import android.app.Application
 import android.content.Context
 import android.util.Log
+import android.widget.Toast
 import kr.co.metisinfo.iotbadsmellmonitoringand.model.CodeModel
 import kr.co.metisinfo.iotbadsmellmonitoringand.model.CodeResult
+import kr.co.metisinfo.iotbadsmellmonitoringand.model.ResponseResult
+import kr.co.metisinfo.iotbadsmellmonitoringand.model.UserModel
 import kr.co.metisinfo.iotbadsmellmonitoringand.util.ApiService
 import kr.co.metisinfo.iotbadsmellmonitoringand.util.PreferenceUtil
 import retrofit2.Call
@@ -97,5 +100,33 @@ class MainApplication : Application() {
                 }
             })
         }
+    }
+
+    fun changePassword(data: UserModel) {
+
+        instance.apiService.userPasswordChange(data).enqueue(object : Callback<ResponseResult> {
+            override fun onResponse(call: Call<ResponseResult>, response: Response<ResponseResult>) {
+                Log.d("metis",response.toString())
+                Log.d("metis", "changePassword 결과 -> " + response.body().toString())
+
+                val result = response.body()?.result
+
+                if (result == "success") {
+
+                    MainApplication.prefs.setString("userPassword", data.userPassword)
+
+                    Toast.makeText(instance, getContext().resources.getString(R.string.my_page_password_change_text), Toast.LENGTH_SHORT).show()
+
+                } else if (result == "fail") {
+                    Toast.makeText(instance, getContext().resources.getString(R.string.my_page_password_change_fail_text), Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseResult>, t: Throwable) {
+                Log.d("metis",t.message.toString())
+                Log.d("metis", "onFailure : fail")
+
+            }
+        })
     }
 }
