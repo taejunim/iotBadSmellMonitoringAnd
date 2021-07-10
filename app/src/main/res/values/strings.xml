@@ -67,4 +67,9 @@
     <string name="histroy_search_smell_value_text">악취 강도</string>
     <string name="history_text">이력</string>
 
+    <string name="my_page_push_text">푸쉬</string>
+    <string name="my_page_current_password_text">현재 비밀번호</string>
+    <string name="my_page_new_password_text">새 비밀번호</string>
+    <string name="my_page_new_password_confirm_text">새 비밀번호 확인</string>
+
 </resources>

@@ -48,6 +48,7 @@ class LoginActivity : BaseActivity() {
                             MainApplication.prefs.setString("userId", userData.userId)
                             MainApplication.prefs.setString("userName", userData.userName)
                             MainApplication.prefs.setString("userPassword", userPassword)
+                            MainApplication.prefs.setBoolean("pushStatus", true)
 
                             Toast.makeText(this@LoginActivity, resource.getString(R.string.sign_in_welcome_text), Toast.LENGTH_SHORT).show()
 

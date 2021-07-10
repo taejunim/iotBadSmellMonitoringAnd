@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <include
+            android:id="@+id/include_header"
+            layout="@layout/layout_header"
+            android:layout_width="match_parent"
+            android:layout_height="60dp" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/include_header"
+            android:layout_above="@+id/modification_button">
+
+            <RelativeLayout
+                android:layout_below="@+id/include_header"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <include
+                    android:id="@+id/my_page_user_information"
+                    layout="@layout/navigation_view_header"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+
+                <TextView
+                    android:id="@+id/my_page_push_text"
+                    style="@style/plainText"
+                    android:layout_below="@+id/my_page_user_information"
+                    android:layout_margin="20dp"
+                    android:text="@string/my_page_push_text"/>
+
+                <Switch
+                    android:id="@+id/my_page_push_switch"
+                    android:layout_toEndOf="@id/my_page_push_text"
+                    android:layout_alignTop="@id/my_page_push_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:switchMinWidth="60dp"
+                    android:checked="true"/>
+
+                <View
+                    android:id="@+id/my_page_push_line"
+                    android:layout_below="@+id/my_page_push_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/include_header_line"/>
+
+                <TextView
+                    android:id="@+id/my_page_current_password_text"
+                    style="@style/myPageText"
+                    android:layout_below="@+id/my_page_push_line"
+                    android:text="@string/my_page_current_password_text"/>
+
+                <TextView
+                    android:layout_toEndOf="@id/my_page_current_password_text"
+                    android:layout_alignTop="@id/my_page_current_password_text"
+                    style="@style/star_mark"/>
+
+                <EditText
+                    android:id="@+id/my_page_current_password_input"
+                    android:layout_below="@id/my_page_current_password_text"
+                    android:importantForAutofill="no"
+                    android:inputType="text"
+                    style="@style/myPageHintEditText"/>
+
+                <TextView
+                    android:id="@+id/my_page_new_password_text"
+                    style="@style/myPageText"
+                    android:layout_below="@+id/my_page_current_password_input"
+                    android:text="@string/my_page_new_password_text"/>
+
+                <TextView
+                    android:layout_toEndOf="@id/my_page_new_password_text"
+                    android:layout_alignTop="@id/my_page_new_password_text"
+                    style="@style/star_mark"/>
+
+                <EditText
+                    android:id="@+id/my_page_new_password_input"
+                    android:layout_below="@id/my_page_new_password_text"
+                    android:hint="@string/password_hint"
+                    android:importantForAutofill="no"
+                    android:inputType="text"
+                    style="@style/myPageHintEditText"/>
+
+                <TextView
+                    android:id="@+id/my_page_new_password_confirm_text"
+                    style="@style/myPageText"
+                    android:layout_below="@+id/my_page_new_password_input"
+                    android:text="@string/my_page_new_password_confirm_text"/>
+
+                <TextView
+                    android:layout_toEndOf="@id/my_page_new_password_confirm_text"
+                    android:layout_alignTop="@id/my_page_new_password_confirm_text"
+                    style="@style/star_mark"/>
+
+                <EditText
+                    android:id="@+id/my_page_new_password_confirm_input"
+                    android:layout_below="@id/my_page_new_password_confirm_text"
+                    android:hint="@string/password_hint"
+                    android:importantForAutofill="no"
+                    android:inputType="text"
+                    style="@style/myPageHintEditText"/>
+
+            </RelativeLayout>
+
+        </ScrollView>
+
+        <!-- 완료버튼-->
+        <Button
+            android:id="@+id/modification_button"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="@drawable/round_blue_button"
+            android:text="@string/registration"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:layout_alignParentBottom="true" />
+
+    </RelativeLayout>
+
+</layout>

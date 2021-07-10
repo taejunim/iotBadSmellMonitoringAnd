@@ -238,7 +238,11 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
             R.id.navigation_view_history-> Toast.makeText(this,"account clicked",Toast.LENGTH_SHORT).show()
-            R.id.navigation_view_my_page-> Toast.makeText(this,"item2 clicked",Toast.LENGTH_SHORT).show()
+            R.id.navigation_view_my_page-> {
+                Log.d("metis", "MyPageActivity clicked")
+                var intent = Intent(this@MainActivity, MyPageActivity::class.java)
+                startActivity(intent)
+            }
             R.id.navigation_view_logout-> {
 
                 MainApplication.prefs.setBoolean("isLogin", false)
@@ -251,6 +255,8 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
                 finish()
             }
         }
+
+        binding.navigationViewLayout.closeDrawer(GravityCompat.START)
         return false
     }
 }

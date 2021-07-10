@@ -43,6 +43,12 @@
         <item name="android:textColor">@color/color_white_gray</item>
     </style>
 
+    <style name="myPageText" parent="plainText">
+        <item name="android:layout_marginLeft">20dp</item>
+        <item name="android:layout_marginTop">20dp</item>
+        <item name="android:layout_marginBottom">20dp</item>
+    </style>
+
     <style name="navigationItemText" >
         <item name="android:textSize">18sp</item>
         <item name="android:textColor">@color/color_plain_text</item>
@@ -77,6 +83,12 @@
         <item name="android:backgroundTint">@color/under_line</item>
         <item name="android:textColorHint">@color/under_line</item>
         <item name="android:textSize">18sp</item>
+    </style>
+
+    <!-- register_title_txt-->
+    <style name="myPageHintEditText" parent="hint_edit_text">
+        <item name="android:layout_marginLeft">20dp</item>
+        <item name="android:layout_marginRight">20dp</item>
     </style>
 
     <!-- register_star_txt-->

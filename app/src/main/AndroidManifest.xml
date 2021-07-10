@@ -51,6 +51,11 @@
 
         </activity>
 
+        <!--My Page-->
+        <activity android:name=".MyPageActivity">
+
+        </activity>
+
     </application>
 
 </manifest>
