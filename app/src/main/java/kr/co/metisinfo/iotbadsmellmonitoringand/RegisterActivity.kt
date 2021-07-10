@@ -146,7 +146,8 @@ class RegisterActivity : BaseActivity(), SmellTypeDialog.SmellTypeDialogListener
             registerTime,
             "",
             regId,
-            ""
+            "",
+            false
         )
 
         instance.apiService.registerInsert(data).enqueue(object : Callback<ResponseResult> {

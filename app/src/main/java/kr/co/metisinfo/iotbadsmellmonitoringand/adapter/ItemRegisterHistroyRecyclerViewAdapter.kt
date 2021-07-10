@@ -1,12 +1,13 @@
 package kr.co.metisinfo.iotbadsmellmonitoringand.adapter
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
 import kr.co.metisinfo.iotbadsmellmonitoringand.R
-import kr.co.metisinfo.iotbadsmellmonitoringand.model.HistoryModel
+import kr.co.metisinfo.iotbadsmellmonitoringand.model.RegisterModel
 import kr.co.metisinfo.iotbadsmellmonitoringand.util.ToggleAnimation
 
 /**
@@ -22,8 +23,9 @@ import kr.co.metisinfo.iotbadsmellmonitoringand.util.ToggleAnimation
  * @
  **/
 
-class ItemRegisterHistroyRecyclerViewAdapter(private val historyList: List<HistoryModel>) :
+class ItemRegisterHistroyRecyclerViewAdapter(private val context: Context, private val historyList: List<RegisterModel>) :
     RecyclerView.Adapter<ItemRegisterHistroyRecyclerViewAdapter.CowViewHolder>() {
+
 
     class CowViewHolder(
 
@@ -31,14 +33,14 @@ class ItemRegisterHistroyRecyclerViewAdapter(private val historyList: List<Histo
 
     ) : RecyclerView.ViewHolder(itemView) {
 
-        fun bind(historyModel: HistoryModel) {
+        fun bind(historyModel: RegisterModel) {
 
             val txtName               = itemView.findViewById<TextView>(R.id.reg_dt_txt)
             val imgMore               = itemView.findViewById<ImageView>(R.id.search_smell_value_dropdown)
             val historyListSmellValue = itemView.findViewById<Button>(R.id.history_list_smell_value)
             val layoutExpand          = itemView.findViewById<LinearLayout>(R.id.layout_expand)
 
-            txtName.text               = historyModel.regId
+            txtName.text               = historyModel.regDt
             historyListSmellValue.text = historyModel.smellValue
 
             imgMore.setOnClickListener {
@@ -61,7 +63,8 @@ class ItemRegisterHistroyRecyclerViewAdapter(private val historyList: List<Histo
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CowViewHolder {
-        return CowViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.layout_histroy_item_list, parent, false))
+
+        return CowViewHolder(LayoutInflater.from(context).inflate(R.layout.layout_histroy_item_list, parent, false))
     }
 
     override fun onBindViewHolder(holder: CowViewHolder, position: Int) {

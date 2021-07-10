@@ -15,7 +15,7 @@
             android:textColor="@color/color_white_gray"
             android:layout_marginTop="5dp"
             android:layout_marginLeft="15dp"
-            android:text="2021-05-29 21:23:21"/>
+            android:hint="2021-05-29 21:23:21"/>
 
         <Button
             android:id="@+id/history_list_smell_value"

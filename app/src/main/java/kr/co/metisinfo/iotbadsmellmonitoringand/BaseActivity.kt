@@ -31,6 +31,7 @@ abstract class BaseActivity : AppCompatActivity(){
     val instance = MainApplication.instance
 
     val calendar: Calendar = Calendar.getInstance()
+    var today = ymdFormatter.format(calendar.time)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -135,7 +136,7 @@ abstract class BaseActivity : AppCompatActivity(){
 
         calendar.time = Date()
 
-        val today = ymdFormatter.format(calendar.time)
+        //today = ymdFormatter.format(calendar.time)
         val currentTime = calendar.time.time
 
         calendar.add(Calendar.DATE, 1)

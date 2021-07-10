@@ -16,5 +16,6 @@ data class RegisterModel(
     val smellRegisterTime : String,
     val smellRegisterTimeName : String,
     val regId : String,
-    val regDt : String
+    val regDt : String,
+    var isExpanded : Boolean                                                        // 열림상태
 )
