@@ -167,7 +167,7 @@
                         <RadioButton
                             android:id="@+id/gender_male"
                             style="@style/GenderRadioGroup"
-                            android:layout_marginLeft="2dp"
+                            android:layout_marginStart="2dp"
                             android:text="@string/male"/>
 
                         <RadioButton

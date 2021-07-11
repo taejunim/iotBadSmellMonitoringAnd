@@ -5,6 +5,7 @@ data class RegisterModel(
     val resultCode : String,
     val smellType : String,
     val smellValue : String,
+    val smellValueName : String,
     val weatherState : String,
     val temperatureValue : String,
     val humidityValue : String,

@@ -19,7 +19,7 @@
 
     <!-- margin_start_end_20-->
     <style name="marginLeftRight_20">
-        <item name="android:layout_marginLeft">20dp</item>
+        <item name="android:layout_marginStart">20dp</item>
         <item name="android:layout_marginRight">20dp</item>
     </style>
 
@@ -38,13 +38,17 @@
         <item name="android:textSize">16sp</item>
     </style>
 
+    <style name="itemText_small" parent="plainText">
+        <item name="android:textSize">14sp</item>
+    </style>
+
     <style name="tinyText" parent="plainText">
         <item name="android:textSize">13sp</item>
         <item name="android:textColor">@color/color_white_gray</item>
     </style>
 
     <style name="myPageText" parent="plainText">
-        <item name="android:layout_marginLeft">20dp</item>
+        <item name="android:layout_marginStart">20dp</item>
         <item name="android:layout_marginTop">20dp</item>
         <item name="android:layout_marginBottom">20dp</item>
     </style>
@@ -57,7 +61,7 @@
     <style name="intensityButton">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">30dp</item>
-        <item name="android:layout_marginLeft">30dp</item>
+        <item name="android:layout_marginStart">30dp</item>
         <item name="android:layout_marginRight">30dp</item>
         <item name="android:layout_marginTop">10dp</item>
         <item name="android:gravity">left|center</item>
@@ -87,7 +91,7 @@
 
     <!-- register_title_txt-->
     <style name="myPageHintEditText" parent="hint_edit_text">
-        <item name="android:layout_marginLeft">20dp</item>
+        <item name="android:layout_marginStart">20dp</item>
         <item name="android:layout_marginRight">20dp</item>
     </style>
 
@@ -95,7 +99,7 @@
     <style name="star_mark" parent="@android:style/TextAppearance.Medium">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginLeft">1dp</item>
+        <item name="android:layout_marginStart">1dp</item>
         <item name="android:text">@string/star_text</item>
         <item name="android:textColor">@color/star_mark</item>
     </style>

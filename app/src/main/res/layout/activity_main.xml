@@ -62,7 +62,7 @@
                             android:layout_below="@+id/current_weather_text"
                             android:layout_centerVertical="true"
                             android:layout_marginTop="5dp"
-                            android:layout_marginLeft="30dp"
+                            android:layout_marginStart="30dp"
                             android:contentDescription="@string/image_description"
                             android:background="@drawable/weather_shower_moon"
                             android:button="@android:color/transparent"/>
@@ -80,7 +80,7 @@
                             style="@style/itemText"
                             android:layout_below="@+id/current_weather_text"
                             android:layout_toRightOf="@+id/temperature_text"
-                            android:layout_marginLeft="20dp"
+                            android:layout_marginStart="20dp"
                             android:layout_marginTop="15dp"
                             android:text="@string/main_humidity"/>
 
@@ -125,7 +125,7 @@
                             android:layout_alignParentTop="true"
                             android:layout_alignParentLeft="true"
                             android:layout_marginTop="10dp"
-                            android:layout_marginLeft="20dp"
+                            android:layout_marginStart="20dp"
                             android:layout_marginBottom="10dp"
                             android:text="@string/main_register_status"/>
 

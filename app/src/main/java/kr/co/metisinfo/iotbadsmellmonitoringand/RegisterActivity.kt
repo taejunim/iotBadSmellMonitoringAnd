@@ -135,6 +135,7 @@ class RegisterActivity : BaseActivity(), SmellTypeDialog.SmellTypeDialogListener
             "",
             selectedSmellTypeId,
             receivedIntensityId,
+            "",
             weatherStatus,
             temperatureValue,
             humidityValue,

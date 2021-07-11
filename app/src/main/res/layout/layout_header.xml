@@ -29,7 +29,7 @@
             android:layout_width="76dp"
             android:layout_height="match_parent"
             android:visibility="visible"
-            android:layout_marginLeft="10dp">
+            android:layout_marginStart="10dp">
 
             <ImageView
                 android:layout_width="32dp"

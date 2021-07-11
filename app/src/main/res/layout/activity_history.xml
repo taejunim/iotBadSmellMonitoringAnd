@@ -13,9 +13,9 @@
 
         <LinearLayout
             android:id="@+id/top"
-            android:layout_below="@+id/include_header"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_below="@+id/include_header"
             android:orientation="vertical">
 
             <LinearLayout
@@ -25,6 +25,7 @@
                 android:layout_weight="1">
 
                 <RelativeLayout
+                    android:id="@+id/left_layout"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
@@ -33,138 +34,153 @@
                         style="@style/plainText"
                         android:layout_alignParentTop="true"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="20dp"
+                        android:layout_marginStart="20dp"
                         android:layout_marginTop="10dp"
-                        android:layout_marginBottom="10dp"
+                        android:layout_marginBottom="5dp"
                         android:text="@string/history_search_text"
                         android:textStyle="bold" />
 
-                    <TextView
-                        android:id="@+id/search_date_text"
-                        style="@style/plainText"
+                    <RelativeLayout
+                        android:id="@+id/layout_condition"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:layout_below="@+id/search_text"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginTop="5dp"
-                        android:text="@string/histroy_search_date_text" />
+                        android:layout_toStartOf="@+id/search_btn">
 
-                    <TextView
-                        android:id="@+id/search_start_date_text"
-                        style="@style/itemText"
-                        android:layout_below="@+id/search_text"
-                        android:layout_alignStart="@id/search_date_text"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="90dp"
-                        android:layout_marginTop="5dp"
-                        android:text="2021-06-21" />
+                        <TextView
+                            android:id="@+id/search_date_text"
+                            style="@style/itemText"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginTop="5dp"
+                            android:text="@string/histroy_search_date_text" />
 
-                    <TextView
-                        android:id="@+id/search_gbn_date_text"
-                        style="@style/plainText"
-                        android:layout_below="@+id/search_text"
-                        android:layout_alignStart="@id/search_start_date_text"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="95dp"
-                        android:layout_marginTop="5dp"
-                        android:text="~" />
+                        <TextView
+                            android:id="@+id/search_start_date_text"
+                            style="@style/itemText"
+                            android:layout_marginStart="50dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_toEndOf="@+id/search_date_text"
+                            android:text="2021-06-21" />
 
-                    <TextView
-                        android:id="@+id/search_end_date_text"
-                        style="@style/itemText"
-                        android:layout_below="@+id/search_text"
-                        android:layout_alignStart="@id/search_gbn_date_text"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginTop="5dp"
-                        android:text="2021-06-21" />
+                        <TextView
+                            android:id="@+id/search_gbn_date_text"
+                            style="@style/plainText"
+                            android:layout_marginStart="10dp"
+                            android:layout_toEndOf="@+id/search_start_date_text"
+                            android:layout_marginTop="5dp"
+                            android:text="~" />
 
-                    <TextView
-                        android:id="@+id/histroy_search_smell_value_text"
-                        style="@style/plainText"
-                        android:layout_below="@+id/search_date_text"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginBottom="10dp"
-                        android:text="@string/histroy_search_smell_value_text" />
+                        <TextView
+                            android:id="@+id/search_end_date_text"
+                            style="@style/itemText"
+                            android:layout_toEndOf="@+id/search_gbn_date_text"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginStart="10dp"
+                            android:text="2021-06-21" />
 
-                    <TextView
-                        android:id="@+id/search_smell_value"
-                        style="@style/itemText"
-                        android:layout_below="@+id/search_date_text"
-                        android:layout_alignStart="@id/histroy_search_smell_value_text"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="90dp"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginBottom="10dp"
-                        android:text="전체" />
+                        <TextView
+                            android:id="@+id/histroy_search_smell_value_text"
+                            style="@style/itemText"
+                            android:layout_below="@+id/search_date_text"
+                            android:layout_centerVertical="true"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="10dp"
+                            android:text="@string/histroy_search_smell_value_text" />
 
-                    <Spinner
-                        android:id="@+id/spinner_search_smell_value"
-                        android:layout_width="100dp"
-                        android:layout_height="1dp"
-                        android:layout_alignStart="@+id/search_smell_value"
-                        android:spinnerMode="dialog"
-                        android:textSize="17dp"
-                        android:textStyle="bold"
-                        android:layout_marginTop="80dp"
-                        android:visibility="invisible" />
-                    <ImageView
-                        android:id="@+id/search_smell_value_dropdown"
-                        android:layout_below="@+id/search_date_text"
-                        android:layout_alignStart="@id/search_smell_value"
-                        android:layout_marginLeft="50dp"
-                        android:layout_marginTop="12dp"
-                        android:layout_width="18dp"
-                        android:layout_height="10dp"
-                        android:rotationX="180"
-                        android:background="@drawable/btn_dropdown"
-                        android:button="@android:color/transparent"
-                        android:contentDescription="@string/image_description"/>
+                        <TextView
+                            android:id="@+id/search_smell_value"
+                            style="@style/itemText"
+                            android:layout_below="@+id/search_date_text"
+                            android:layout_toEndOf="@id/histroy_search_smell_value_text"
+                            android:layout_centerVertical="true"
+                            android:layout_marginStart="18dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="10dp"
+                            android:text="전체" />
 
+                        <Spinner
+                            android:id="@+id/spinner_search_smell_value"
+                            android:layout_width="100dp"
+                            android:layout_height="1dp"
+                            android:layout_alignStart="@+id/search_smell_value"
+                            android:layout_marginTop="80dp"
+                            android:spinnerMode="dialog"
+                            android:textSize="17dp"
+                            android:textStyle="bold"
+                            android:visibility="invisible" />
+
+                        <ImageView
+                            android:id="@+id/search_smell_value_dropdown"
+                            android:layout_width="18dp"
+                            android:layout_height="10dp"
+                            android:layout_below="@+id/search_date_text"
+                            android:layout_alignStart="@id/search_smell_value"
+                            android:layout_marginStart="50dp"
+                            android:layout_marginTop="12dp"
+                            android:background="@drawable/btn_dropdown"
+                            android:button="@android:color/transparent"
+                            android:contentDescription="@string/image_description"
+                            android:rotationX="180" />
+                    </RelativeLayout>
+
+                    <Button
+                        android:id="@+id/search_btn"
+                        android:layout_width="60dp"
+                        android:layout_height="50dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_centerInParent="true"
+
+                        android:layout_alignParentEnd="true"
+
+                        android:background="@drawable/round_blue_button"
+                        android:text="@string/history_search_text"
+                        android:textColor="@color/white" />
                 </RelativeLayout>
+
 
             </LinearLayout>
 
             <View
+                style="@style/marginLeftRight_20"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_below="@+id/histroy_search_smell_value_text"
-                style="@style/marginLeftRight_20"
-                android:background="@color/include_header_line"/>
+                android:background="@color/include_header_line" />
 
-        <LinearLayout
-            android:id="@+id/history_layout"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="5">
-
-            <RelativeLayout
+            <LinearLayout
+                android:id="@+id/history_layout"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="0dp"
+                android:layout_weight="5">
 
-                <TextView
-                    android:id="@+id/history_text"
-                    style="@style/plainText"
-                    android:layout_alignParentTop="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:text="@string/history_text"
-                    android:textStyle="bold" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/register_history_recycler"
-                    android:layout_below="@+id/history_text"
-                    android:padding="10dp"
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/history_text"
+                        style="@style/plainText"
+                        android:layout_alignParentTop="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:text="@string/history_text"
+                        android:textStyle="bold" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/register_history_recycler"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_below="@+id/history_text"
+                        android:padding="10dp" />
 
 
-            </RelativeLayout>
+                </RelativeLayout>
 
-        </LinearLayout>
+            </LinearLayout>
 
         </LinearLayout>
 

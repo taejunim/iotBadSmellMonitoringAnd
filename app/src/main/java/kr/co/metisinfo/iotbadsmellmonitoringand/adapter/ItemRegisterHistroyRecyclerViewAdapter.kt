@@ -36,12 +36,12 @@ class ItemRegisterHistroyRecyclerViewAdapter(private val context: Context, priva
         fun bind(historyModel: RegisterModel) {
 
             val txtName               = itemView.findViewById<TextView>(R.id.reg_dt_txt)
-            val imgMore               = itemView.findViewById<ImageView>(R.id.search_smell_value_dropdown)
+            val imgMore               = itemView.findViewById<RelativeLayout>(R.id.layout_dropdown)
             val historyListSmellValue = itemView.findViewById<Button>(R.id.history_list_smell_value)
-            val layoutExpand          = itemView.findViewById<LinearLayout>(R.id.layout_expand)
+            val layoutExpand          = itemView.findViewById<RelativeLayout>(R.id.layout_expand)
 
             txtName.text               = historyModel.regDt
-            historyListSmellValue.text = historyModel.smellValue
+            historyListSmellValue.text = historyModel.smellValueName + " / " + historyModel.smellComment
 
             imgMore.setOnClickListener {
                 // 1
@@ -50,7 +50,7 @@ class ItemRegisterHistroyRecyclerViewAdapter(private val context: Context, priva
             }
         }
 
-        private fun toggleLayout(isExpanded: Boolean, view: View, layoutExpand: LinearLayout): Boolean {
+        private fun toggleLayout(isExpanded: Boolean, view: View, layoutExpand: RelativeLayout): Boolean {
             // 2
             ToggleAnimation.toggleArrow(view, isExpanded)
             if (isExpanded) {
