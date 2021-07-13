@@ -1,17 +1,23 @@
 package kr.co.metisinfo.iotbadsmellmonitoringand
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.LocationManager
+import android.net.Uri
 import android.os.Build
 import android.os.Handler
 import android.os.Looper
+import android.provider.MediaStore
 import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import kr.co.metisinfo.iotbadsmellmonitoringand.adapter.MultiImageAdapter
 import kr.co.metisinfo.iotbadsmellmonitoringand.databinding.ActivityRegisterBinding
 import kr.co.metisinfo.iotbadsmellmonitoringand.dialog.SmellTypeDialog
 import kr.co.metisinfo.iotbadsmellmonitoringand.model.RegisterModel
@@ -39,6 +45,10 @@ class RegisterActivity : BaseActivity(), SmellTypeDialog.SmellTypeDialogListener
     private var locationManager = instance.getSystemService(LOCATION_SERVICE) as LocationManager
 
     private var registerTime = ""
+
+    var uriList = ArrayList<Uri>() // 이미지의 uri를 담을 ArrayList 객체
+    var recyclerView : RecyclerView? = null // 이미지를 보여줄 리사이클러뷰
+    var adapter : MultiImageAdapter? = null // 리사이클러뷰에 적용시킬 어댑터
 
     override fun onInputData(id: String, index: Int) {
         drawSmellTypeButton(id, index)
@@ -70,6 +80,7 @@ class RegisterActivity : BaseActivity(), SmellTypeDialog.SmellTypeDialogListener
 
         binding.intensityButton.text = receivedIntensityText
         binding.intensityButton.setBackgroundResource(resource.getIdentifier(receivedIntensityResource,"drawable", "kr.co.metisinfo.iotbadsmellmonitoringand"))
+        recyclerView = findViewById(R.id.register_image_view)
     }
 
     override fun setOnClickListener() {
@@ -90,6 +101,55 @@ class RegisterActivity : BaseActivity(), SmellTypeDialog.SmellTypeDialogListener
             when (registerTime) {
                 "" -> Toast.makeText(this@RegisterActivity, resource.getString(R.string.register_not_register_time_text), Toast.LENGTH_SHORT).show()
                 else -> getWeatherApiData() //날씨 데이터
+            }
+        }
+
+        binding.registerBlankLayout.setOnClickListener {
+
+            val intent = Intent(Intent.ACTION_PICK, MediaStore.Audio.Media.EXTERNAL_CONTENT_URI)
+            //사진을 여러개 선택할수 있도록 한다
+            intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
+            intent.type = "image/*"
+            startActivityForResult(Intent.createChooser(intent, "Select Picture"), 0)
+        }
+    }
+
+    // 앨범에서 액티비티로 돌아온 후 실행되는 메서드
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        binding.registerBlankLayout.visibility = View.GONE
+        binding.registerAddedImageLayout.visibility = View.VISIBLE
+
+        if (data == null) {   // 어떤 이미지도 선택하지 않은 경우
+            Toast.makeText(applicationContext, "이미지를 선택하지 않았습니다.", Toast.LENGTH_LONG).show()
+        } else {   // 이미지를 하나라도 선택한 경우
+            if (data.clipData == null) {     // 이미지를 하나만 선택한 경우
+                Log.e("single choice: ", data.data.toString())
+                val imageUri = data.data
+                uriList.add(imageUri!!)
+                adapter = MultiImageAdapter(uriList, applicationContext)
+                recyclerView!!.adapter = adapter
+                recyclerView!!.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, true)
+            } else {      // 이미지를 여러장 선택한 경우
+                val clipData = data.clipData
+                Log.e("clipData", clipData!!.itemCount.toString())
+                if (clipData.itemCount > 10) {   // 선택한 이미지가 11장 이상인 경우
+                    Toast.makeText(applicationContext, "사진은 10장까지 선택 가능합니다.", Toast.LENGTH_LONG).show()
+                } else {   // 선택한 이미지가 1장 이상 10장 이하인 경우
+                    Log.e("metis", "multiple choice")
+                    for (i in 0 until clipData.itemCount) {
+                        val imageUri = clipData.getItemAt(i).uri // 선택한 이미지들의 uri를 가져온다.
+                        try {
+                            uriList.add(imageUri) //uri를 list에 담는다.
+                        } catch (e: Exception) {
+                            Log.e("metis", "File select error", e)
+                        }
+                    }
+                    adapter = MultiImageAdapter(uriList, applicationContext)
+                    recyclerView!!.adapter = adapter // 리사이클러뷰에 어댑터 세팅
+                    recyclerView!!.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, true) // 리사이클러뷰 수평 스크롤 적용
+                }
             }
         }
     }

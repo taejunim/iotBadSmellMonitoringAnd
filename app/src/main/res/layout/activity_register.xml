@@ -112,132 +112,41 @@
                             android:text="@string/register_upload_image_text"/>
 
                         <LinearLayout
+                            android:id="@+id/register_upload_image_layout"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_below="@id/register_upload_image_text"
-                            android:orientation="horizontal">
+                            android:orientation="horizontal"
+                            android:background="@color/color_dark_gray">
+
+                            <RelativeLayout
+                                android:id="@+id/register_blank_layout"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent">
+
+                                <ImageView
+                                    android:layout_width="180dp"
+                                    android:layout_height="140dp"
+                                    android:layout_centerHorizontal="true"
+                                    android:layout_centerVertical="true"
+                                    android:contentDescription="@string/image_description"
+                                    android:background="@drawable/add_image"
+                                    android:button="@android:color/transparent"/>
+
+
+                            </RelativeLayout>
 
                             <LinearLayout
-                                android:layout_width="0dp"
+                                android:id="@+id/register_added_image_layout"
+                                android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:layout_weight="1">
+                                android:visibility="gone">
 
-                                <RelativeLayout
+                                <androidx.recyclerview.widget.RecyclerView
+                                    android:id="@+id/register_image_view"
                                     android:layout_width="match_parent"
-                                    android:layout_height="match_parent">
-
-                                    <ImageView
-                                        android:id="@+id/register_first_time_image"
-                                        android:layout_width="60dp"
-                                        android:layout_height="60dp"
-                                        android:layout_centerHorizontal="true"
-                                        android:contentDescription="@string/image_description"
-                                        android:background="@drawable/not_yet"
-                                        android:button="@android:color/transparent"/>
-
-                                    <TextView
-                                        android:id="@+id/register_first_time_text"
-                                        style="@style/tinyText"
-                                        android:layout_below="@+id/register_first_time_image"
-                                        android:layout_centerInParent="true"
-                                        android:layout_marginTop="5dp"
-                                        android:singleLine="true"
-                                        android:text="-" />
-
-                                </RelativeLayout>
-
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:layout_width="0dp"
-                                android:layout_height="match_parent"
-                                android:layout_weight="1">
-
-                                <RelativeLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent">
-
-                                    <ImageView
-                                        android:id="@+id/register_second_time_image"
-                                        android:layout_width="60dp"
-                                        android:layout_height="60dp"
-                                        android:layout_centerHorizontal="true"
-                                        android:contentDescription="@string/image_description"
-                                        android:background="@drawable/not_yet"
-                                        android:button="@android:color/transparent"/>
-
-                                    <TextView
-                                        android:id="@+id/register_second_time_text"
-                                        style="@style/tinyText"
-                                        android:layout_below="@+id/register_second_time_image"
-                                        android:layout_centerInParent="true"
-                                        android:layout_marginTop="5dp"
-                                        android:singleLine="true"
-                                        android:text="-" />
-
-                                </RelativeLayout>
-
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:layout_width="0dp"
-                                android:layout_height="match_parent"
-                                android:layout_weight="1">
-
-                                <RelativeLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent">
-
-                                    <ImageView
-                                        android:id="@+id/register_third_time_image"
-                                        android:layout_width="60dp"
-                                        android:layout_height="60dp"
-                                        android:layout_centerHorizontal="true"
-                                        android:contentDescription="@string/image_description"
-                                        android:background="@drawable/not_yet"
-                                        android:button="@android:color/transparent"/>
-
-                                    <TextView
-                                        android:id="@+id/register_third_time_text"
-                                        style="@style/tinyText"
-                                        android:layout_below="@+id/register_third_time_image"
-                                        android:layout_centerInParent="true"
-                                        android:layout_marginTop="5dp"
-                                        android:singleLine="true"
-                                        android:text="-" />
-
-                                </RelativeLayout>
-
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:layout_width="0dp"
-                                android:layout_height="match_parent"
-                                android:layout_weight="1">
-
-                                <RelativeLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent">
-
-                                    <ImageView
-                                        android:id="@+id/register_fourth_time_image"
-                                        android:layout_width="60dp"
-                                        android:layout_height="60dp"
-                                        android:layout_centerHorizontal="true"
-                                        android:contentDescription="@string/image_description"
-                                        android:background="@drawable/not_yet"
-                                        android:button="@android:color/transparent"/>
-
-                                    <TextView
-                                        android:id="@+id/register_fourth_time_text"
-                                        style="@style/tinyText"
-                                        android:layout_below="@+id/register_fourth_time_image"
-                                        android:layout_centerInParent="true"
-                                        android:layout_marginTop="5dp"
-                                        android:singleLine="true"
-                                        android:text="-" />
-
-                                </RelativeLayout>
+                                    android:layout_height="match_parent"
+                                    android:orientation="horizontal"/>
 
                             </LinearLayout>
 

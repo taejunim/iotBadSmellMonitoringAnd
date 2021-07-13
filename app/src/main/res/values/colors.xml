@@ -28,4 +28,6 @@
     <color name="star_mark">#E4513D</color>
 
     <color name="gray_round_line">#EFEFEF</color>
+
+    <color name="color_dark_gray">#DFDFDF</color>
 </resources>

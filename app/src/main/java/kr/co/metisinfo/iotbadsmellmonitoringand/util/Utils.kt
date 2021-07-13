@@ -13,6 +13,7 @@ class Utils {
     companion object {
         val ymdFormatter = SimpleDateFormat("yyyy-MM-dd")
         val dateFormatter = SimpleDateFormat("yyyy-MM-dd HH:mm")
+        val timeFormatter = SimpleDateFormat("HH:mm")
 
         private val resource: Resources = MainApplication.getContext().resources
 

@@ -154,6 +154,10 @@ class MainApplication : Application() {
             in time22 .. time24 -> timeValue = tomorrow07
         }
 
+        //Log.d("metis", "다음 알람 시간 : " + Utils.timeFormatter.format(testTime) )
+        Log.d("metis", "다음 알람 시간 : " + Utils.timeFormatter.format(timeValue) )
+
+
         return timeValue!!
     }
 
