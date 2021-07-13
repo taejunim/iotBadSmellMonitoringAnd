@@ -108,7 +108,7 @@ class HistoryActivity : BaseActivity(), AdapterView.OnItemSelectedListener {
         Log.d("metis", "selectedStartDate : $selectedStartDate")
         Log.d("metis", "selectedEndDate : $selectedEndDate")
 
-        instance.apiService.getRegisterMasterHistory(pageNum, pageCount, selectedSmellValeCode, selectedStartDate, selectedEndDate).enqueue(object : Callback<RegisterResult> {
+        instance.apiService.getRegisterMasterHistory(pageNum, pageCount, selectedSmellValeCode, selectedStartDate, selectedEndDate, userId).enqueue(object : Callback<RegisterResult> {
             override fun onResponse(call: Call<RegisterResult>, response: Response<RegisterResult>) {
 
                 Log.d("metis",response.toString())

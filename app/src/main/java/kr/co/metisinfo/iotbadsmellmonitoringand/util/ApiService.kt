@@ -93,7 +93,8 @@ interface ApiService {
         @Query("recordCountPerPage") recordCountPerPage: Int,
         @Query("smellValue") smellValue: String,
         @Query("startDate") startDate: String,
-        @Query("endDate") endDate: String
+        @Query("endDate") endDate: String,
+        @Query("regId") regId: String
 
     ): Call<RegisterResult>
 
