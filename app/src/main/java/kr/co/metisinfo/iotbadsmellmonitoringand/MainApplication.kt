@@ -35,7 +35,6 @@ class MainApplication : Application() {
     
     init {
         instance = this
-        getApiData()
     }
 
     companion object {
@@ -58,7 +57,7 @@ class MainApplication : Application() {
     }
 
     //코드 API
-    private fun getApiData() {
+    fun getApiData() {
 
         for (i in codeGroupArray.indices) {
 

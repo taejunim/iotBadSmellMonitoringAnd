@@ -11,6 +11,8 @@ class IntroActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_intro)
 
+         MainApplication.instance.getApiData()
+
         val handler = Handler(Looper.getMainLooper())
         handler.postDelayed ({
 
