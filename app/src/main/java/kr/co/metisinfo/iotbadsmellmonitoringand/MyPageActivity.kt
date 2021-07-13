@@ -5,7 +5,11 @@ import android.view.View
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import kr.co.metisinfo.iotbadsmellmonitoringand.databinding.ActivityMyPageBinding
+import kr.co.metisinfo.iotbadsmellmonitoringand.model.ResponseResult
 import kr.co.metisinfo.iotbadsmellmonitoringand.model.UserModel
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 
 class MyPageActivity : BaseActivity() {
@@ -39,9 +43,14 @@ class MyPageActivity : BaseActivity() {
             if(isChecked) {
                 Log.d("metis", "MyPageActivity on")
                 MainApplication.prefs.setBoolean("pushStatus", true)
-            } else{
+
+                MainApplication.instance.setAlarm()
+
+            } else {
                 Log.d("metis", "MyPageActivity off")
                 MainApplication.prefs.setBoolean("pushStatus", false)
+
+                MainApplication.instance.cancelAlarm()
             }
         }
 
@@ -52,7 +61,7 @@ class MyPageActivity : BaseActivity() {
                 val userPassword = binding.myPageNewPasswordInput.text.toString()
                 val data = UserModel(userId,userPassword,"","","","","","","")
 
-                instance.changePassword(data)
+                changePassword(data)
             }
         }
     }
@@ -89,7 +98,37 @@ class MyPageActivity : BaseActivity() {
             }
             else -> return true
         }
+    }
 
+    private fun changePassword(data: UserModel) {
+
+        MainApplication.instance.apiService.userPasswordChange(data).enqueue(object :
+            Callback<ResponseResult> {
+            override fun onResponse(
+                call: Call<ResponseResult>,
+                response: Response<ResponseResult>
+            ) {
+                Log.d("metis", response.toString())
+                Log.d("metis", "changePassword 결과 -> " + response.body().toString())
+
+                val result = response.body()?.result
+
+                if (result == "success") {
+
+                    MainApplication.prefs.setString("userPassword", data.userPassword)
+                    Toast.makeText(this@MyPageActivity, resource.getString(R.string.my_page_password_change_success_text), Toast.LENGTH_SHORT).show()
+
+                } else if (result == "fail") {
+                    Toast.makeText(this@MyPageActivity, resource.getString(R.string.my_page_password_change_fail_text), Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseResult>, t: Throwable) {
+                Log.d("metis", t.message.toString())
+                Log.d("metis", "onFailure : fail")
+
+            }
+        })
     }
 
     /**

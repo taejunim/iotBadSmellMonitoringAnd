@@ -39,6 +39,7 @@ abstract class BaseActivity : AppCompatActivity(){
         initData()
         initLayout()
         setOnClickListener()
+        instance.setAlarm()
     }
 
     abstract fun initLayout()

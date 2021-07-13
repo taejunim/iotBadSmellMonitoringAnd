@@ -13,9 +13,18 @@ object Constants {
     const val nx = "48" //지역 X
     const val ny = "36" //지역 Y
 
+    //배경색 구분을 위한 시간
     const val TIME_00 = "00:00"
     const val TIME_06 = "06:00"
     const val TIME_09 = "09:00"
     const val TIME_18 = "18:00"
     const val TIME_21 = "21:00"
+
+    //푸시 시간
+    const val PUSH_TIME_00 = "00:00:00"
+    const val PUSH_TIME_07 = "07:00:00"
+    const val PUSH_TIME_12 = "12:00:00"
+    const val PUSH_TIME_18 = "18:00:00"
+    const val PUSH_TIME_22 = "22:00:00"
+    //const val TEST_TIME = "18:05:00"
 }

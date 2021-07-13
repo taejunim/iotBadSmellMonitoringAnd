@@ -1,18 +1,21 @@
 package kr.co.metisinfo.iotbadsmellmonitoringand
 
+import android.app.AlarmManager
 import android.app.Application
+import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
 import android.util.Log
-import android.widget.Toast
 import kr.co.metisinfo.iotbadsmellmonitoringand.model.CodeModel
 import kr.co.metisinfo.iotbadsmellmonitoringand.model.CodeResult
-import kr.co.metisinfo.iotbadsmellmonitoringand.model.ResponseResult
-import kr.co.metisinfo.iotbadsmellmonitoringand.model.UserModel
+import kr.co.metisinfo.iotbadsmellmonitoringand.receiver.AlarmReceiver
 import kr.co.metisinfo.iotbadsmellmonitoringand.util.ApiService
 import kr.co.metisinfo.iotbadsmellmonitoringand.util.PreferenceUtil
+import kr.co.metisinfo.iotbadsmellmonitoringand.util.Utils
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.*
 
 class MainApplication : Application() {
 
@@ -24,6 +27,11 @@ class MainApplication : Application() {
     var intensityList: List<CodeModel> = mutableListOf() //강도
     var regionList: List<CodeModel> = mutableListOf() //지역
     var smellTypeList: List<CodeModel> = mutableListOf() //취기
+
+    /** 푸시 관련 **/
+    private lateinit var alarmManager: AlarmManager
+    private lateinit var alarmReceiver:Intent
+    private lateinit var pendingIntent: PendingIntent
     
     init {
         instance = this
@@ -42,6 +50,11 @@ class MainApplication : Application() {
     override fun onCreate() {
         prefs = PreferenceUtil(applicationContext)
         super.onCreate()
+
+        alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
+        alarmReceiver = Intent(this, AlarmReceiver::class.java)
+        pendingIntent = PendingIntent.getBroadcast(this, AlarmReceiver.NOTIFICATION_ID, alarmReceiver, PendingIntent.FLAG_UPDATE_CURRENT)
+
     }
 
     //코드 API
@@ -102,31 +115,56 @@ class MainApplication : Application() {
         }
     }
 
-    fun changePassword(data: UserModel) {
+    private fun getAlarmTime() : Long {
 
-        instance.apiService.userPasswordChange(data).enqueue(object : Callback<ResponseResult> {
-            override fun onResponse(call: Call<ResponseResult>, response: Response<ResponseResult>) {
-                Log.d("metis",response.toString())
-                Log.d("metis", "changePassword 결과 -> " + response.body().toString())
+        val currentDate: Calendar = Calendar.getInstance()
+        currentDate.time = Date()
 
-                val result = response.body()?.result
+        val today = Utils.ymdFormatter.format(currentDate.time)
+        val currentTime = currentDate.time.time
 
-                if (result == "success") {
+        currentDate.add(Calendar.DATE, 1)
+        val tomorrow = Utils.ymdFormatter.format(currentDate.time)
 
-                    MainApplication.prefs.setString("userPassword", data.userPassword)
+        val time00 = Utils.dateFormatter.parse("$today ${Constants.PUSH_TIME_00}").time
+        val time07 = Utils.dateFormatter.parse("$today ${Constants.PUSH_TIME_07}").time
+        val time12 = Utils.dateFormatter.parse("$today ${Constants.PUSH_TIME_12}").time
+        val time18 = Utils.dateFormatter.parse("$today ${Constants.PUSH_TIME_18}").time
+        val time22 = Utils.dateFormatter.parse("$today ${Constants.PUSH_TIME_22}").time
+        val time24 = Utils.dateFormatter.parse("$tomorrow ${Constants.PUSH_TIME_00}").time
+        val tomorrow07 = Utils.dateFormatter.parse("$tomorrow ${Constants.PUSH_TIME_07}").time
 
-                    Toast.makeText(instance, getContext().resources.getString(R.string.my_page_password_change_text), Toast.LENGTH_SHORT).show()
+        //val testTime = Utils.dateFormatter.parse("$today ${Constants.TEST_TIME}").time
 
-                } else if (result == "fail") {
-                    Toast.makeText(instance, getContext().resources.getString(R.string.my_page_password_change_fail_text), Toast.LENGTH_SHORT).show()
-                }
-            }
+        var timeValue : Long? = null
+        when (currentTime) {
 
-            override fun onFailure(call: Call<ResponseResult>, t: Throwable) {
-                Log.d("metis",t.message.toString())
-                Log.d("metis", "onFailure : fail")
+            //07 에 push
+            in time00 .. time07 -> timeValue = time07
 
-            }
-        })
+            //12 push
+            in time07 .. time12 -> timeValue = time12
+
+            //18 push
+            in time12 .. time18 -> timeValue = time18
+
+            //22 push
+            in time18 .. time22 -> timeValue = time22
+
+            //tomorrow 07 push
+            in time22 .. time24 -> timeValue = tomorrow07
+        }
+
+        return timeValue!!
+    }
+
+    //푸시 알람 설정 -> getAlarmTime() 로 가져온 가까운 시간대에
+    fun setAlarm() {
+        alarmManager.set(AlarmManager.RTC_WAKEUP, getAlarmTime(), pendingIntent)
+    }
+
+    //푸시 알람 취소
+    fun cancelAlarm() {
+        alarmManager.cancel(pendingIntent)
     }
 }

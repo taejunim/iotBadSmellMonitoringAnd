@@ -8,6 +8,8 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
 
+    <!-- 기기 부팅시 리시버 퍼미션 -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
 
     <application
         android:allowBackup="true"
@@ -56,6 +58,18 @@
         <activity android:name=".MyPageActivity">
 
         </activity>
+
+        <!--알람 리시버-->
+        <receiver android:name=".receiver.AlarmReceiver"
+            android:exported="false">
+        </receiver>
+
+        <!--부팅 리시버-->
+        <receiver android:name=".receiver.BootReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
 
     </application>
 
