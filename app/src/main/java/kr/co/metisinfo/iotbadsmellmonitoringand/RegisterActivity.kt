@@ -3,12 +3,12 @@ package kr.co.metisinfo.iotbadsmellmonitoringand
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.location.LocationManager
 import android.net.Uri
 import android.os.Build
 import android.os.Handler
 import android.os.Looper
-import android.provider.MediaStore
 import android.util.Log
 import android.view.View
 import android.widget.Toast
@@ -17,6 +17,9 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.sangcomz.fishbun.FishBun
+import com.sangcomz.fishbun.MimeType
+import com.sangcomz.fishbun.adapter.image.impl.GlideAdapter
 import kr.co.metisinfo.iotbadsmellmonitoringand.adapter.MultiImageAdapter
 import kr.co.metisinfo.iotbadsmellmonitoringand.databinding.ActivityRegisterBinding
 import kr.co.metisinfo.iotbadsmellmonitoringand.dialog.SmellTypeDialog
@@ -106,11 +109,40 @@ class RegisterActivity : BaseActivity(), SmellTypeDialog.SmellTypeDialogListener
 
         binding.registerBlankLayout.setOnClickListener {
 
-            val intent = Intent(Intent.ACTION_PICK, MediaStore.Audio.Media.EXTERNAL_CONTENT_URI)
-            //사진을 여러개 선택할수 있도록 한다
-            intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
-            intent.type = "image/*"
-            startActivityForResult(Intent.createChooser(intent, "Select Picture"), 0)
+            FishBun.with(this@RegisterActivity)
+                .setImageAdapter(GlideAdapter())
+                .setMaxCount(5)
+                .setMinCount(1)
+                .setPickerSpanCount(5)
+                .setActionBarColor(
+                    Color.parseColor("#FFFFFF"),
+                    Color.parseColor("#FFFFFF"),
+                    false
+                )
+                .setActionBarTitleColor(Color.parseColor("#010101"))
+                .setSelectedImages(uriList)
+                .setAlbumSpanCount(2, 3)
+                //.setButtonInAlbumActivity(false)
+                .hasCameraInPickerPage(true)
+                .exceptMimeType(arrayListOf(MimeType.GIF))
+                .setReachLimitAutomaticClose(false)
+                .setHomeAsUpIndicatorDrawable(
+                    ContextCompat.getDrawable(
+                        this,
+                        R.drawable.back
+                    )
+                )
+                .setDoneButtonDrawable(
+                    ContextCompat.getDrawable(
+                        this,
+                        R.drawable.check_black
+                    )
+                )
+                .setAllViewTitle("전체")
+                .setActionBarTitle("사진을 선택해주세요")
+                .textOnNothingSelected("최소 1개 이상 선택해주세요!")
+                .startAlbum()
+
         }
     }
 
@@ -121,36 +153,12 @@ class RegisterActivity : BaseActivity(), SmellTypeDialog.SmellTypeDialogListener
         binding.registerBlankLayout.visibility = View.GONE
         binding.registerAddedImageLayout.visibility = View.VISIBLE
 
-        if (data == null) {   // 어떤 이미지도 선택하지 않은 경우
-            Toast.makeText(applicationContext, "이미지를 선택하지 않았습니다.", Toast.LENGTH_LONG).show()
-        } else {   // 이미지를 하나라도 선택한 경우
-            if (data.clipData == null) {     // 이미지를 하나만 선택한 경우
-                Log.e("single choice: ", data.data.toString())
-                val imageUri = data.data
-                uriList.add(imageUri!!)
-                adapter = MultiImageAdapter(uriList, applicationContext)
-                recyclerView!!.adapter = adapter
-                recyclerView!!.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, true)
-            } else {      // 이미지를 여러장 선택한 경우
-                val clipData = data.clipData
-                Log.e("clipData", clipData!!.itemCount.toString())
-                if (clipData.itemCount > 10) {   // 선택한 이미지가 11장 이상인 경우
-                    Toast.makeText(applicationContext, "사진은 10장까지 선택 가능합니다.", Toast.LENGTH_LONG).show()
-                } else {   // 선택한 이미지가 1장 이상 10장 이하인 경우
-                    Log.e("metis", "multiple choice")
-                    for (i in 0 until clipData.itemCount) {
-                        val imageUri = clipData.getItemAt(i).uri // 선택한 이미지들의 uri를 가져온다.
-                        try {
-                            uriList.add(imageUri) //uri를 list에 담는다.
-                        } catch (e: Exception) {
-                            Log.e("metis", "File select error", e)
-                        }
-                    }
-                    adapter = MultiImageAdapter(uriList, applicationContext)
-                    recyclerView!!.adapter = adapter // 리사이클러뷰에 어댑터 세팅
-                    recyclerView!!.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, true) // 리사이클러뷰 수평 스크롤 적용
-                }
-            }
+        if (requestCode == 27 && resultCode == RESULT_OK) {
+
+            uriList = data?.getParcelableArrayListExtra("intent_path") ?: arrayListOf()
+            adapter = MultiImageAdapter(uriList, applicationContext)
+            recyclerView!!.adapter = adapter // 리사이클러뷰에 어댑터 세팅
+            recyclerView!!.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, true) // 리사이클러뷰 수평 스크롤 적용
         }
     }
 
