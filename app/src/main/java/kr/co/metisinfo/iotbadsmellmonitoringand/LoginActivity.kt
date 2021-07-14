@@ -48,7 +48,14 @@ class LoginActivity : BaseActivity() {
                             MainApplication.prefs.setString("userId", userData.userId)
                             MainApplication.prefs.setString("userName", userData.userName)
                             MainApplication.prefs.setString("userPassword", userPassword)
-                            MainApplication.prefs.setBoolean("pushStatus", true)
+
+                            val initialRun = MainApplication.prefs.getBoolean("initialRun", true)
+                            if (initialRun) {
+                                Log.d("metis", "==================== initialRun -> " + initialRun)
+                                MainApplication.prefs.setBoolean("pushStatus", true)
+                                MainApplication.prefs.setBoolean("initialRun", false)
+                            }
+
 
                             Toast.makeText(this@LoginActivity, resource.getString(R.string.sign_in_welcome_text), Toast.LENGTH_SHORT).show()
 

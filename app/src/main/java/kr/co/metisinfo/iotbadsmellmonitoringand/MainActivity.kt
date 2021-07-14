@@ -26,6 +26,12 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     override fun initData() {
         getUserTodayRegisterInfo() //접수 현황
         getWeatherApiData() //현재 날씨 API
+
+        var pushStatus = MainApplication.prefs.getBoolean("pushStatus", false)
+
+        if (pushStatus) {
+            instance.setAlarm()
+        }
     }
 
     override fun initLayout() {

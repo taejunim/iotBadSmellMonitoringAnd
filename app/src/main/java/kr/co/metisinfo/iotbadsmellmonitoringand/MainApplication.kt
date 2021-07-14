@@ -53,7 +53,6 @@ class MainApplication : Application() {
         alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
         alarmReceiver = Intent(this, AlarmReceiver::class.java)
         pendingIntent = PendingIntent.getBroadcast(this, AlarmReceiver.NOTIFICATION_ID, alarmReceiver, PendingIntent.FLAG_UPDATE_CURRENT)
-
     }
 
     //코드 API
@@ -163,6 +162,7 @@ class MainApplication : Application() {
 
     //푸시 알람 설정 -> getAlarmTime() 로 가져온 가까운 시간대에
     fun setAlarm() {
+        cancelAlarm()
         alarmManager.set(AlarmManager.RTC_WAKEUP, getAlarmTime(), pendingIntent)
     }
 
