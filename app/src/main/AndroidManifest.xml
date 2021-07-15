@@ -29,6 +29,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppThemeNoActionBar"
         android:usesCleartextTraffic="true"
+        android:requestLegacyExternalStorage="true"
         android:name=".MainApplication">
         <activity android:name=".IntroActivity">
             <intent-filter>

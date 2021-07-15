@@ -4,6 +4,8 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import kr.co.metisinfo.iotbadsmellmonitoringand.Constants
 import kr.co.metisinfo.iotbadsmellmonitoringand.model.*
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -62,14 +64,26 @@ interface ApiService {
         @Query("userId") userId: String
     ): Call<RegisterResult>
 
-    //접수
+    @Multipart
     @POST("/api/registerInsert")
-    @Headers(
-        "Accept: application/json",
-        "Content-Type: application/json"
-    )
     fun registerInsert(
-        @Body body: RegisterModel
+        @Part("smellType") smellType: RequestBody,
+        @Part("smellValue") smellValue: RequestBody,
+        @Part("weatherState") weatherState: RequestBody,
+        @Part("temperatureValue") temperatureValue: RequestBody,
+        @Part("humidityValue") humidityValue: RequestBody,
+        @Part("windDirectionValue") windDirectionValue: RequestBody,
+        @Part("windSpeedValue") windSpeedValue: RequestBody,
+        @Part("gpsX") gpsX: RequestBody,
+        @Part("gpsY") gpsY: RequestBody,
+        @Part("smellComment") smellComment: RequestBody,
+        @Part("smellRegisterTime") smellRegisterTime: RequestBody,
+        @Part("regId") regId: RequestBody,
+        @Part imageFile1 : MultipartBody.Part?,
+        @Part imageFile2 : MultipartBody.Part?,
+        @Part imageFile3 : MultipartBody.Part?,
+        @Part imageFile4 : MultipartBody.Part?,
+        @Part imageFile5 : MultipartBody.Part?
     ): Call<ResponseResult>
 
     //비밀번호 변경

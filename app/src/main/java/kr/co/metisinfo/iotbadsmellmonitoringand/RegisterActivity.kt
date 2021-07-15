@@ -9,6 +9,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Handler
 import android.os.Looper
+import android.provider.MediaStore
 import android.util.Log
 import android.view.View
 import android.widget.Toast
@@ -23,14 +24,17 @@ import com.sangcomz.fishbun.adapter.image.impl.GlideAdapter
 import kr.co.metisinfo.iotbadsmellmonitoringand.adapter.MultiImageAdapter
 import kr.co.metisinfo.iotbadsmellmonitoringand.databinding.ActivityRegisterBinding
 import kr.co.metisinfo.iotbadsmellmonitoringand.dialog.SmellTypeDialog
-import kr.co.metisinfo.iotbadsmellmonitoringand.model.RegisterModel
 import kr.co.metisinfo.iotbadsmellmonitoringand.model.ResponseResult
 import kr.co.metisinfo.iotbadsmellmonitoringand.model.WeatherModel
 import kr.co.metisinfo.iotbadsmellmonitoringand.util.Utils.Companion.dateFormatter
 import kr.co.metisinfo.iotbadsmellmonitoringand.util.Utils.Companion.ymdFormatter
+import okhttp3.MediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.File
 import java.util.*
 
 class RegisterActivity : BaseActivity(), SmellTypeDialog.SmellTypeDialogListener {
@@ -102,7 +106,8 @@ class RegisterActivity : BaseActivity(), SmellTypeDialog.SmellTypeDialogListener
 
             //등록 시간이 아니면 return
             when (registerTime) {
-                "" -> Toast.makeText(this@RegisterActivity, resource.getString(R.string.register_not_register_time_text), Toast.LENGTH_SHORT).show()
+                //"" -> Toast.makeText(this@RegisterActivity, resource.getString(R.string.register_not_register_time_text), Toast.LENGTH_SHORT).show()
+                "" -> getWeatherApiData()
                 else -> getWeatherApiData() //날씨 데이터
             }
         }
@@ -144,6 +149,30 @@ class RegisterActivity : BaseActivity(), SmellTypeDialog.SmellTypeDialogListener
                 .startAlbum()
 
         }
+    }
+
+    private fun getRealPathFromURI(index: Int, contentURI: Uri): MultipartBody.Part? {
+        val filePath: String?
+
+        val cursor =
+            MainApplication.instance.contentResolver.query(contentURI, null, null, null, null)
+        if (cursor == null) {
+            filePath = contentURI.path
+        } else {
+            cursor.moveToFirst()
+            val idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA)
+            filePath = cursor.getString(idx)
+            cursor.close()
+        }
+
+        val imageFile = File(filePath)
+
+        var imageBody : RequestBody = RequestBody.create(MediaType.parse("image/*"),imageFile)
+
+        val serverKey = "img$index"
+        val serverFileName = "image$index.jpg"
+
+        return MultipartBody.Part.createFormData(serverKey,serverFileName,imageBody)
     }
 
     // 앨범에서 액티비티로 돌아온 후 실행되는 메서드
@@ -189,37 +218,47 @@ class RegisterActivity : BaseActivity(), SmellTypeDialog.SmellTypeDialogListener
             "" -> weatherStatus = "011" //기타
         }
 
-        val temperatureValue = weatherModel.temperature
-        val humidityValue = weatherModel.humidity
-
-        //현재 풍향 텍스트 가져와서 +1 해주고 세자리 코드로 변환후 값 전송
-        val windDirectionValue = String.format("%03d", instance.windDirectionMap.filter { weatherModel.windDirection == it.value }.keys.first().toInt() + 1)
-
-        val windSpeedValue = weatherModel.windSpeed
         val locationMap = getLocation()
-        val regId = MainApplication.prefs.getString("userId", "")
 
-        val data = RegisterModel(
-            "",
-            selectedSmellTypeId,
-            receivedIntensityId,
-            "",
-            weatherStatus,
+        val smellType = RequestBody.create(MediaType.parse("text/plain"), selectedSmellTypeId)
+        val smellValue = RequestBody.create(MediaType.parse("text/plain"), receivedIntensityId)
+        val weatherState = RequestBody.create(MediaType.parse("text/plain"), weatherStatus)
+        val temperatureValue = RequestBody.create(MediaType.parse("text/plain"), weatherModel.temperature)
+        val humidityValue = RequestBody.create(MediaType.parse("text/plain"), weatherModel.humidity)
+        val windDirectionValue = RequestBody.create(MediaType.parse("text/plain"), String.format("%03d", instance.windDirectionMap.filter { weatherModel.windDirection == it.value }.keys.first().toInt() + 1))
+        val windSpeedValue = RequestBody.create(MediaType.parse("text/plain"), weatherModel.windSpeed)
+        val gpsX = RequestBody.create(MediaType.parse("text/plain"), locationMap["longitude"].toString())
+        val gpsY = RequestBody.create(MediaType.parse("text/plain"), locationMap["latitude"].toString(),)
+        val smellComment = RequestBody.create(MediaType.parse("text/plain"), binding.registerMemoInput.text.toString(),)
+        val smellRegisterTime = RequestBody.create(MediaType.parse("text/plain"), registerTime)
+        val regId = RequestBody.create(MediaType.parse("text/plain"), MainApplication.prefs.getString("userId", ""))
+
+        var imageFile1: MultipartBody.Part? = try { getRealPathFromURI(1,uriList[0]) } catch (e: IndexOutOfBoundsException) { null }
+        var imageFile2: MultipartBody.Part? = try { getRealPathFromURI(2,uriList[1]) } catch (e: IndexOutOfBoundsException) { null }
+        var imageFile3: MultipartBody.Part? = try { getRealPathFromURI(3,uriList[2]) } catch (e: IndexOutOfBoundsException) { null }
+        var imageFile4: MultipartBody.Part? = try { getRealPathFromURI(4,uriList[3]) } catch (e: IndexOutOfBoundsException) { null }
+        var imageFile5: MultipartBody.Part? = try { getRealPathFromURI(5,uriList[4]) } catch (e: IndexOutOfBoundsException) { null }
+
+        instance.apiService.registerInsert(
+            smellType,
+            smellValue,
+            weatherState,
             temperatureValue,
             humidityValue,
             windDirectionValue,
             windSpeedValue,
-            locationMap["longitude"].toString(),
-            locationMap["latitude"].toString(),
-            binding.registerMemoInput.text.toString(),
-            registerTime,
-            "",
+            gpsX,
+            gpsY,
+            smellComment,
+            smellRegisterTime,
             regId,
-            "",
-            false
-        )
+            imageFile1,
+            imageFile2,
+            imageFile3,
+            imageFile4,
+            imageFile5
 
-        instance.apiService.registerInsert(data).enqueue(object : Callback<ResponseResult> {
+        ).enqueue(object : Callback<ResponseResult> {
             override fun onResponse(call: Call<ResponseResult>, response: Response<ResponseResult>) {
                 Log.d("metis",response.toString())
                 Log.d("metis", " data -> " + data)
