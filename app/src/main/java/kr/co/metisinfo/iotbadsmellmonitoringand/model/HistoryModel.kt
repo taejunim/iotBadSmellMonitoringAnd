@@ -30,6 +30,6 @@ data class HistoryModel(
     var smellRegisterTimeName      : String = "",
     var regId                      : String = "",                                                   // 사용자 아이디
     var regDt                      : String = "",                                                   // 등록 일시
-    var isExpanded                 : Boolean                                                        // 열림상태
+    var isExpanded                 : Boolean = false                                                // 열림상태
 
 )

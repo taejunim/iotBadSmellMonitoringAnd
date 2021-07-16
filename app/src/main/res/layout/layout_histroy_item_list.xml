@@ -24,7 +24,8 @@
             android:layout_marginStart="10dp"
             android:layout_toStartOf="@+id/layout_dropdown"
             android:background="@drawable/intensity_0_button"
-            android:text="0도 - 무취 / 평상시에 감지하지 못함" />
+            android:text="0도 - 무취 / 평상시에 감지하지 못함"
+            android:textSize="12sp"/>
 
         <RelativeLayout
             android:id="@+id/layout_dropdown"
@@ -70,26 +71,78 @@
             android:visibility="gone">
 
             <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="20dp">
+                android:id="@+id/smell_type_layout"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_below="@+id/current_weather_text">
 
-                <ImageView
-                    android:id="@+id/image_smell"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:background="@drawable/smell_type_button" />
-
-                <TextView
-                    android:id="@+id/txt_smell_comment"
+                <RelativeLayout
+                    android:id="@+id/smell_type_image_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="15dp"
-                    android:layout_toEndOf="@+id/image_smell"
-                    android:text="askdjflkajsdflkjaslkdjf" />
-            </RelativeLayout>
-        </RelativeLayout>
+                    android:layout_height="match_parent"
+                    android:background="@drawable/smell_type_button">
 
+                    <ImageView
+                        android:id="@+id/smell_type_image"
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_centerHorizontal="true"
+                        android:contentDescription="@string/image_description"
+                        android:background="@drawable/smell_001"
+                        android:button="@android:color/transparent"/>
+                </RelativeLayout>
+                <TextView
+                    android:id="@+id/smell_type_text"
+                    style="@style/plainText"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="10dp"
+                    android:textSize="11sp"
+                    android:text="계사취"/>
+            </RelativeLayout>
+            <TextView
+                android:id="@+id/txt_smell_comment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_toEndOf="@+id/smell_type_layout"
+                android:text="askdjflkajsdflkjaslkdjf" />
+
+            <ImageView
+                android:id="@+id/countImage"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_alignLeft="@+id/smell_type_layout"
+                android:layout_below="@+id/smell_type_layout"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/smell_001"/>
+            <TextView
+                android:id="@+id/countText"
+                android:layout_toEndOf="@+id/countImage"
+                android:layout_below="@+id/smell_type_layout"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="10dp"
+                android:text="0 / 5"
+                android:layout_height="20dp"
+                android:layout_width="wrap_content" />
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_below="@+id/countImage">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:id="@+id/imageListView">
+                </LinearLayout>
+            </HorizontalScrollView>
+        </RelativeLayout>
     </RelativeLayout>
 
 </layout>

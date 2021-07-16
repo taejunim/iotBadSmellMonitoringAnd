@@ -96,8 +96,17 @@ interface ApiService {
         @Query("endDate") endDate: String,
         @Query("regId") regId: String
 
-    ): Call<RegisterResult>
+    ): Call<HistoryResult>
 
+    // 악취 이력 마스터
+    @GET("/api/registerDetailHistory")
+    @Headers(
+            "Accept: application/json",
+            "Content-Type: application/json"
+    )
+    fun getRegisterDetailHistory(
+        @Query("smellRegisterNo") smellRegisterNo: String
+    ): Call<ImageResult>
 
     companion object { // static 처럼 공유객체로 사용가능함. 모든 인스턴스가 공유하는 객체로서 동작함.
 

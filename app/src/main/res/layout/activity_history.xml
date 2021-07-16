@@ -21,7 +21,7 @@
             <LinearLayout
                 android:id="@+id/search_layout"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:layout_height="100dp"
                 android:layout_weight="1">
 
                 <RelativeLayout
@@ -44,19 +44,18 @@
                         android:id="@+id/layout_condition"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_below="@+id/search_text"
-                        android:layout_toStartOf="@+id/search_btn">
+                        android:layout_below="@+id/search_text">
 
                         <TextView
                             android:id="@+id/search_date_text"
-                            style="@style/itemText"
+                            style="@style/itemText2"
                             android:layout_marginStart="20dp"
                             android:layout_marginTop="5dp"
                             android:text="@string/histroy_search_date_text" />
 
                         <TextView
                             android:id="@+id/search_start_date_text"
-                            style="@style/itemText"
+                            style="@style/itemText2"
                             android:layout_marginStart="50dp"
                             android:layout_marginTop="5dp"
                             android:layout_toEndOf="@+id/search_date_text"
@@ -72,7 +71,7 @@
 
                         <TextView
                             android:id="@+id/search_end_date_text"
-                            style="@style/itemText"
+                            style="@style/itemText2"
                             android:layout_toEndOf="@+id/search_gbn_date_text"
                             android:layout_marginTop="5dp"
                             android:layout_marginStart="10dp"
@@ -80,7 +79,7 @@
 
                         <TextView
                             android:id="@+id/histroy_search_smell_value_text"
-                            style="@style/itemText"
+                            style="@style/itemText2"
                             android:layout_below="@+id/search_date_text"
                             android:layout_centerVertical="true"
                             android:layout_marginStart="20dp"
@@ -90,7 +89,7 @@
 
                         <TextView
                             android:id="@+id/search_smell_value"
-                            style="@style/itemText"
+                            style="@style/itemText2"
                             android:layout_below="@+id/search_date_text"
                             android:layout_toEndOf="@id/histroy_search_smell_value_text"
                             android:layout_centerVertical="true"
@@ -115,28 +114,27 @@
                             android:layout_width="18dp"
                             android:layout_height="10dp"
                             android:layout_below="@+id/search_date_text"
-                            android:layout_alignStart="@id/search_smell_value"
-                            android:layout_marginStart="50dp"
+                            android:layout_toRightOf="@id/search_smell_value"
+                            android:layout_marginStart="10dp"
                             android:layout_marginTop="12dp"
                             android:background="@drawable/btn_dropdown"
                             android:button="@android:color/transparent"
                             android:contentDescription="@string/image_description"
                             android:rotationX="180" />
+                        <Button
+                            android:id="@+id/search_btn"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:layout_below="@+id/histroy_search_smell_value_text"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginEnd="20dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="10dp"
+                            android:background="@drawable/round_blue_button"
+                            android:text="@string/history_search_text"
+                            android:textColor="@color/white" />
                     </RelativeLayout>
 
-                    <Button
-                        android:id="@+id/search_btn"
-                        android:layout_width="60dp"
-                        android:layout_height="50dp"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginEnd="10dp"
-                        android:layout_centerInParent="true"
-
-                        android:layout_alignParentEnd="true"
-
-                        android:background="@drawable/round_blue_button"
-                        android:text="@string/history_search_text"
-                        android:textColor="@color/white" />
                 </RelativeLayout>
 
 
@@ -149,7 +147,7 @@
                 android:layout_below="@+id/histroy_search_smell_value_text"
                 android:background="@color/include_header_line" />
 
-            <LinearLayout
+            <RelativeLayout
                 android:id="@+id/history_layout"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
@@ -157,13 +155,13 @@
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="wrap_content">
 
                     <TextView
                         android:id="@+id/history_text"
                         style="@style/plainText"
                         android:layout_alignParentTop="true"
-                        android:layout_centerVertical="true"
+
                         android:layout_marginStart="20dp"
                         android:layout_marginTop="10dp"
                         android:layout_marginBottom="10dp"
@@ -173,14 +171,11 @@
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/register_history_recycler"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_below="@+id/history_text"
                         android:padding="10dp" />
-
-
                 </RelativeLayout>
-
-            </LinearLayout>
+            </RelativeLayout>
 
         </LinearLayout>
 

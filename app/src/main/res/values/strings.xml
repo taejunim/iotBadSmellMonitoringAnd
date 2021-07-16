@@ -66,6 +66,8 @@
     <string name="histroy_search_date_text">일자</string>
     <string name="histroy_search_smell_value_text">악취 강도</string>
     <string name="history_text">이력</string>
+    <string name="history_no_more_data">더 이상 데이터가 존재하지 않습니다.</string>
+    <string name="history_no_data">검색 결과가 존재하지 않습니다.</string>
 
     <string name="my_page_push_text">푸쉬</string>
     <string name="my_page_current_password_text">현재 비밀번호</string>

@@ -7,16 +7,19 @@ import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import kr.co.metisinfo.iotbadsmellmonitoringand.adapter.ItemRegisterHistroyRecyclerViewAdapter
 import kr.co.metisinfo.iotbadsmellmonitoringand.databinding.ActivityHistoryBinding
-import kr.co.metisinfo.iotbadsmellmonitoringand.model.RegisterModel
-import kr.co.metisinfo.iotbadsmellmonitoringand.model.RegisterResult
+import kr.co.metisinfo.iotbadsmellmonitoringand.model.HistoryModel
+import kr.co.metisinfo.iotbadsmellmonitoringand.model.HistoryResult
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.util.*
+import kotlin.collections.ArrayList
 
 /**
  * @ Class Name   : HistoryActivity.kt
@@ -48,53 +51,75 @@ class HistoryActivity : BaseActivity(), AdapterView.OnItemSelectedListener {
 
     private var pageNum = 0
     private val pageCount = 10
+    private var isLastData = false
 
-    private lateinit var historyResult: List<RegisterModel>
+    private var historyResult: MutableList<HistoryModel> = ArrayList()
 
     /**
      * ACTIVITY INIT DATA
      */
     override fun initData() {
-
-        //selectedStartDate = today
         selectedStartDate = "2021-01-01"
         selectedEndDate = today
-        selectedSmellValeCode = instance.intensityList[0].codeId
+        selectedSmellValeCode = ""
 
     }
 
-    
     /**
      * ACTIVITY INIT
      */
     override fun initLayout() {
-
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_history)           // XML BIND
-
         Log.d("metis","HistoryActivity 시작")
-        binding.includeHeader.textTitle.setText(R.string.history)                                   // 타이틀 제목
-        binding.includeHeader.backButton.visibility = View.GONE                                     // 뒤로가기 버튼 안보이게
-        binding.includeHeader.navigationViewButton.visibility = View.VISIBLE                              // 사이드 메뉴 버튼 보이게
-
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_history)           // XML BIND
+        binding.includeHeader.textTitle.setText(R.string.history)                                      // 타이틀 제목
+        binding.includeHeader.backButton.visibility = View.VISIBLE                                 // 뒤로가기 버튼 안보이게
+        binding.includeHeader.navigationViewButton.visibility = View.GONE                          // 사이드 메뉴 버튼 보이게
+        binding.includeHeader.backButton.setOnClickListener { finish() }
         binding.searchStartDateText.text = "2021-01-01"
         binding.searchEndDateText.text = today
-
-        getRegisterMasterHistory()
-
         setAdpater()
+        initRecycler()
+        getRegisterMasterHistory()
+        binding.registerHistoryRecycler.addOnScrollListener(object : RecyclerView.OnScrollListener(){
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                when (newState) {
+                    RecyclerView.SCROLL_STATE_IDLE -> checkIsLastData()
+                }
+            }
+        })
     }
 
     /**
      * ONCLICK LISTENER SET
      */
     override fun setOnClickListener() {
-
         binding.searchStartDateText.setOnClickListener(this::clickDatePicker)
         binding.searchEndDateText.setOnClickListener(this::clickDatePicker)
         binding.searchSmellValue.setOnClickListener { binding.spinnerSearchSmellValue.performClick() }
         binding.searchSmellValueDropdown.setOnClickListener { binding.spinnerSearchSmellValue.performClick() }
+        binding.searchBtn.setOnClickListener {
+            pageNum = 0
+            isLastData = false
+            getRegisterMasterHistory()
+        }
     }
 
+    /**
+     * 마지막 데이터인지 체크 / 결과가 없는건지, 더이상 없는건지 체크
+     */
+    fun checkIsLastData() {
+        if(isLastData) {
+            //데이터가 존재하지 않을때
+            if(pageNum == 0) Toast.makeText(this, resource.getString(R.string.history_no_data), Toast.LENGTH_SHORT).show()
+            //데이터가 존재할 때
+            else Toast.makeText(this, resource.getString(R.string.history_no_more_data), Toast.LENGTH_SHORT).show()
+        }
+        else {
+            pageNum += 10
+            getRegisterMasterHistory()
+        }
+    }
     /**
      * 악취 등록 이력 가져오기
      */
@@ -108,28 +133,32 @@ class HistoryActivity : BaseActivity(), AdapterView.OnItemSelectedListener {
         Log.d("metis", "selectedStartDate : $selectedStartDate")
         Log.d("metis", "selectedEndDate : $selectedEndDate")
 
-        instance.apiService.getRegisterMasterHistory(pageNum, pageCount, selectedSmellValeCode, selectedStartDate, selectedEndDate, userId).enqueue(object : Callback<RegisterResult> {
-            override fun onResponse(call: Call<RegisterResult>, response: Response<RegisterResult>) {
+        instance.apiService.getRegisterMasterHistory(pageNum, pageCount, selectedSmellValeCode, selectedStartDate, selectedEndDate, userId).enqueue(object : Callback<HistoryResult> {
+            override fun onResponse(call: Call<HistoryResult>, response: Response<HistoryResult>) {
 
-                Log.d("metis",response.toString())
-                Log.d("metis", userId + " getRegisterMasterHistory 결과 -> " + response.body().toString())
 
-                historyResult = response.body()!!.data //접수 현황
+                if(response.body()!!.data != null) {
 
-                if(historyResult != null) {
-                    for (historyModel in historyResult) {
 
+                    for (historyModel in response.body()!!.data) {
+//                        historyResult.add(historyModel)
                         Log.d( "metis", "smellRegisterTimeName : " + historyModel.smellRegisterTimeName)
                         Log.d("metis", "smellRegisterTime : " + historyModel.smellRegisterTime)
                         Log.d("metis", "regDt : " + historyModel.regDt)
-
                     }
-                }
 
+                    Log.d("metis", userId + " getRegisterMasterHistory 결과 -> " + historyResult.size.toString())
+                    if(response.body()!!.data.size != pageCount) isLastData = true
+                }
+                else {
+                    historyResult = ArrayList()
+                    isLastData = true
+                    checkIsLastData()
+                }
                 callback("registerStatus", historyResult)
             }
 
-            override fun onFailure(call: Call<RegisterResult>, t: Throwable) {
+            override fun onFailure(call: Call<HistoryResult>, t: Throwable) {
                 Log.d("metis",t.message.toString())
                 Log.d("metis", "onFailure : fail")
             }
@@ -143,11 +172,12 @@ class HistoryActivity : BaseActivity(), AdapterView.OnItemSelectedListener {
 
         val smellValue : ArrayList<String> = ArrayList<String>()
 
+        //picker에 전체 추가
+        smellValue.add("전체")
         for (smellTypeCode in instance.intensityList) {
             smellValue.add(smellTypeCode.codeIdName)
         }
         smellValueArray = smellValue
-
         binding.spinnerSearchSmellValue.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, smellValueArray)
 
         binding.spinnerSearchSmellValue.onItemSelectedListener = this
@@ -155,6 +185,9 @@ class HistoryActivity : BaseActivity(), AdapterView.OnItemSelectedListener {
 
     fun initRecycler() {
 
+        recyclerAdapter = ItemRegisterHistroyRecyclerViewAdapter(this@HistoryActivity, historyResult)
+        binding.registerHistoryRecycler.layoutManager = LinearLayoutManager(this)
+        binding.registerHistoryRecycler.adapter = recyclerAdapter
     }
 
     /**
@@ -162,14 +195,6 @@ class HistoryActivity : BaseActivity(), AdapterView.OnItemSelectedListener {
      */
     override fun callback(apiName: String, data: Any) {
         Log.d("metis", "callback data : $data")
-
-        historyResult = data as List<RegisterModel>
-
-
-        recyclerAdapter = ItemRegisterHistroyRecyclerViewAdapter(this@HistoryActivity, historyResult)
-        binding.registerHistoryRecycler.layoutManager = LinearLayoutManager(this)
-        binding.registerHistoryRecycler.adapter = recyclerAdapter
-
 
         recyclerAdapter.notifyDataSetChanged()
     }
@@ -218,7 +243,9 @@ class HistoryActivity : BaseActivity(), AdapterView.OnItemSelectedListener {
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
 
         binding.searchSmellValue.text = smellValueArray[position]
-        selectedSmellValeCode = instance.intensityList[position].codeId
+        if(position == 0)
+            selectedSmellValeCode = ""
+        else selectedSmellValeCode = instance.intensityList[position-1].codeId
 
         Log.d("metis", "selectedSmellTypeCode : $selectedSmellValeCode")
     }
