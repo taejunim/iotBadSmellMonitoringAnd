@@ -4,15 +4,23 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
+import androidx.databinding.DataBindingUtil
+import kr.co.metisinfo.iotbadsmellmonitoringand.databinding.ActivityIntroBinding
 
 class IntroActivity : BaseActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_intro)
-    }
+
+    lateinit var fadeInAnimation: Animation
+    private lateinit var binding: ActivityIntroBinding
 
     override fun initLayout() {
 
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_intro)
+
+        fadeInAnimation = AnimationUtils.loadAnimation(this, R.anim.intro_fade_in)
+
+        binding.introTitle.startAnimation(fadeInAnimation)
     }
 
     override fun setOnClickListener() {
@@ -36,7 +44,7 @@ class IntroActivity : BaseActivity() {
                 //val intent = Intent(this, HistoryActivity::class.java)
                 //val intent = Intent(this, MainActivity::class.java)
                 startActivity (intent)
-            }, 500)
+            }, 2000)
         }
     }
 
