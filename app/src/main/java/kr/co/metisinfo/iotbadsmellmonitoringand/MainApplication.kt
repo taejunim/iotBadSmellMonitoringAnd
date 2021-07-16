@@ -7,14 +7,10 @@ import android.content.Context
 import android.content.Intent
 import android.util.Log
 import kr.co.metisinfo.iotbadsmellmonitoringand.model.CodeModel
-import kr.co.metisinfo.iotbadsmellmonitoringand.model.CodeResult
 import kr.co.metisinfo.iotbadsmellmonitoringand.receiver.AlarmReceiver
 import kr.co.metisinfo.iotbadsmellmonitoringand.util.ApiService
 import kr.co.metisinfo.iotbadsmellmonitoringand.util.PreferenceUtil
 import kr.co.metisinfo.iotbadsmellmonitoringand.util.Utils
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import java.util.*
 
 class MainApplication : Application() {
@@ -53,64 +49,6 @@ class MainApplication : Application() {
         alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
         alarmReceiver = Intent(this, AlarmReceiver::class.java)
         pendingIntent = PendingIntent.getBroadcast(this, AlarmReceiver.NOTIFICATION_ID, alarmReceiver, PendingIntent.FLAG_UPDATE_CURRENT)
-    }
-
-    //코드 API
-    fun getApiData() {
-
-        for (i in codeGroupArray.indices) {
-
-            //풍향 코드 API
-            apiService.getWindDirectionCode(codeGroupArray[i]).enqueue(object : Callback<CodeResult> {
-                override fun onResponse(call: Call<CodeResult>, response: Response<CodeResult>) {
-                    Log.d("metis",response.toString())
-                    Log.d("metis", codeGroupArray[i] + " getWindDirectionCode 결과 -> " + response.body().toString())
-
-                    val dataList: List<CodeModel> = response.body()!!.data
-
-                    for (j in dataList.indices) {
-
-                        //풍향 코드
-                        if (i == 0 ) {
-                            val convertedValue = (Integer.parseInt(dataList[j].codeId) - 1).toString() //풍향 변환값 => CODE_ID를 정수로 변환후 -1 한 값
-                            val directionName = dataList[j].codeIdName //풍향
-
-                            windDirectionMap.put(convertedValue,directionName)
-                            Log.d("metis", "windDirectionMap : " + windDirectionMap)
-                        }
-
-                        //신고 시간대
-                        else if (i == 1) {
-                            registerTimeZoneMap.put(dataList[j].codeId,dataList[j].codeIdName)
-                            Log.d("metis", "registerTimeZoneMap : " + registerTimeZoneMap)
-                        }
-                    }
-
-                    //냄새 타입
-                    if (i == 2) {
-                        intensityList = response.body()!!.data
-                        Log.d("metis", "intensityList : " + intensityList)
-                    }
-
-                    //지역
-                    else if (i == 3) {
-                        regionList = response.body()!!.data
-                        Log.d("metis", "regionList : " + regionList)
-                    }
-
-                    //취기
-                    else if (i == 4) {
-                        smellTypeList = response.body()!!.data
-                        Log.d("metis", "smellTypeList : " + smellTypeList)
-                    }
-                }
-
-                override fun onFailure(call: Call<CodeResult>, t: Throwable) {
-                    Log.d("metis",t.message.toString())
-                    Log.d("metis", "onFailure : fail")
-                }
-            })
-        }
     }
 
     private fun getAlarmTime() : Long {
@@ -162,7 +100,7 @@ class MainApplication : Application() {
 
     //푸시 알람 설정 -> getAlarmTime() 로 가져온 가까운 시간대에
     fun setAlarm() {
-        cancelAlarm()
+        //cancelAlarm()
         alarmManager.set(AlarmManager.RTC_WAKEUP, getAlarmTime(), pendingIntent)
     }
 

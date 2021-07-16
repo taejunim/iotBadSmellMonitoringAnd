@@ -45,8 +45,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         //현재 날씨 레이아웃 그리기
         drawWeatherLayout("-", "-", "-", "-", "", "")
 
-        //악취 강도 레이아웃 그리기
-        drawSmellIntensityLayout()
+
 
         //네비게이션 뷰 그리기
         drawNavigationView()
@@ -74,6 +73,9 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             "registerStatus" -> {
                 val registerStatusList = data as List<RegisterModel>
                 drawRegisterStatusLayout(registerStatusList) //접수 현황 레이아웃 그리기
+
+                //악취 강도 레이아웃 그리기
+                drawSmellIntensityLayout()
             }
         }
     }

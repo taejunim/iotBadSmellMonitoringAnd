@@ -9,10 +9,7 @@ import kr.co.metisinfo.iotbadsmellmonitoringand.Constants.TIME_06
 import kr.co.metisinfo.iotbadsmellmonitoringand.Constants.TIME_09
 import kr.co.metisinfo.iotbadsmellmonitoringand.Constants.TIME_18
 import kr.co.metisinfo.iotbadsmellmonitoringand.Constants.TIME_21
-import kr.co.metisinfo.iotbadsmellmonitoringand.model.RegisterModel
-import kr.co.metisinfo.iotbadsmellmonitoringand.model.RegisterResult
-import kr.co.metisinfo.iotbadsmellmonitoringand.model.WeatherModel
-import kr.co.metisinfo.iotbadsmellmonitoringand.model.WeatherResponse
+import kr.co.metisinfo.iotbadsmellmonitoringand.model.*
 import kr.co.metisinfo.iotbadsmellmonitoringand.util.ApiService
 import kr.co.metisinfo.iotbadsmellmonitoringand.util.Utils.Companion.dateFormatter
 import kr.co.metisinfo.iotbadsmellmonitoringand.util.Utils.Companion.ymdFormatter
@@ -31,7 +28,7 @@ abstract class BaseActivity : AppCompatActivity(){
     val instance = MainApplication.instance
 
     val calendar: Calendar = Calendar.getInstance()
-    var today = ymdFormatter.format(calendar.time)
+    var today: String = ymdFormatter.format(calendar.time)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,6 +46,55 @@ abstract class BaseActivity : AppCompatActivity(){
 
     abstract fun callback(apiName: String, data: Any)
 
+    //코드 API
+    fun getApiData() {
+
+        for (i in instance.codeGroupArray.indices) {
+
+            //풍향 코드 API
+            instance.apiService.getWindDirectionCode(instance.codeGroupArray[i]).enqueue(object : Callback<CodeResult> {
+                override fun onResponse(call: Call<CodeResult>, response: Response<CodeResult>) {
+
+                    val dataList: List<CodeModel> = response.body()!!.data
+
+                    for (j in dataList.indices) {
+
+                        //풍향 코드
+                        if (i == 0 ) {
+                            val convertedValue = (Integer.parseInt(dataList[j].codeId) - 1).toString() //풍향 변환값 => CODE_ID를 정수로 변환후 -1 한 값
+                            val directionName = dataList[j].codeIdName //풍향
+
+                            instance.windDirectionMap.put(convertedValue,directionName)
+                        }
+
+                        //신고 시간대
+                        else if (i == 1) {
+                            instance.registerTimeZoneMap.put(dataList[j].codeId,dataList[j].codeIdName)
+                        }
+                    }
+
+                    when (i) {
+                        //냄새 타입
+                        2 -> instance.intensityList = response.body()!!.data
+
+                        //지역
+                        3 -> instance.regionList = response.body()!!.data
+
+                        //취기
+                        4 -> {
+                            instance.smellTypeList = response.body()!!.data
+                            callback("baseData","")
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<CodeResult>, t: Throwable) {
+                    Log.d("metis", "onFailure : " + t.message.toString())
+                }
+            })
+        }
+    }
+
     //날씨 API
     fun getWeatherApiData() {
 
@@ -56,7 +102,7 @@ abstract class BaseActivity : AppCompatActivity(){
 
         val parameterMap = getParameters() // 날씨 API를 위한 Parameter
 
-        weatherApiService.getCurrentWeather(parameterMap["base_date"].toString(), parameterMap["base_time"].toString(), Constants.nx,Constants.ny,
+        weatherApiService.getCurrentWeather(parameterMap["base_date"].toString(), parameterMap["base_time"].toString(), Constants.nx, Constants.ny,
             Constants.dataType, Constants.numOfRows).enqueue(object : Callback<WeatherResponse> {
             override fun onResponse(call: Call<WeatherResponse>, response: Response<WeatherResponse>) {
 
@@ -71,20 +117,24 @@ abstract class BaseActivity : AppCompatActivity(){
                         // 가까운 시간대의 데이터 가져오기
                         if (itemList[i].fcstTime == nearestTime) {
 
-                            val category = itemList[i].category
+                            when (itemList[i].category) {
+                                //온도
+                                "T1H" -> weatherModel.temperature = itemList[i].fcstValue
 
-                            if (category == "T1H") {
-                                weatherModel.temperature = itemList[i].fcstValue
-                            } else if (category == "REH") {
-                                weatherModel.humidity = itemList[i].fcstValue
-                            } else if (category == "VEC") {
-                                weatherModel.windDirection = getWindDirectionText(itemList[i].fcstValue)
-                            } else if (category == "WSD") {
-                                weatherModel.windSpeed = itemList[i].fcstValue
-                            } else if (category == "PTY") {
-                                weatherModel.precipitationStatus = itemList[i].fcstValue
-                            } else if (category == "SKY") {
-                                weatherModel.skyStatus = itemList[i].fcstValue
+                                //습도
+                                "REH" -> weatherModel.humidity = itemList[i].fcstValue
+
+                                //풍향
+                                "VEC" -> weatherModel.windDirection = getWindDirectionText(itemList[i].fcstValue)
+
+                                //풍속
+                                "WSD" -> weatherModel.windSpeed = itemList[i].fcstValue
+
+                                //강수 상태
+                                "PTY" -> weatherModel.precipitationStatus = itemList[i].fcstValue
+
+                                //기상 상태
+                                "SKY" -> weatherModel.skyStatus = itemList[i].fcstValue
                             }
                         }
                     }
@@ -94,8 +144,7 @@ abstract class BaseActivity : AppCompatActivity(){
             }
 
             override fun onFailure(call: Call<WeatherResponse>, t: Throwable) {
-                Log.d("metis",t.message.toString())
-                Log.d("metis", "onFailure : fail")
+                Log.d("metis", "onFailure : " + t.message.toString())
                 callback("weather", weatherModel)
             }
         })
@@ -106,9 +155,8 @@ abstract class BaseActivity : AppCompatActivity(){
         val baseDateformatter = SimpleDateFormat("yyyyMMdd")
         val baseTimeformatter = SimpleDateFormat("HH30")
         val timeformatter = SimpleDateFormat("HH00")
-        val currentDate = Date()
 
-        calendar.time = currentDate
+        calendar.time = Date()
 
         calendar.add(Calendar.MINUTE, -30)
 
@@ -136,7 +184,6 @@ abstract class BaseActivity : AppCompatActivity(){
 
         calendar.time = Date()
 
-        //today = ymdFormatter.format(calendar.time)
         val currentTime = calendar.time.time
 
         calendar.add(Calendar.DATE, 1)
@@ -168,25 +215,14 @@ abstract class BaseActivity : AppCompatActivity(){
 
         instance.apiService.getUserTodayRegisterInfo(userId).enqueue(object : Callback<RegisterResult> {
             override fun onResponse(call: Call<RegisterResult>, response: Response<RegisterResult>) {
-                Log.d("metis",response.toString())
-                Log.d("metis", userId + " getUserTodayRegisterInfo 결과 -> " + response.body().toString())
 
                 registerStatusList= response.body()!!.data //접수 현황
-
-                for (j in registerStatusList.indices) {
-
-                    Log.d("metis", "smellRegisterTimeName : " + registerStatusList[j].smellRegisterTimeName)
-                    Log.d("metis", "resultCode : " + registerStatusList[j].resultCode)
-                    Log.d("metis", "regDt : " + registerStatusList[j].regDt)
-                    Log.d("metis", "smellRegisterTime : " + registerStatusList[j].smellRegisterTime)
-                }
 
                 callback("registerStatus", registerStatusList)
             }
 
             override fun onFailure(call: Call<RegisterResult>, t: Throwable) {
-                Log.d("metis",t.message.toString())
-                Log.d("metis", "onFailure : fail")
+                Log.d("metis", "onFailure : " + t.message.toString())
             }
         })
     }

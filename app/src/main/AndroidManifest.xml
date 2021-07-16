@@ -4,6 +4,7 @@
 
     <!-- 네트워크 권한 퍼미션 -->
     <uses-permission android:name="android.permission.INTERNET"/>
+
     <!-- 위치 권한 퍼미션 -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
@@ -11,9 +12,11 @@
     <!-- 기기 부팅시 리시버 퍼미션 -->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
 
+    <!-- 외부 저장소 읽기/쓰기 리시버 퍼미션 -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
+    <!-- 사진 촬영 퍼미션 -->
     <uses-permission android:name="android.permission.CAMERA" />
     <queries>
         <intent>
@@ -29,6 +32,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppThemeNoActionBar"
         android:usesCleartextTraffic="true"
+        android:requestLegacyExternalStorage="true"
         android:name=".MainApplication">
         <activity android:name=".IntroActivity">
             <intent-filter>
