@@ -76,9 +76,7 @@ class SignUpActivity : BaseActivity() {
                     }
 
                     override fun onFailure(call: Call<ResponseResult>, t: Throwable) {
-                        Log.d("metis",t.message.toString())
-                        Log.d("metis", "onFailure : fail")
-
+                        Log.d("metis", "onFailure : " + t.message.toString())
                     }
                 })
             }

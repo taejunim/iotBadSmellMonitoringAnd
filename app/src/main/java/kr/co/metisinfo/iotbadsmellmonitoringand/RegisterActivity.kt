@@ -229,7 +229,7 @@ class RegisterActivity : BaseActivity(), SmellTypeDialog.SmellTypeDialogListener
         val windSpeedValue = RequestBody.create(MediaType.parse("text/plain"), weatherModel.windSpeed)
         val gpsX = RequestBody.create(MediaType.parse("text/plain"), locationMap["longitude"].toString())
         val gpsY = RequestBody.create(MediaType.parse("text/plain"), locationMap["latitude"].toString(),)
-        val smellComment = RequestBody.create(MediaType.parse("text/plain"), binding.registerMemoInput.text.toString(),)
+        val smellComment = RequestBody.create(MediaType.parse("text/plain"), binding.registerMemoInput.text.toString())
         val smellRegisterTime = RequestBody.create(MediaType.parse("text/plain"), registerTime)
         val regId = RequestBody.create(MediaType.parse("text/plain"), MainApplication.prefs.getString("userId", ""))
 
@@ -273,7 +273,6 @@ class RegisterActivity : BaseActivity(), SmellTypeDialog.SmellTypeDialogListener
 
             override fun onFailure(call: Call<ResponseResult>, t: Throwable) {
                 Log.d("metis", t.message.toString())
-                Log.d("metis", "onFailure : fail")
             }
         })
     }

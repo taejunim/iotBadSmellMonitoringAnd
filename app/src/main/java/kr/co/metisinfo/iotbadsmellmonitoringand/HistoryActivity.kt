@@ -130,8 +130,7 @@ class HistoryActivity : BaseActivity(), AdapterView.OnItemSelectedListener {
             }
 
             override fun onFailure(call: Call<RegisterResult>, t: Throwable) {
-                Log.d("metis",t.message.toString())
-                Log.d("metis", "onFailure : fail")
+                Log.d("metis", "onFailure : " + t.message.toString())
             }
         })
     }
