@@ -7,7 +7,10 @@ import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.RelativeLayout
 import android.widget.Toast
+import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -15,6 +18,7 @@ import kr.co.metisinfo.iotbadsmellmonitoringand.adapter.ItemRegisterHistroyRecyc
 import kr.co.metisinfo.iotbadsmellmonitoringand.databinding.ActivityHistoryBinding
 import kr.co.metisinfo.iotbadsmellmonitoringand.model.HistoryModel
 import kr.co.metisinfo.iotbadsmellmonitoringand.model.HistoryResult
+import kr.co.metisinfo.iotbadsmellmonitoringand.util.ToggleAnimation
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -81,15 +85,27 @@ class HistoryActivity : BaseActivity(), AdapterView.OnItemSelectedListener {
         initRecycler()
         getRegisterMasterHistory()
         binding.registerHistoryRecycler.addOnScrollListener(object : RecyclerView.OnScrollListener(){
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                super.onScrollStateChanged(recyclerView, newState)
-                when (newState) {
-                    RecyclerView.SCROLL_STATE_IDLE -> checkIsLastData()
-                }
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+
+                val linearLayoutManager: LinearLayoutManager = recyclerView.layoutManager as LinearLayoutManager
+                val totalItemCount = linearLayoutManager.itemCount
+                val lastItem = linearLayoutManager.findLastCompletelyVisibleItemPosition()
+
+                Log.d("metis", "뭐가 찍히는지")
+                Log.d("metis", totalItemCount.toString())
+                Log.d("metis", lastItem.toString())
+
+                val views = binding.registerHistoryRecycler.findViewById<RelativeLayout>(R.id.layout_expand)
+
+                Log.d("metis", views.toString())
+
+
+                if(lastItem >= totalItemCount - 1 ) checkIsLastData()
             }
         })
-    }
 
+    }
     /**
      * ONCLICK LISTENER SET
      */
@@ -139,9 +155,9 @@ class HistoryActivity : BaseActivity(), AdapterView.OnItemSelectedListener {
 
                 if(response.body()!!.data != null) {
 
-
+                        historyResult.addAll(response.body()!!.data)
                     for (historyModel in response.body()!!.data) {
-//                        historyResult.add(historyModel)
+                        //historyResult.add(historyModel)
                         Log.d( "metis", "smellRegisterTimeName : " + historyModel.smellRegisterTimeName)
                         Log.d("metis", "smellRegisterTime : " + historyModel.smellRegisterTime)
                         Log.d("metis", "regDt : " + historyModel.regDt)

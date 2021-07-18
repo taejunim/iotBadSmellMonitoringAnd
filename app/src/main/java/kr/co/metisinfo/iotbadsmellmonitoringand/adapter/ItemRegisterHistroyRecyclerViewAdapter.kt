@@ -47,7 +47,6 @@ class ItemRegisterHistroyRecyclerViewAdapter(private val context: Context, priva
         var mContext: Context? = context
         private val instance = MainApplication.instance
         val resource: Resources = MainApplication.getContext().resources
-        var isLoaded: Boolean = false
         var smellRegisterNo = ""
 
         fun bind(historyModel: HistoryModel) {
@@ -61,8 +60,8 @@ class ItemRegisterHistroyRecyclerViewAdapter(private val context: Context, priva
             val smellTypeText         = itemView.findViewById<TextView>(R.id.smell_type_text)
 
             smellRegisterNo           = historyModel.smellRegisterNo
-            txtName.text               = historyModel.regDt
-            txtSmellComment.text     = historyModel.smellComment
+            txtName.text              = historyModel.regDt
+            txtSmellComment.text      = historyModel.smellComment
 
             val smellValue = historyModel.smellValue.replace("00","").toInt()
             val smellType = historyModel.smellType.replace("00","").toInt()
@@ -91,7 +90,7 @@ class ItemRegisterHistroyRecyclerViewAdapter(private val context: Context, priva
             // 2
             ToggleAnimation.toggleArrow(view, isExpanded)
             if (isExpanded) {
-                if(!isLoaded) getRegisterDetailHistory()
+                getRegisterDetailHistory()
                 ToggleAnimation.expand(layoutExpand)
             } else {
                 ToggleAnimation.collapse(layoutExpand)
@@ -109,10 +108,9 @@ class ItemRegisterHistroyRecyclerViewAdapter(private val context: Context, priva
 
             instance.apiService.getRegisterDetailHistory(smellRegisterNo).enqueue(object : Callback<ImageResult> {
                 override fun onResponse(call: Call<ImageResult>, response: Response<ImageResult>) {
-                    isLoaded = true
                     var layout = itemView.findViewById<LinearLayout>(R.id.imageListView)
                     var imageResult: List<ImageModel>
-
+                    layout.removeAllViews()
                     if(response.body()!!.data != null) imageResult = response.body()!!.data
                     else {
                         imageResult = ArrayList()
