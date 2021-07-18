@@ -7,10 +7,7 @@ import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.RelativeLayout
 import android.widget.Toast
-import androidx.core.view.isGone
-import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -18,7 +15,6 @@ import kr.co.metisinfo.iotbadsmellmonitoringand.adapter.ItemRegisterHistroyRecyc
 import kr.co.metisinfo.iotbadsmellmonitoringand.databinding.ActivityHistoryBinding
 import kr.co.metisinfo.iotbadsmellmonitoringand.model.HistoryModel
 import kr.co.metisinfo.iotbadsmellmonitoringand.model.HistoryResult
-import kr.co.metisinfo.iotbadsmellmonitoringand.util.ToggleAnimation
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -92,19 +88,9 @@ class HistoryActivity : BaseActivity(), AdapterView.OnItemSelectedListener {
                 val totalItemCount = linearLayoutManager.itemCount
                 val lastItem = linearLayoutManager.findLastCompletelyVisibleItemPosition()
 
-                Log.d("metis", "뭐가 찍히는지")
-                Log.d("metis", totalItemCount.toString())
-                Log.d("metis", lastItem.toString())
-
-                val views = binding.registerHistoryRecycler.findViewById<RelativeLayout>(R.id.layout_expand)
-
-                Log.d("metis", views.toString())
-
-
                 if(lastItem >= totalItemCount - 1 ) checkIsLastData()
             }
         })
-
     }
     /**
      * ONCLICK LISTENER SET

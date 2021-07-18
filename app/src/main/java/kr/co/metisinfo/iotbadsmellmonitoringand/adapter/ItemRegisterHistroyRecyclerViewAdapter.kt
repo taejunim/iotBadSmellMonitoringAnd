@@ -39,7 +39,6 @@ import java.util.ArrayList
 class ItemRegisterHistroyRecyclerViewAdapter(private val context: Context, private val historyList: List<HistoryModel>) :
     RecyclerView.Adapter<ItemRegisterHistroyRecyclerViewAdapter.CowViewHolder>() {
 
-
     class CowViewHolder(
         itemView: View,
         context: Context
@@ -119,7 +118,7 @@ class ItemRegisterHistroyRecyclerViewAdapter(private val context: Context, priva
 
                     if(imageResult != null) {
                         val param = ViewGroup.MarginLayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT)
-                        param.setMargins(10,0,10,0)
+                        param.setMargins(10,0,10,10)
                         param.width = 150
                         param.height = 150
 
@@ -161,5 +160,10 @@ class ItemRegisterHistroyRecyclerViewAdapter(private val context: Context, priva
 
     override fun getItemCount(): Int {
         return historyList.size
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        //스크롤을 해도 그 형태를 유지시켜주기 위해 override
+        return position
     }
 }
