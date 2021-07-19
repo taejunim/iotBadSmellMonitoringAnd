@@ -57,6 +57,7 @@ class ItemRegisterHistroyRecyclerViewAdapter(private val context: Context, priva
             val txtSmellComment       = itemView.findViewById<TextView>(R.id.txt_smell_comment)
             val smellTypeImage        = itemView.findViewById<ImageView>(R.id.smell_type_image)
             val smellTypeText         = itemView.findViewById<TextView>(R.id.smell_type_text)
+            val countImage            = itemView.findViewById<ImageView>(R.id.countImage)
 
             smellRegisterNo           = historyModel.smellRegisterNo
             txtName.text              = historyModel.regDt
@@ -77,6 +78,7 @@ class ItemRegisterHistroyRecyclerViewAdapter(private val context: Context, priva
             historyListSmellValue.text = instance.intensityList[smellValue - 1].codeIdName + " / " + instance.intensityList[smellValue-1].codeComment
 
             smellTypeImage?.setBackgroundResource(resource.getIdentifier("smell_${historyModel.smellType}","drawable","kr.co.metisinfo.iotbadsmellmonitoringand"))
+            countImage?.setBackgroundResource(resource.getIdentifier("smell_${historyModel.smellType}","drawable","kr.co.metisinfo.iotbadsmellmonitoringand"))
             smellTypeText?.text = instance.smellTypeList[smellType-1].codeIdName
 
             imgMore.setOnClickListener {

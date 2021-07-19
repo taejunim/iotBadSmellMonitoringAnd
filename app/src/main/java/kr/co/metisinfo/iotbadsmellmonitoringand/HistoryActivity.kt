@@ -101,8 +101,12 @@ class HistoryActivity : BaseActivity(), AdapterView.OnItemSelectedListener {
         binding.searchSmellValue.setOnClickListener { binding.spinnerSearchSmellValue.performClick() }
         binding.searchSmellValueDropdown.setOnClickListener { binding.spinnerSearchSmellValue.performClick() }
         binding.searchBtn.setOnClickListener {
+            //조회시에 데이터 초기화.
+            historyResult.clear()
             pageNum = 0
             isLastData = false
+            //recycler도 초기화를 해야함.
+            initRecycler()
             getRegisterMasterHistory()
         }
     }
@@ -113,8 +117,8 @@ class HistoryActivity : BaseActivity(), AdapterView.OnItemSelectedListener {
     fun checkIsLastData() {
         if(isLastData) {
             //데이터가 존재하지 않을때
-            if(pageNum == 0) Toast.makeText(this, resource.getString(R.string.history_no_data), Toast.LENGTH_SHORT).show()
-            //데이터가 존재할 때
+            if(pageNum == 0 && historyResult.size == 0) Toast.makeText(this, resource.getString(R.string.history_no_data), Toast.LENGTH_SHORT).show()
+            //데이터가 더 이상 존재할 때
             else Toast.makeText(this, resource.getString(R.string.history_no_more_data), Toast.LENGTH_SHORT).show()
         }
         else {
@@ -141,14 +145,7 @@ class HistoryActivity : BaseActivity(), AdapterView.OnItemSelectedListener {
 
                 if(response.body()!!.data != null) {
 
-                        historyResult.addAll(response.body()!!.data)
-                    for (historyModel in response.body()!!.data) {
-                        //historyResult.add(historyModel)
-                        Log.d( "metis", "smellRegisterTimeName : " + historyModel.smellRegisterTimeName)
-                        Log.d("metis", "smellRegisterTime : " + historyModel.smellRegisterTime)
-                        Log.d("metis", "regDt : " + historyModel.regDt)
-                    }
-
+                    historyResult.addAll(response.body()!!.data)
                     Log.d("metis", userId + " getRegisterMasterHistory 결과 -> " + historyResult.size.toString())
                     if(response.body()!!.data.size != pageCount) isLastData = true
                 }
@@ -186,7 +183,6 @@ class HistoryActivity : BaseActivity(), AdapterView.OnItemSelectedListener {
     }
 
     fun initRecycler() {
-
         recyclerAdapter = ItemRegisterHistroyRecyclerViewAdapter(this@HistoryActivity, historyResult)
         binding.registerHistoryRecycler.layoutManager = LinearLayoutManager(this)
         binding.registerHistoryRecycler.adapter = recyclerAdapter
