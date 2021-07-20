@@ -170,6 +170,14 @@ class RegisterActivity : BaseActivity(), SmellTypeDialog.SmellTypeDialogListener
             uriList.clear()
             binding.registerUploadImageCountText.text = "0/5"
         }
+
+        binding.registerMemoInput.onFocusChangeListener =
+            View.OnFocusChangeListener { v, hasFocus ->
+                if (hasFocus) {
+                    binding.registerScrollView.smoothScrollTo(0, binding.registerScrollView.bottom)
+                }
+            }
+
     }
 
     private fun getRealPathFromURI(index: Int, contentURI: Uri): MultipartBody.Part? {

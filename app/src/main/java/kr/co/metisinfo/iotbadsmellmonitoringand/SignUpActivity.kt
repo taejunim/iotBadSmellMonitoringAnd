@@ -134,6 +134,7 @@ class SignUpActivity : BaseActivity() {
 
                         override fun onFailure(call: Call<ResponseResult>, t: Throwable) {
                             Log.d("metis", "onFailure : " + t.message.toString())
+                            Toast.makeText(this@SignUpActivity, resource.getString(R.string.server_no_response), Toast.LENGTH_SHORT).show()
                         }
                     })
                 })

@@ -3,6 +3,8 @@
 
     <string name="image_description">description</string>
 
+    <string name="server_no_response">서버와 통신이 원활하지 않습니다.\n관리자에게 문의해주세요.</string>
+
     <string name="login">로그인</string>
     <string name="logout">로그아웃</string>
     <string name="sign_up">회원가입</string>

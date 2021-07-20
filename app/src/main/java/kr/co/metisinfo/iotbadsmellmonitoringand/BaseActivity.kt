@@ -1,8 +1,12 @@
 package kr.co.metisinfo.iotbadsmellmonitoringand
 
+import android.content.Context
 import android.content.res.Resources
 import android.os.Bundle
 import android.util.Log
+import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import kr.co.metisinfo.iotbadsmellmonitoringand.Constants.TIME_00
 import kr.co.metisinfo.iotbadsmellmonitoringand.Constants.TIME_06
@@ -90,6 +94,7 @@ abstract class BaseActivity : AppCompatActivity(){
 
                 override fun onFailure(call: Call<CodeResult>, t: Throwable) {
                     Log.d("metis", "onFailure : " + t.message.toString())
+                    Toast.makeText(this@BaseActivity, resource.getString(R.string.server_no_response), Toast.LENGTH_SHORT).show()
                     callback("noResponse","")
                 }
             })
@@ -146,6 +151,7 @@ abstract class BaseActivity : AppCompatActivity(){
 
             override fun onFailure(call: Call<WeatherResponse>, t: Throwable) {
                 Log.d("metis", "onFailure : " + t.message.toString())
+                Toast.makeText(this@BaseActivity, resource.getString(R.string.server_no_response), Toast.LENGTH_SHORT).show()
                 callback("weather", weatherModel)
             }
         })
@@ -224,7 +230,13 @@ abstract class BaseActivity : AppCompatActivity(){
 
             override fun onFailure(call: Call<RegisterResult>, t: Throwable) {
                 Log.d("metis", "onFailure : " + t.message.toString())
+                Toast.makeText(this@BaseActivity, resource.getString(R.string.server_no_response), Toast.LENGTH_SHORT).show()
             }
         })
+    }
+
+    fun hideKeyboard(editText: EditText) {
+        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(editText.windowToken, 0)
     }
 }
