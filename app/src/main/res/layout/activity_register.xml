@@ -108,21 +108,58 @@
                             android:layout_centerHorizontal="true"
                             android:layout_centerVertical="true"
                             android:layout_marginTop="10dp"
-                            android:layout_marginBottom="10dp"
                             android:text="@string/register_upload_image_text"/>
+
+                        <ImageView
+                            android:id="@+id/register_refresh_button"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_marginEnd="15dp"
+                            android:layout_alignParentRight="true"
+                            android:layout_alignTop="@+id/register_upload_image_text"
+                            android:layout_alignBottom="@+id/register_upload_image_text"
+                            android:background="@drawable/refresh"/>
+
+                        <ImageView
+                            android:id="@+id/register_camera_image"
+                            android:layout_width="20dp"
+                            android:layout_height="14dp"
+                            android:layout_below="@+id/register_upload_image_text"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginBottom="10dp"
+                            android:paddingTop="2dp"
+
+                            android:layout_alignParentLeft="true"
+                            android:scaleType="centerInside"
+
+                            android:src="@drawable/camera"/>
+
+                        <TextView
+                            android:id="@+id/register_upload_image_count_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="14dp"
+                            android:layout_marginStart="3dp"
+                            android:layout_toRightOf="@id/register_camera_image"
+                            android:layout_alignTop="@+id/register_camera_image"
+                            android:layout_alignBottom="@+id/register_camera_image"
+                            android:gravity="center"
+                            android:textColor="@color/color_plain_text"
+                            android:textSize="12sp"
+                            android:text="0/5"/>
 
                         <LinearLayout
                             android:id="@+id/register_upload_image_layout"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:layout_below="@id/register_upload_image_text"
+                            android:layout_below="@id/register_camera_image"
                             android:orientation="horizontal"
                             android:background="@color/color_dark_gray">
 
                             <RelativeLayout
                                 android:id="@+id/register_blank_layout"
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent">
+                                android:layout_height="match_parent"
+                                android:visibility="visible">
 
                                 <ImageView
                                     android:layout_width="180dp"
@@ -140,6 +177,8 @@
                                 android:id="@+id/register_added_image_layout"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
+                                android:paddingStart="10dp"
+                                android:paddingEnd="10dp"
                                 android:visibility="gone">
 
                                 <androidx.recyclerview.widget.RecyclerView

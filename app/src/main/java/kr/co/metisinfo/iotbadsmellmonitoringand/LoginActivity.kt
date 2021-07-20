@@ -64,7 +64,7 @@ class LoginActivity : BaseActivity() {
                                 var intent = Intent(this@LoginActivity, MainActivity::class.java)
                                 startActivity(intent)
                                 finish()
-                            }, 2000)
+                            }, 1000)
 
                         } else if (result == "fail") {
                             Toast.makeText(this@LoginActivity, resource.getString(R.string.incorrect_data), Toast.LENGTH_SHORT).show()
@@ -82,6 +82,10 @@ class LoginActivity : BaseActivity() {
 
             var intent = Intent(this, SignUpActivity::class.java)
             startActivity(intent)
+        }
+
+        binding.lostPasswordText.setOnClickListener {
+            Toast.makeText(this@LoginActivity, resource.getString(R.string.sign_in_ask_text), Toast.LENGTH_SHORT).show()
         }
     }
 

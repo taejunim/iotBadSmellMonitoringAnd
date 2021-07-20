@@ -1,5 +1,7 @@
 package kr.co.metisinfo.iotbadsmellmonitoringand
 
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.View
 import android.widget.Toast
@@ -86,9 +88,19 @@ class MyPageActivity : BaseActivity() {
                 Toast.makeText(this, resource.getString(R.string.my_page_blank_new_password_text), Toast.LENGTH_SHORT).show()
                 return false
             }
+            binding.myPageNewPasswordInput.text.toString().length < 5 || binding.myPageNewPasswordInput.text.toString().length > 15 -> {
+
+                Toast.makeText(this, resource.getString(R.string.user_password_length_exceed), Toast.LENGTH_SHORT).show()
+                return false
+            }
             binding.myPageNewPasswordConfirmInput.text.toString() == "" -> {
 
                 Toast.makeText(this, resource.getString(R.string.my_page_blank_new_password_confirm_text), Toast.LENGTH_SHORT).show()
+                return false
+            }
+            binding.myPageNewPasswordConfirmInput.text.toString().length < 5 || binding.myPageNewPasswordConfirmInput.text.toString().length > 15 -> {
+
+                Toast.makeText(this, resource.getString(R.string.user_password_length_exceed), Toast.LENGTH_SHORT).show()
                 return false
             }
             binding.myPageNewPasswordInput.text.toString() != binding.myPageNewPasswordConfirmInput.text.toString() -> {
@@ -117,6 +129,11 @@ class MyPageActivity : BaseActivity() {
 
                     MainApplication.prefs.setString("userPassword", data.userPassword)
                     Toast.makeText(this@MyPageActivity, resource.getString(R.string.my_page_password_change_success_text), Toast.LENGTH_SHORT).show()
+
+                    val handler = Handler(Looper.getMainLooper())
+                    handler.postDelayed ({
+                        finish()
+                    }, 2000)
 
                 } else if (result == "fail") {
                     Toast.makeText(this@MyPageActivity, resource.getString(R.string.my_page_password_change_fail_text), Toast.LENGTH_SHORT).show()

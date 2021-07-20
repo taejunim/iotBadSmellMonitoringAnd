@@ -12,6 +12,8 @@
     <string name="my_page">My Page</string>
 
     <string name="sign_in_welcome_text">환영합니다!</string>
+    <string name="sign_in_lost_password_text"><u>비밀번호를 잊으셨나요?</u></string>
+    <string name="sign_in_ask_text">관리자에게 문의해 주십시오.</string>
 
     <string name="sign_up_user_id">아이디</string>
     <string name="sign_up_check_duplicate">중복 확인</string>
@@ -22,6 +24,10 @@
     <string name="sign_up_gender">성별</string>
     <string name="sign_up_region">지역</string>
 
+    <string name="sign_up_available_user_id">회원 가입이 가능한 아이디입니다.</string>
+    <string name="sign_up_duplicate_user_id">이미 사용중인 아이디입니다.</string>
+    <string name="sign_up_not_clicked_check_duplicate_user_id">아이디 중복 확인을 해주세요.</string>
+
     <string name="blank_user_id">아이디를 입력해주세요.</string>
     <string name="blank_user_password">비밀번호를 입력해주세요.</string>
     <string name="blank_user_password_confirm">비밀번호 확인을 입력해주세요.</string>
@@ -31,6 +37,10 @@
     <string name="blank_user_gender">성별을 선택해주세요.</string>
     <string name="blank_user_region">지역을 선택해주세요.</string>
 
+    <string name="user_id_length_exceed">아이디를 5자리 이상 20자리 이하로 입력해주세요.</string>
+    <string name="user_password_length_exceed">비밀번호를 5자리 이상 15자리 이하로 입력해주세요.</string>
+    <string name="user_password_confirm_length_exceed">비밀번호 확인을 5자리 이상 15자리 이하로 입력해주세요.</string>
+
     <string name="incorrect_data">아이디 혹은 비밀번호가 일치하지 않습니다.</string>
 
     <string name="registration">등록</string>
@@ -38,8 +48,8 @@
     <string name="completion">완료</string>
     <string name="star_text">*</string>
 
-    <string name="user_id_hint">아이디 20자리 이하 입력</string>
-    <string name="password_hint">비밀번호 15자리 이하 입력</string>
+    <string name="user_id_hint">5자리 이상 20자리 이하 입력</string>
+    <string name="password_hint">5자리 이상 15자리 이하 입력</string>
     <string name="user_name_hint">실명 입력</string>
     <string name="age_hint">나이 입력</string>
     <string name="gender_hint">성별 선택</string>

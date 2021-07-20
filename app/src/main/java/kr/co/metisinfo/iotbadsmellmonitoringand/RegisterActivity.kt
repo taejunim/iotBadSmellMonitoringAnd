@@ -1,6 +1,8 @@
 package kr.co.metisinfo.iotbadsmellmonitoringand
 
 import android.Manifest
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
@@ -88,6 +90,12 @@ class RegisterActivity : BaseActivity(), SmellTypeDialog.SmellTypeDialogListener
         binding.intensityButton.text = receivedIntensityText
         binding.intensityButton.setBackgroundResource(resource.getIdentifier(receivedIntensityResource,"drawable", "kr.co.metisinfo.iotbadsmellmonitoringand"))
         recyclerView = findViewById(R.id.register_image_view)
+
+        if (getRegisterTime() == "") {
+            binding.registrationButton.setBackgroundResource(R.drawable.round_gray_button)
+        } else {
+            binding.registrationButton.setBackgroundResource(R.drawable.round_blue_button)
+        }
     }
 
     override fun setOnClickListener() {
@@ -101,14 +109,20 @@ class RegisterActivity : BaseActivity(), SmellTypeDialog.SmellTypeDialogListener
         }
 
         binding.registrationButton.setOnClickListener {
-
             registerTime = getRegisterTime()
 
-            //등록 시간이 아니면 return
             when (registerTime) {
-                //"" -> Toast.makeText(this@RegisterActivity, resource.getString(R.string.register_not_register_time_text), Toast.LENGTH_SHORT).show()
-                "" -> getWeatherApiData()
-                else -> getWeatherApiData() //날씨 데이터
+                //등록 시간이 아니면 return
+                "" -> Toast.makeText(this@RegisterActivity, resource.getString(R.string.register_not_register_time_text), Toast.LENGTH_SHORT).show()
+                else -> {
+                    val builder = AlertDialog.Builder(this@RegisterActivity)
+                    builder.setMessage("해당 내용으로 등록하시겠습니까?") //AlertDialog의 내용 부분
+                    builder.setPositiveButton("예", DialogInterface.OnClickListener { dialog, which ->
+                        getWeatherApiData() //날씨 데이터 받은 후 등록
+                    })
+                    builder.setNegativeButton("아니오", null)
+                    builder.create().show() //보이기
+                }
             }
         }
 
@@ -149,6 +163,13 @@ class RegisterActivity : BaseActivity(), SmellTypeDialog.SmellTypeDialogListener
                 .startAlbum()
 
         }
+
+        binding.registerRefreshButton.setOnClickListener {
+            binding.registerBlankLayout.visibility = View.VISIBLE
+            binding.registerAddedImageLayout.visibility = View.GONE
+            uriList.clear()
+            binding.registerUploadImageCountText.text = "0/5"
+        }
     }
 
     private fun getRealPathFromURI(index: Int, contentURI: Uri): MultipartBody.Part? {
@@ -188,6 +209,7 @@ class RegisterActivity : BaseActivity(), SmellTypeDialog.SmellTypeDialogListener
             adapter = MultiImageAdapter(uriList, applicationContext)
             recyclerView!!.adapter = adapter // 리사이클러뷰에 어댑터 세팅
             recyclerView!!.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, true) // 리사이클러뷰 수평 스크롤 적용
+            binding.registerUploadImageCountText.text = uriList.size.toString() + "/5"
         }
     }
 

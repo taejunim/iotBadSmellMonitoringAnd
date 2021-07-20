@@ -122,6 +122,16 @@ interface ApiService {
         @Query("smellRegisterNo") smellRegisterNo: String
     ): Call<ImageResult>
 
+    // 아이디 찾기
+    @GET("/api/userFindId")
+    @Headers(
+        "Accept: application/json",
+        "Content-Type: application/json"
+    )
+    fun userFindId(
+        @Query("userId") userId: String
+    ): Call<ResponseResult>
+
     companion object { // static 처럼 공유객체로 사용가능함. 모든 인스턴스가 공유하는 객체로서 동작함.
 
         fun create(): ApiService {

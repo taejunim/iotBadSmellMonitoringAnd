@@ -40,10 +40,11 @@
                     android:hint="@string/user_id_hint"
                     android:importantForAutofill="no"
                     android:inputType="text"
+                    android:maxLength="20"
                     style="@style/hint_edit_text"/>
 
                 <Button
-                    android:id="@+id/register_certification_btn"
+                    android:id="@+id/register_duplication_check_button"
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
                     android:layout_alignTop="@+id/sign_up_user_id_input"
@@ -74,7 +75,8 @@
                     android:layout_below="@id/sign_up_password_text"
                     android:hint="@string/password_hint"
                     android:importantForAutofill="no"
-                    android:inputType="text"
+                    android:inputType="textPassword"
+                    android:maxLength="15"
                     style="@style/hint_edit_text"/>
 
                 <TextView
@@ -94,7 +96,8 @@
                     android:layout_below="@id/sign_up_password_confirm_text"
                     android:hint="@string/password_hint"
                     android:importantForAutofill="no"
-                    android:inputType="text"
+                    android:inputType="textPassword"
+                    android:maxLength="15"
                     style="@style/hint_edit_text"/>
 
                 <TextView

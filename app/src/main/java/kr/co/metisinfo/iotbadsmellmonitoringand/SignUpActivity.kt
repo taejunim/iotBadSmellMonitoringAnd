@@ -1,5 +1,7 @@
 package kr.co.metisinfo.iotbadsmellmonitoringand
 
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.graphics.Color
 import android.graphics.drawable.StateListDrawable
 import android.os.Handler
@@ -26,6 +28,8 @@ class SignUpActivity : BaseActivity() {
 
     private var selectedRegionCode = ""
 
+    private var isAvailableId = false
+
     override fun initData() {
     }
 
@@ -36,9 +40,6 @@ class SignUpActivity : BaseActivity() {
         binding.includeHeader.backButton.visibility = View.VISIBLE
         binding.includeHeader.navigationViewButton.visibility = View.GONE
 
-        //버튼 회색으로 초기화
-        setButtonEnable(false)
-        addTextChanged()
         //지역 레이아웃 그리기
         drawRegionGroup()
     }
@@ -46,97 +47,102 @@ class SignUpActivity : BaseActivity() {
 
         binding.includeHeader.backButton.setOnClickListener { finish() }
 
-        binding.registrationButton.setOnClickListener {
+        binding.registerDuplicationCheckButton.setOnClickListener {
 
-            if (checkBlank()) {
-
+            if (checkId()) {
                 val userId = binding.signUpUserIdInput.text.toString()
-                val userPassword = binding.signUpPasswordInput.text.toString()
-                val userName = binding.signUpUserNameInput.text.toString()
-                val userAge = binding.signUpUserAgeInput.text.toString()
-                val userGender = getGender()
-                val userRegion = selectedRegionCode
 
-                val data = UserModel(userId,userPassword,userAge,userName,userGender,"","001","", userRegion)
-
-                instance.apiService.signIn(data).enqueue(object : Callback<ResponseResult> {
+                instance.apiService.userFindId(userId).enqueue(object : Callback<ResponseResult> {
                     override fun onResponse(call: Call<ResponseResult>, response: Response<ResponseResult>) {
                         Log.d("metis",response.toString())
-                        Log.d("metis", "회원가입 결과 -> " + response.body().toString())
+                        Log.d("metis", "userFindId 결과 -> " + response.body().toString())
 
-                        val result = response.body()?.result
+                        val result = response.body()!!.result
 
-                        if (result == "success") {
-
-                            Toast.makeText(this@SignUpActivity, resource.getString(R.string.register_success_text), Toast.LENGTH_SHORT).show()
-
-                            val handler = Handler(Looper.getMainLooper())
-                            handler.postDelayed ({
-                                finish()
-                            }, 2000)
-
-                        } else if (result == "fail") {
-                            Toast.makeText(this@SignUpActivity, resource.getString(R.string.incorrect_data), Toast.LENGTH_SHORT).show()
+                        if(result == "fail") {
+                            Toast.makeText(this@SignUpActivity, resource.getString(R.string.sign_up_available_user_id), Toast.LENGTH_SHORT).show()
+                            isAvailableId = true
+                        } else if (result == "success") {
+                            Toast.makeText(this@SignUpActivity, resource.getString(R.string.sign_up_duplicate_user_id), Toast.LENGTH_SHORT).show()
+                            isAvailableId = false
                         }
                     }
 
                     override fun onFailure(call: Call<ResponseResult>, t: Throwable) {
-                        Log.d("metis", "onFailure : " + t.message.toString())
+                        Toast.makeText(this@SignUpActivity, resource.getString(R.string.sign_in_ask_text), Toast.LENGTH_SHORT).show()
                     }
                 })
             }
         }
-    }
-    fun addTextChanged(){
-        //아이디 입력
-        binding.signUpUserIdInput.addTextChangedListener(object: TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-                setButtonEnable(checkBlank())
+
+        binding.signUpUserIdInput.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
             }
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-        })
-        binding.signUpPasswordInput.addTextChangedListener(object: TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-                setButtonEnable(checkBlank())
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+
             }
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-        })
-        binding.signUpPasswordConfirmInput.addTextChangedListener(object: TextWatcher {
+
             override fun afterTextChanged(s: Editable?) {
-                setButtonEnable(checkBlank())
+                isAvailableId = false
             }
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         })
-        binding.signUpUserNameInput.addTextChangedListener(object: TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-                setButtonEnable(checkBlank())
+
+        binding.registrationButton.setOnClickListener {
+
+            if (checkId() && checkBlank()) {
+
+                if (!isAvailableId) {
+                    Toast.makeText(this@SignUpActivity, resource.getString(R.string.sign_up_not_clicked_check_duplicate_user_id), Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
+
+                val builder = AlertDialog.Builder(this@SignUpActivity)
+                builder.setMessage("해당 내용으로 등록하시겠습니까?") //AlertDialog의 내용 부분
+                builder.setPositiveButton("예", DialogInterface.OnClickListener { dialog, which ->
+
+                    val userId = binding.signUpUserIdInput.text.toString()
+                    val userPassword = binding.signUpPasswordInput.text.toString()
+                    val userName = binding.signUpUserNameInput.text.toString()
+                    val userAge = binding.signUpUserAgeInput.text.toString()
+                    val userGender = getGender()
+                    val userRegion = selectedRegionCode
+
+                    val data = UserModel(userId,userPassword,userAge,userName,userGender,"","001","", userRegion)
+
+                    instance.apiService.signIn(data).enqueue(object : Callback<ResponseResult> {
+                        override fun onResponse(call: Call<ResponseResult>, response: Response<ResponseResult>) {
+                            Log.d("metis",response.toString())
+                            Log.d("metis", "회원가입 결과 -> " + response.body().toString())
+
+                            val result = response.body()?.result
+
+                            if (result == "success") {
+
+                                Toast.makeText(this@SignUpActivity, resource.getString(R.string.register_success_text), Toast.LENGTH_SHORT).show()
+
+                                val handler = Handler(Looper.getMainLooper())
+                                handler.postDelayed ({
+                                    finish()
+                                }, 2000)
+
+                            } else if (result == "fail") {
+                                Toast.makeText(this@SignUpActivity, resource.getString(R.string.incorrect_data), Toast.LENGTH_SHORT).show()
+                            }
+                        }
+
+                        override fun onFailure(call: Call<ResponseResult>, t: Throwable) {
+                            Log.d("metis", "onFailure : " + t.message.toString())
+                        }
+                    })
+                })
+                builder.setNegativeButton("아니오", null)
+                builder.create().show() //보이기
             }
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-        })
-        binding.signUpUserAgeInput.addTextChangedListener(object: TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-                Log.d("metis" , "afterTextChanged")
-                    setButtonEnable(checkBlank())
-            }
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-        })
-    }
-    fun setButtonEnable(enable : Boolean){
-        Log.d("metis" , "enable  $enable")
-        if(enable) {
-            binding.registrationButton.isEnabled = true
-            binding.registrationButton.setBackgroundColor(getColor(R.color.color_blue))
         }
-        else {
-            binding.registerCertificationBtn.isEnabled = false
-            binding.registrationButton.setBackgroundColor(getColor(R.color.color_gray))
-        }
     }
+
     /**
      * DATA CALLBACK
      */
@@ -167,66 +173,95 @@ class SignUpActivity : BaseActivity() {
         return gender
     }
 
+    //아이디 체크
+    private fun checkId(): Boolean {
+
+        when {
+            //아이디
+            binding.signUpUserIdInput.text.toString() == "" -> {
+
+                Toast.makeText(this, resource.getString(R.string.blank_user_id), Toast.LENGTH_SHORT).show()
+                return false
+            }
+
+            //아이디 길이 체크
+            binding.signUpUserIdInput.text.toString().length < 5 || binding.signUpUserIdInput.text.toString().length > 20 -> {
+
+                Toast.makeText(this, resource.getString(R.string.user_id_length_exceed), Toast.LENGTH_SHORT).show()
+                return false
+            }
+            else -> return true
+        }
+    }
+
     //빈칸 체크
     private fun checkBlank(): Boolean {
 
-        //아이디
-        if (binding.signUpUserIdInput.text.toString() == "") {
+        when {
+            //비밀번호
+            binding.signUpPasswordInput.text.toString() == "" -> {
 
-            //Toast.makeText(this, resource.getString(R.string.blank_user_id), Toast.LENGTH_SHORT).show()
-            return false
+                Toast.makeText(this, resource.getString(R.string.blank_user_password), Toast.LENGTH_SHORT).show()
+                return false
+            }
+
+            //비밀번호 길이 체크
+            binding.signUpPasswordInput.text.toString().length < 5 || binding.signUpPasswordInput.text.toString().length > 15 -> {
+
+                Toast.makeText(this, resource.getString(R.string.user_password_length_exceed), Toast.LENGTH_SHORT).show()
+                return false
+            }
+
+            //비밀번호 확인
+            binding.signUpPasswordConfirmInput.text.toString() == "" -> {
+
+                Toast.makeText(this, resource.getString(R.string.blank_user_password_confirm), Toast.LENGTH_SHORT).show()
+                return false
+            }
+
+            //비밀번호 길이 체크
+            binding.signUpPasswordConfirmInput.text.toString().length < 5 || binding.signUpPasswordConfirmInput.text.toString().length > 15 -> {
+
+                Toast.makeText(this, resource.getString(R.string.user_password_confirm_length_exceed), Toast.LENGTH_SHORT).show()
+                return false
+            }
+
+            //비밀번호 일치
+            binding.signUpPasswordInput.text.toString() != binding.signUpPasswordConfirmInput.text.toString() -> {
+
+                Toast.makeText(this, resource.getString(R.string.blank_user_incorrect_password), Toast.LENGTH_SHORT).show()
+                return false
+            }
+
+            //이름
+            binding.signUpUserNameInput.text.toString() == "" -> {
+
+                Toast.makeText(this, resource.getString(R.string.blank_user_name), Toast.LENGTH_SHORT).show()
+                return false
+            }
+
+            //나이
+            binding.signUpUserAgeInput.text.toString() == "" -> {
+
+                Toast.makeText(this, resource.getString(R.string.blank_user_age), Toast.LENGTH_SHORT).show()
+                return false
+            }
+
+            //성별
+            binding.genderToggle.checkedRadioButtonId == null -> {
+
+                Toast.makeText(this, resource.getString(R.string.blank_user_gender), Toast.LENGTH_SHORT).show()
+                return false
+            }
+
+            //지역
+            selectedRegionCode == "" -> {
+
+                Toast.makeText(this, resource.getString(R.string.blank_user_region), Toast.LENGTH_SHORT).show()
+                return false
+            }
+            else -> return true
         }
-
-        //비밀번호
-        else if (binding.signUpPasswordInput.text.toString() == "") {
-
-            //Toast.makeText(this, resource.getString(R.string.blank_user_password), Toast.LENGTH_SHORT).show()
-            return false
-        }
-
-        //비밀번호 확인
-        else if (binding.signUpPasswordConfirmInput.text.toString() == "") {
-
-            //Toast.makeText(this, resource.getString(R.string.blank_user_password_confirm), Toast.LENGTH_SHORT).show()
-            return false
-        }
-
-        //비밀번호 일치
-        else if (binding.signUpPasswordInput.text.toString() != binding.signUpPasswordConfirmInput.text.toString()) {
-
-            Toast.makeText(this, resource.getString(R.string.blank_user_incorrect_password), Toast.LENGTH_SHORT).show()
-            return false
-        }
-
-        //이름
-        else if (binding.signUpUserNameInput.text.toString() == "") {
-
-            //Toast.makeText(this, resource.getString(R.string.blank_user_name), Toast.LENGTH_SHORT).show()
-            return false
-        }
-
-        //나이
-        else if (binding.signUpUserAgeInput.text.toString() == "") {
-
-            //Toast.makeText(this, resource.getString(R.string.blank_user_age), Toast.LENGTH_SHORT).show()
-            return false
-        }
-
-        //성별
-        else if (binding.genderToggle.checkedRadioButtonId == null) {
-
-            //Toast.makeText(this, resource.getString(R.string.blank_user_gender), Toast.LENGTH_SHORT).show()
-            return false
-        }
-
-        //지역
-        else if (selectedRegionCode == "") {
-
-            //Toast.makeText(this, resource.getString(R.string.blank_user_region), Toast.LENGTH_SHORT).show()
-            return false
-        }
-
-        return true
     }
 
     //지역 레이아웃 그리기

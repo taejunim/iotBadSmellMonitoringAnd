@@ -90,6 +90,7 @@ abstract class BaseActivity : AppCompatActivity(){
 
                 override fun onFailure(call: Call<CodeResult>, t: Throwable) {
                     Log.d("metis", "onFailure : " + t.message.toString())
+                    callback("noResponse","")
                 }
             })
         }
