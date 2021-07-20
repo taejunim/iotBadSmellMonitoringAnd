@@ -4,6 +4,8 @@ import android.graphics.Color
 import android.graphics.drawable.StateListDrawable
 import android.os.Handler
 import android.os.Looper
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.Gravity
 import android.view.View
@@ -34,6 +36,9 @@ class SignUpActivity : BaseActivity() {
         binding.includeHeader.backButton.visibility = View.VISIBLE
         binding.includeHeader.navigationViewButton.visibility = View.GONE
 
+        //버튼 회색으로 초기화
+        setButtonEnable(false)
+        addTextChanged()
         //지역 레이아웃 그리기
         drawRegionGroup()
     }
@@ -82,7 +87,56 @@ class SignUpActivity : BaseActivity() {
             }
         }
     }
-
+    fun addTextChanged(){
+        //아이디 입력
+        binding.signUpUserIdInput.addTextChangedListener(object: TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                setButtonEnable(checkBlank())
+            }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        })
+        binding.signUpPasswordInput.addTextChangedListener(object: TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                setButtonEnable(checkBlank())
+            }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        })
+        binding.signUpPasswordConfirmInput.addTextChangedListener(object: TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                setButtonEnable(checkBlank())
+            }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        })
+        binding.signUpUserNameInput.addTextChangedListener(object: TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                setButtonEnable(checkBlank())
+            }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        })
+        binding.signUpUserAgeInput.addTextChangedListener(object: TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                Log.d("metis" , "afterTextChanged")
+                    setButtonEnable(checkBlank())
+            }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        })
+    }
+    fun setButtonEnable(enable : Boolean){
+        Log.d("metis" , "enable  $enable")
+        if(enable) {
+            binding.registrationButton.isEnabled = true
+            binding.registrationButton.setBackgroundColor(getColor(R.color.color_blue))
+        }
+        else {
+            binding.registerCertificationBtn.isEnabled = false
+            binding.registrationButton.setBackgroundColor(getColor(R.color.color_gray))
+        }
+    }
     /**
      * DATA CALLBACK
      */
@@ -119,21 +173,21 @@ class SignUpActivity : BaseActivity() {
         //아이디
         if (binding.signUpUserIdInput.text.toString() == "") {
 
-            Toast.makeText(this, resource.getString(R.string.blank_user_id), Toast.LENGTH_SHORT).show()
+            //Toast.makeText(this, resource.getString(R.string.blank_user_id), Toast.LENGTH_SHORT).show()
             return false
         }
 
         //비밀번호
         else if (binding.signUpPasswordInput.text.toString() == "") {
 
-            Toast.makeText(this, resource.getString(R.string.blank_user_password), Toast.LENGTH_SHORT).show()
+            //Toast.makeText(this, resource.getString(R.string.blank_user_password), Toast.LENGTH_SHORT).show()
             return false
         }
 
         //비밀번호 확인
         else if (binding.signUpPasswordConfirmInput.text.toString() == "") {
 
-            Toast.makeText(this, resource.getString(R.string.blank_user_password_confirm), Toast.LENGTH_SHORT).show()
+            //Toast.makeText(this, resource.getString(R.string.blank_user_password_confirm), Toast.LENGTH_SHORT).show()
             return false
         }
 
@@ -147,28 +201,28 @@ class SignUpActivity : BaseActivity() {
         //이름
         else if (binding.signUpUserNameInput.text.toString() == "") {
 
-            Toast.makeText(this, resource.getString(R.string.blank_user_name), Toast.LENGTH_SHORT).show()
+            //Toast.makeText(this, resource.getString(R.string.blank_user_name), Toast.LENGTH_SHORT).show()
             return false
         }
 
         //나이
         else if (binding.signUpUserAgeInput.text.toString() == "") {
 
-            Toast.makeText(this, resource.getString(R.string.blank_user_age), Toast.LENGTH_SHORT).show()
+            //Toast.makeText(this, resource.getString(R.string.blank_user_age), Toast.LENGTH_SHORT).show()
             return false
         }
 
         //성별
         else if (binding.genderToggle.checkedRadioButtonId == null) {
 
-            Toast.makeText(this, resource.getString(R.string.blank_user_gender), Toast.LENGTH_SHORT).show()
+            //Toast.makeText(this, resource.getString(R.string.blank_user_gender), Toast.LENGTH_SHORT).show()
             return false
         }
 
         //지역
         else if (selectedRegionCode == "") {
 
-            Toast.makeText(this, resource.getString(R.string.blank_user_region), Toast.LENGTH_SHORT).show()
+            //Toast.makeText(this, resource.getString(R.string.blank_user_region), Toast.LENGTH_SHORT).show()
             return false
         }
 
