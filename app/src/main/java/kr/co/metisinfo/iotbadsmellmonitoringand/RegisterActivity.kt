@@ -210,6 +210,8 @@ class RegisterActivity : BaseActivity(), SmellTypeDialog.SmellTypeDialogListener
             recyclerView!!.adapter = adapter // 리사이클러뷰에 어댑터 세팅
             recyclerView!!.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, true) // 리사이클러뷰 수평 스크롤 적용
             binding.registerUploadImageCountText.text = uriList.size.toString() + "/5"
+
+            binding.registerScrollView.scrollTo(0, binding.registrationButton.top)
         }
     }
 

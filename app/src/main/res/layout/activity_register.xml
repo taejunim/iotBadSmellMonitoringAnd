@@ -11,6 +11,7 @@
             android:layout_height="60dp" />
 
         <ScrollView
+            android:id="@+id/register_scroll_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@+id/include_header"
