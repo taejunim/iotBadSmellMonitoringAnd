@@ -20,6 +20,8 @@ class LoginActivity : BaseActivity() {
     private lateinit var binding: ActivityLoginBinding
 
     override fun initData() {
+
+        checkLocationPermission()
     }
 
     override fun initLayout() {

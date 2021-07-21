@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.Intent
 import android.util.Log
 import kr.co.metisinfo.iotbadsmellmonitoringand.model.CodeModel
+import kr.co.metisinfo.iotbadsmellmonitoringand.model.RegisterModel
 import kr.co.metisinfo.iotbadsmellmonitoringand.receiver.AlarmReceiver
 import kr.co.metisinfo.iotbadsmellmonitoringand.util.ApiService
 import kr.co.metisinfo.iotbadsmellmonitoringand.util.PreferenceUtil
@@ -23,6 +24,8 @@ class MainApplication : Application() {
     var intensityList: List<CodeModel> = mutableListOf() //강도
     var regionList: List<CodeModel> = mutableListOf() //지역
     var smellTypeList: List<CodeModel> = mutableListOf() //취기
+
+    var registerStatusList: List<RegisterModel> = mutableListOf() //접수 현황
 
     /** 푸시 관련 **/
     private lateinit var alarmManager: AlarmManager

@@ -24,8 +24,6 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     private lateinit var navigationBinding: NavigationViewHeaderBinding
 
     override fun initData() {
-        getUserTodayRegisterInfo() //접수 현황
-        getWeatherApiData() //현재 날씨 API
 
         var pushStatus = MainApplication.prefs.getBoolean("pushStatus", false)
 
@@ -45,16 +43,17 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         //현재 날씨 레이아웃 그리기
         drawWeatherLayout("-", "-", "-", "-", "", "")
 
-
-
         //네비게이션 뷰 그리기
         drawNavigationView()
     }
 
     override fun setOnClickListener() {
         binding.includeHeader.navigationViewButton.setOnClickListener {
-            Log.d("metis","MainActivity - Side Menu 구현해야 ")
             binding.navigationViewLayout.openDrawer(GravityCompat.START)
+        }
+
+        binding.weatherRefreshButton.setOnClickListener {
+            getWeatherApiData() //현재 날씨 API
         }
     }
 
@@ -270,5 +269,11 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
         binding.navigationViewLayout.closeDrawer(GravityCompat.START)
         return false
+    }
+
+    override fun onResume() {
+        super.onResume()
+        getWeatherApiData() //현재 날씨 API
+        getUserTodayRegisterInfo() //접수 현황
     }
 }

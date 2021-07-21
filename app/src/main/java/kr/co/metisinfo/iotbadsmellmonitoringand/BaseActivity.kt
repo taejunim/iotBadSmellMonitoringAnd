@@ -1,13 +1,18 @@
 package kr.co.metisinfo.iotbadsmellmonitoringand
 
+import android.Manifest
 import android.content.Context
+import android.content.pm.PackageManager
 import android.content.res.Resources
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import kr.co.metisinfo.iotbadsmellmonitoringand.Constants.TIME_00
 import kr.co.metisinfo.iotbadsmellmonitoringand.Constants.TIME_06
 import kr.co.metisinfo.iotbadsmellmonitoringand.Constants.TIME_09
@@ -26,8 +31,8 @@ import java.util.*
 abstract class BaseActivity : AppCompatActivity(){
 
     val resource: Resources = MainApplication.getContext().resources
+
     private val weatherApiService = ApiService.weatherApiCreate()
-    var registerStatusList: List<RegisterModel> = mutableListOf() //접수 현황
 
     val instance = MainApplication.instance
 
@@ -223,9 +228,9 @@ abstract class BaseActivity : AppCompatActivity(){
         instance.apiService.getUserTodayRegisterInfo(userId).enqueue(object : Callback<RegisterResult> {
             override fun onResponse(call: Call<RegisterResult>, response: Response<RegisterResult>) {
 
-                registerStatusList= response.body()!!.data //접수 현황
+                instance.registerStatusList= response.body()!!.data //접수 현황
 
-                callback("registerStatus", registerStatusList)
+                callback("registerStatus", instance.registerStatusList)
             }
 
             override fun onFailure(call: Call<RegisterResult>, t: Throwable) {
@@ -235,8 +240,19 @@ abstract class BaseActivity : AppCompatActivity(){
         })
     }
 
+    //키보드 내리기
     fun hideKeyboard(editText: EditText) {
         val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(editText.windowToken, 0)
+    }
+
+    //위치 권한 퍼미션 체크
+    fun checkLocationPermission() : Boolean {
+        return if (Build.VERSION.SDK_INT >= 23 && ContextCompat.checkSelfPermission(applicationContext,Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this@BaseActivity, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 0)
+            false
+        } else {
+            true
+        }
     }
 }

@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -16,12 +15,11 @@ import kr.co.metisinfo.iotbadsmellmonitoringand.R
 import kr.co.metisinfo.iotbadsmellmonitoringand.model.HistoryModel
 import kr.co.metisinfo.iotbadsmellmonitoringand.model.ImageModel
 import kr.co.metisinfo.iotbadsmellmonitoringand.model.ImageResult
-
 import kr.co.metisinfo.iotbadsmellmonitoringand.util.ToggleAnimation
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.util.ArrayList
+import java.util.*
 
 /**
  * @ Class Name   : ItemRegisterHistroyRecyclerViewAdapter.kt
@@ -124,7 +122,7 @@ class ItemRegisterHistroyRecyclerViewAdapter(private val context: Context, priva
                         param.width = 150
                         param.height = 150
 
-                        for (imageModel in imageResult) {
+                        /*for (imageModel in imageResult) {
                             var imageView = ImageView(mContext)
 
                             imageView.layoutParams = param
@@ -137,6 +135,29 @@ class ItemRegisterHistroyRecyclerViewAdapter(private val context: Context, priva
                             Log.d( "metis", "smellRegisterNo : " + imageModel.smellRegisterNo)
                             Log.d( "metis", "regDt : " + imageModel.regDt)
 
+                            imageView.setOnClickListener {
+                                Log.d("metis", "image click : " + imageView.id)
+                            }
+
+                        }*/
+
+                        for (i in imageResult.indices) {
+                            var imageView = ImageView(mContext)
+                            imageView.id = i
+
+                            imageView.layoutParams = param
+
+                            Glide.with(mContext!!).load(imageResult[i].smellImagePath).override(200,100).fitCenter().into(imageView)
+
+                            layout.addView(imageView)
+                            Log.d( "metis", "updated smellImageNo : " + imageResult[i].smellImageNo)
+                            Log.d( "metis", "updated smellImagePath : " + imageResult[i].smellImagePath)
+                            Log.d( "metis", "updated smellRegisterNo : " + imageResult[i].smellRegisterNo)
+                            Log.d( "metis", "updated regDt : " + imageResult[i].regDt)
+
+                            imageView.setOnClickListener {
+                                Log.d("metis", "image click : " + imageView.id)
+                            }
                         }
                     }
                     countText.text = imageResult.size.toString() + " / 5"
