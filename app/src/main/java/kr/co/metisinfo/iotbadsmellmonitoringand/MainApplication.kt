@@ -104,11 +104,13 @@ class MainApplication : Application() {
     //푸시 알람 설정 -> getAlarmTime() 로 가져온 가까운 시간대에
     fun setAlarm() {
         //cancelAlarm()
-        alarmManager.set(AlarmManager.RTC_WAKEUP, getAlarmTime(), pendingIntent)
+        pendingIntent = PendingIntent.getBroadcast(this, AlarmReceiver.NOTIFICATION_ID, alarmReceiver, PendingIntent.FLAG_UPDATE_CURRENT)
+        alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, getAlarmTime(), pendingIntent)
     }
 
     //푸시 알람 취소
     fun cancelAlarm() {
+        pendingIntent = PendingIntent.getBroadcast(this, AlarmReceiver.NOTIFICATION_ID, alarmReceiver, PendingIntent.FLAG_NO_CREATE)
         alarmManager.cancel(pendingIntent)
     }
 }
