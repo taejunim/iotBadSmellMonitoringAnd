@@ -73,6 +73,11 @@
 
         </activity>
 
+        <!--악취 이력 이미지 상세-->
+        <activity android:name=".ImageDetailActivity">
+
+        </activity>
+
         <!--알람 리시버-->
         <receiver android:name=".receiver.AlarmReceiver"
             android:exported="false">

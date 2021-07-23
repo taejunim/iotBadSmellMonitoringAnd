@@ -1,6 +1,7 @@
 package kr.co.metisinfo.iotbadsmellmonitoringand.adapter
 
 import android.content.Context
+import android.content.Intent
 import android.content.res.Resources
 import android.util.Log
 import android.view.LayoutInflater
@@ -10,6 +11,7 @@ import android.widget.*
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import kr.co.metisinfo.iotbadsmellmonitoringand.ImageDetailActivity
 import kr.co.metisinfo.iotbadsmellmonitoringand.MainApplication
 import kr.co.metisinfo.iotbadsmellmonitoringand.R
 import kr.co.metisinfo.iotbadsmellmonitoringand.model.HistoryModel
@@ -122,25 +124,6 @@ class ItemRegisterHistroyRecyclerViewAdapter(private val context: Context, priva
                         param.width = 150
                         param.height = 150
 
-                        /*for (imageModel in imageResult) {
-                            var imageView = ImageView(mContext)
-
-                            imageView.layoutParams = param
-
-                            Glide.with(mContext!!).load(imageModel.smellImagePath).override(200,100).fitCenter().into(imageView)
-
-                            layout.addView(imageView)
-                            Log.d( "metis", "smellImageNo : " + imageModel.smellImageNo)
-                            Log.d( "metis", "smellImagePath : " + imageModel.smellImagePath)
-                            Log.d( "metis", "smellRegisterNo : " + imageModel.smellRegisterNo)
-                            Log.d( "metis", "regDt : " + imageModel.regDt)
-
-                            imageView.setOnClickListener {
-                                Log.d("metis", "image click : " + imageView.id)
-                            }
-
-                        }*/
-
                         for (i in imageResult.indices) {
                             var imageView = ImageView(mContext)
                             imageView.id = i
@@ -156,7 +139,13 @@ class ItemRegisterHistroyRecyclerViewAdapter(private val context: Context, priva
                             Log.d( "metis", "updated regDt : " + imageResult[i].regDt)
 
                             imageView.setOnClickListener {
-                                Log.d("metis", "image click : " + imageView.id)
+                                
+                                Intent(mContext, ImageDetailActivity::class.java).apply {
+                                    putExtra("imageUrl", imageResult[i].smellImagePath)
+                                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                                }.run { 
+                                    mContext!!.startActivity(this) 
+                                }
                             }
                         }
                     }

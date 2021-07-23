@@ -53,8 +53,6 @@ class RegisterActivity : BaseActivity(), SmellTypeDialog.SmellTypeDialogListener
     private var receivedIntensityText = ""
     private var receivedIntensityResource = ""
 
-    private var locationManager = instance.getSystemService(LOCATION_SERVICE) as LocationManager
-
     private var registerTime = ""
 
     var uriList = ArrayList<Uri>() // 이미지의 uri를 담을 ArrayList 객체
@@ -132,34 +130,49 @@ class RegisterActivity : BaseActivity(), SmellTypeDialog.SmellTypeDialogListener
                     }
                     snackBar.show()
                 }
-
             }
 
             //위치 권한있을 시
             else {
-                registerTime = getRegisterTime()
 
-                when (registerTime) {
-                    //등록 시간이 아니면 return
-                    //"" -> Toast.makeText(this@RegisterActivity, resource.getString(R.string.register_not_register_time_text), Toast.LENGTH_SHORT).show()
-                    "" -> {
-                        val builder = AlertDialog.Builder(this@RegisterActivity)
-                        builder.setMessage("해당 내용으로 등록하시겠습니까?") //AlertDialog의 내용 부분
-                        builder.setPositiveButton("예", DialogInterface.OnClickListener { dialog, which ->
-                            getWeatherApiData() //날씨 데이터 받은 후 등록
-                        })
-                        builder.setNegativeButton("아니오", null)
-                        builder.create().show() //보이기
+                if (!locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+
+                    val snackBar = Snackbar.make(binding.registerMain,R.string.location_text, Snackbar.LENGTH_INDEFINITE)
+                    snackBar.setAction ("확인") {
+                        val gpsOptionsIntent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+                        startActivity(gpsOptionsIntent)
                     }
+                    snackBar.show()
 
-                    else -> {
-                        val builder = AlertDialog.Builder(this@RegisterActivity)
-                        builder.setMessage("해당 내용으로 등록하시겠습니까?") //AlertDialog의 내용 부분
-                        builder.setPositiveButton("예", DialogInterface.OnClickListener { dialog, which ->
-                            getWeatherApiData() //날씨 데이터 받은 후 등록
-                        })
-                        builder.setNegativeButton("아니오", null)
-                        builder.create().show() //보이기
+                } else {
+
+                    registerTime = getRegisterTime()
+
+                    when (registerTime) {
+                        //등록 시간이 아니면 return
+                        "" -> Toast.makeText(this@RegisterActivity, resource.getString(R.string.register_not_register_time_text), Toast.LENGTH_SHORT).show()
+                        /*"" -> {
+                            val builder = AlertDialog.Builder(this@RegisterActivity)
+                            builder.setMessage("해당 내용으로 등록하시겠습니까?") //AlertDialog의 내용 부분
+                            builder.setPositiveButton("예", DialogInterface.OnClickListener { dialog, which ->
+                                //getWeatherApiData() //날씨 데이터 받은 후 등록
+                                //locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0L, 0f, locationListener)
+                                getLocation()
+                            })
+                            builder.setNegativeButton("아니오", null)
+                            builder.create().show() //보이기
+                        }*/
+
+                        else -> {
+                            val builder = AlertDialog.Builder(this@RegisterActivity)
+                            builder.setMessage("해당 내용으로 등록하시겠습니까?") //AlertDialog의 내용 부분
+                            builder.setPositiveButton("예", DialogInterface.OnClickListener { dialog, which ->
+                                //getWeatherApiData() //날씨 데이터 받은 후 등록
+                                getLocation()
+                            })
+                            builder.setNegativeButton("아니오", null)
+                            builder.create().show() //보이기
+                        }
                     }
                 }
             }
@@ -211,11 +224,10 @@ class RegisterActivity : BaseActivity(), SmellTypeDialog.SmellTypeDialogListener
         }
 
         binding.registerMemoInput.onFocusChangeListener = View.OnFocusChangeListener { v, hasFocus ->
-                if (hasFocus) {
-                    binding.registerScrollView.smoothScrollTo(0, binding.registerScrollView.bottom)
-                }
+            if (hasFocus) {
+                binding.registerScrollView.smoothScrollTo(0, binding.registerScrollView.bottom)
             }
-
+        }
     }
 
     private fun getRealPathFromURI(index: Int, contentURI: Uri): MultipartBody.Part? {
@@ -246,10 +258,10 @@ class RegisterActivity : BaseActivity(), SmellTypeDialog.SmellTypeDialogListener
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        binding.registerBlankLayout.visibility = View.GONE
-        binding.registerAddedImageLayout.visibility = View.VISIBLE
-
         if (requestCode == 27 && resultCode == RESULT_OK) {
+
+            binding.registerBlankLayout.visibility = View.GONE
+            binding.registerAddedImageLayout.visibility = View.VISIBLE
 
             uriList = data?.getParcelableArrayListExtra("intent_path") ?: arrayListOf()
             adapter = MultiImageAdapter(uriList, applicationContext)
@@ -267,6 +279,10 @@ class RegisterActivity : BaseActivity(), SmellTypeDialog.SmellTypeDialogListener
     override fun callback(apiName: String, data: Any) {
 
         when (apiName) {
+            "location" -> {
+                getWeatherApiData() //날씨 데이터 받은 후 등록
+            }
+
             "weather" -> {
                 val weatherModel = data as WeatherModel
                 Log.d("metis", "등록 callback data : $weatherModel")
@@ -291,7 +307,10 @@ class RegisterActivity : BaseActivity(), SmellTypeDialog.SmellTypeDialogListener
                     "" -> weatherStatus = "011" //기타
                 }
 
-                val locationMap = getLocation()
+                //val locationMap = getLocation()
+
+                Log.d("metis", " locationMap[\"longitude\"].toString() -> " + locationMap["longitude"].toString())
+                Log.d("metis", " locationMap[\"latitude\"].toString() -> " + locationMap["latitude"].toString())
 
                 val smellType = RequestBody.create(MediaType.parse("text/plain"), selectedSmellTypeId)
                 val smellValue = RequestBody.create(MediaType.parse("text/plain"), receivedIntensityId)
@@ -350,60 +369,6 @@ class RegisterActivity : BaseActivity(), SmellTypeDialog.SmellTypeDialogListener
                 })
             }
         }
-    }
-
-    //접수 등록시 현재 좌표 구하기
-    private fun getLocation() : Map<String, String> {
-
-        var latitude = ""
-        var longitude = ""
-
-        val isGPSEnabled: Boolean = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
-        val isNetworkEnabled: Boolean = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
-        //매니페스트에 권한이 추가되어 있다해도 여기서 다시 한번 확인해야함
-        if (Build.VERSION.SDK_INT >= 23 &&
-            ContextCompat.checkSelfPermission(
-                applicationContext,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(
-                this@RegisterActivity,
-                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                0
-            )
-        } else {
-            when { //프로바이더 제공자 활성화 여부 체크
-                isNetworkEnabled -> {
-                    val location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER) //인터넷기반으로 위치를 찾음
-
-                    latitude = location?.latitude.toString()
-                    longitude = location?.longitude.toString()
-                }
-                isGPSEnabled -> {
-                    val location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER) //GPS 기반으로 위치를 찾음
-
-                    latitude = location?.latitude.toString()
-                    longitude = location?.longitude.toString()
-                }
-                else -> {
-
-                }
-            }
-            //몇초 간격과 몇미터를 이동했을시에 호출되는 부분 - 주기적으로 위치 업데이트를 하고 싶다면 사용
-            // ****주기적 업데이트를 사용하다가 사용안할시에는 반드시 해제 필요****
-            /*lm.requestLocationUpdates(LocationManager.GPS_PROVIDER,
-                    1000, //몇초
-                    1F,   //몇미터
-                    gpsLocationListener)
-            lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,
-                    1000,
-                    1F,
-                    gpsLocationListener)
-            //해제부분. 상황에 맞게 잘 구현하자
-            lm.removeUpdates(gpsLocationListener)*/
-        }
-
-        return mapOf("latitude" to latitude, "longitude" to longitude)
     }
 
     //접수 등록 시간 가져오기

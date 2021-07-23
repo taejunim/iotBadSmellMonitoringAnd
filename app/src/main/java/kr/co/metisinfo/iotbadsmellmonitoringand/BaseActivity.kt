@@ -4,6 +4,9 @@ import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
 import android.content.res.Resources
+import android.location.Location
+import android.location.LocationListener
+import android.location.LocationManager
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -39,6 +42,28 @@ abstract class BaseActivity : AppCompatActivity(){
     val calendar: Calendar = Calendar.getInstance()
     var today: String = ymdFormatter.format(calendar.time)
 
+    var locationMap: MutableMap<String, String> = mutableMapOf()
+
+    val locationManager = instance.getSystemService(LOCATION_SERVICE) as LocationManager
+
+    /*var locationManager = instance.getSystemService(LOCATION_SERVICE) as LocationManager
+    //define the listener
+    val locationListener: LocationListener = object : LocationListener {
+        override fun onLocationChanged(location: Location) {
+
+            Log.d("metis", " LocationListener 위치 " + location.longitude + ":" + location.latitude)
+            locationManager.removeUpdates(this)
+
+            locationMap["latitude"] = location.latitude.toString()
+            locationMap["longitude"] = location.longitude.toString()
+
+            callback("location", "")
+        }
+        override fun onStatusChanged(provider: String, status: Int, extras: Bundle) {}
+        override fun onProviderEnabled(provider: String) {}
+        override fun onProviderDisabled(provider: String) {}
+    }*/
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -54,6 +79,34 @@ abstract class BaseActivity : AppCompatActivity(){
     abstract fun initData()
 
     abstract fun callback(apiName: String, data: Any)
+
+    fun getLocation() {
+
+        //define the listener
+        val locationListener: LocationListener = object : LocationListener {
+            override fun onLocationChanged(location: Location) {
+
+                Log.d("metis", " LocationListener 위치 " + location.longitude + ":" + location.latitude)
+                locationMap["latitude"] = location.latitude.toString()
+                locationMap["longitude"] = location.longitude.toString()
+
+                //callback("location", "")
+
+                if (locationMap["latitude"] != "" && locationMap["latitude"] != null) {
+                    locationManager.removeUpdates(this)
+                    callback("location", "")
+                }
+            }
+            override fun onStatusChanged(provider: String, status: Int, extras: Bundle) {}
+            override fun onProviderEnabled(provider: String) {}
+            override fun onProviderDisabled(provider: String) {}
+        }
+
+        try {
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0L, 0f, locationListener)
+        } catch (ex: SecurityException) {
+        }
+    }
 
     //코드 API
     fun getApiData() {

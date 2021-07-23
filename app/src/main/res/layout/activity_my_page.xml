@@ -65,7 +65,7 @@
                     android:id="@+id/my_page_current_password_input"
                     android:layout_below="@id/my_page_current_password_text"
                     android:importantForAutofill="no"
-                    android:inputType="text"
+                    android:inputType="textPassword"
                     style="@style/myPageHintEditText"/>
 
                 <TextView
@@ -84,7 +84,7 @@
                     android:layout_below="@id/my_page_new_password_text"
                     android:hint="@string/password_hint"
                     android:importantForAutofill="no"
-                    android:inputType="text"
+                    android:inputType="textPassword"
                     android:maxLength="15"
                     style="@style/myPageHintEditText"/>
 
@@ -104,7 +104,7 @@
                     android:layout_below="@id/my_page_new_password_confirm_text"
                     android:hint="@string/password_hint"
                     android:importantForAutofill="no"
-                    android:inputType="text"
+                    android:inputType="textPassword"
                     android:maxLength="15"
                     style="@style/myPageHintEditText"/>
 
@@ -118,7 +118,7 @@
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:background="@drawable/round_blue_button"
-            android:text="@string/registration"
+            android:text="@string/modification"
             android:textColor="@color/white"
             android:textStyle="bold"
             android:textSize="18sp"
