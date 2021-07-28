@@ -16,34 +16,19 @@
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:layout_centerVertical="true"
-            android:paddingStart="20dp"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
             android:background="@drawable/intro_middle_background">
 
             <TextView
                 android:id="@+id/title_our_town"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:textSize="32dp"
                 android:textStyle="bold"
                 android:textColor="@color/white"
-                android:text="우리동네"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:layout_below="@+id/title_our_town"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="60dp"
-                android:textSize="32dp"
-                android:textStyle="bold"
-                android:textColor="@color/white"
-                android:text="악취감시"/>
+                android:gravity="center"
+                android:text="우리동네 악취 모니터링"/>
 
         </RelativeLayout>
-
-
 
     </RelativeLayout>
 

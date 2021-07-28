@@ -88,7 +88,7 @@ class MyPageActivity : BaseActivity() {
                 Toast.makeText(this, resource.getString(R.string.my_page_blank_new_password_text), Toast.LENGTH_SHORT).show()
                 return false
             }
-            binding.myPageNewPasswordInput.text.toString().length < 5 || binding.myPageNewPasswordInput.text.toString().length > 15 -> {
+            binding.myPageNewPasswordInput.text.toString().length < 4 || binding.myPageNewPasswordInput.text.toString().length > 15 -> {
 
                 Toast.makeText(this, resource.getString(R.string.user_password_length_exceed), Toast.LENGTH_SHORT).show()
                 return false
@@ -98,7 +98,7 @@ class MyPageActivity : BaseActivity() {
                 Toast.makeText(this, resource.getString(R.string.my_page_blank_new_password_confirm_text), Toast.LENGTH_SHORT).show()
                 return false
             }
-            binding.myPageNewPasswordConfirmInput.text.toString().length < 5 || binding.myPageNewPasswordConfirmInput.text.toString().length > 15 -> {
+            binding.myPageNewPasswordConfirmInput.text.toString().length < 4 || binding.myPageNewPasswordConfirmInput.text.toString().length > 15 -> {
 
                 Toast.makeText(this, resource.getString(R.string.user_password_length_exceed), Toast.LENGTH_SHORT).show()
                 return false

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">iotBadSmellMonitoringAnd</string>
+    <string name="app_name">우리동네 악취 모니터링</string>
 
     <string name="image_description">description</string>
 
@@ -39,9 +39,9 @@
     <string name="blank_user_gender">성별을 선택해주세요.</string>
     <string name="blank_user_region">지역을 선택해주세요.</string>
 
-    <string name="user_id_length_exceed">아이디를 5자리 이상 20자리 이하로 입력해주세요.</string>
-    <string name="user_password_length_exceed">비밀번호를 5자리 이상 15자리 이하로 입력해주세요.</string>
-    <string name="user_password_confirm_length_exceed">비밀번호 확인을 5자리 이상 15자리 이하로 입력해주세요.</string>
+    <string name="user_id_length_exceed">아이디를 4자리 이상 20자리 이하로 입력해주세요.</string>
+    <string name="user_password_length_exceed">비밀번호를 4자리 이상 15자리 이하로 입력해주세요.</string>
+    <string name="user_password_confirm_length_exceed">비밀번호 확인을 4자리 이상 15자리 이하로 입력해주세요.</string>
 
     <string name="incorrect_data">아이디 혹은 비밀번호가 일치하지 않습니다.</string>
 
@@ -54,8 +54,8 @@
     <string name="modification">수정</string>
     <string name="star_text">*</string>
 
-    <string name="user_id_hint">5자리 이상 20자리 이하 입력</string>
-    <string name="password_hint">5자리 이상 15자리 이하 입력</string>
+    <string name="user_id_hint">4자리 이상 20자리 이하 입력</string>
+    <string name="password_hint">4자리 이상 15자리 이하 입력</string>
     <string name="user_name_hint">실명 입력</string>
     <string name="age_hint">나이 입력</string>
     <string name="gender_hint">성별 선택</string>

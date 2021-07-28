@@ -186,7 +186,7 @@ class SignUpActivity : BaseActivity() {
             }
 
             //아이디 길이 체크
-            binding.signUpUserIdInput.text.toString().length < 5 || binding.signUpUserIdInput.text.toString().length > 20 -> {
+            binding.signUpUserIdInput.text.toString().length < 4 || binding.signUpUserIdInput.text.toString().length > 20 -> {
 
                 Toast.makeText(this, resource.getString(R.string.user_id_length_exceed), Toast.LENGTH_SHORT).show()
                 return false
@@ -207,7 +207,7 @@ class SignUpActivity : BaseActivity() {
             }
 
             //비밀번호 길이 체크
-            binding.signUpPasswordInput.text.toString().length < 5 || binding.signUpPasswordInput.text.toString().length > 15 -> {
+            binding.signUpPasswordInput.text.toString().length < 4 || binding.signUpPasswordInput.text.toString().length > 15 -> {
 
                 Toast.makeText(this, resource.getString(R.string.user_password_length_exceed), Toast.LENGTH_SHORT).show()
                 return false
@@ -221,7 +221,7 @@ class SignUpActivity : BaseActivity() {
             }
 
             //비밀번호 길이 체크
-            binding.signUpPasswordConfirmInput.text.toString().length < 5 || binding.signUpPasswordConfirmInput.text.toString().length > 15 -> {
+            binding.signUpPasswordConfirmInput.text.toString().length < 4 || binding.signUpPasswordConfirmInput.text.toString().length > 15 -> {
 
                 Toast.makeText(this, resource.getString(R.string.user_password_confirm_length_exceed), Toast.LENGTH_SHORT).show()
                 return false

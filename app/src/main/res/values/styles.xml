@@ -53,6 +53,12 @@
         <item name="android:textColor">@color/color_white_gray</item>
     </style>
 
+    <style name="smellTypeText" parent="plainText">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/color_bright_gray</item>
+    </style>
+
     <style name="myPageText" parent="plainText">
         <item name="android:layout_marginStart">20dp</item>
         <item name="android:layout_marginTop">20dp</item>

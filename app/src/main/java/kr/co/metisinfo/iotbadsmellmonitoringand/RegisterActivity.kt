@@ -15,6 +15,7 @@ import android.provider.MediaStore
 import android.provider.Settings
 import android.util.Log
 import android.view.View
+import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -30,6 +31,7 @@ import kr.co.metisinfo.iotbadsmellmonitoringand.databinding.ActivityRegisterBind
 import kr.co.metisinfo.iotbadsmellmonitoringand.dialog.SmellTypeDialog
 import kr.co.metisinfo.iotbadsmellmonitoringand.model.ResponseResult
 import kr.co.metisinfo.iotbadsmellmonitoringand.model.WeatherModel
+import kr.co.metisinfo.iotbadsmellmonitoringand.util.Utils.Companion.convertToDp
 import kr.co.metisinfo.iotbadsmellmonitoringand.util.Utils.Companion.dateFormatter
 import kr.co.metisinfo.iotbadsmellmonitoringand.util.Utils.Companion.ymdFormatter
 import okhttp3.MediaType
@@ -59,39 +61,42 @@ class RegisterActivity : BaseActivity(), SmellTypeDialog.SmellTypeDialogListener
     var recyclerView : RecyclerView? = null // 이미지를 보여줄 리사이클러뷰
     var adapter : MultiImageAdapter? = null // 리사이클러뷰에 적용시킬 어댑터
 
+    private lateinit var imageLayoutParams : RelativeLayout.LayoutParams
+
     override fun onInputData(id: String, index: Int) {
         drawSmellTypeButton(id, index)
     }
 
     private fun drawSmellTypeButton(id: String, index: Int) {
         binding.smellTypeText.text = smellTypeList[index].codeIdName
-        binding.smellTypeImage.setBackgroundResource(
-            resource.getIdentifier("smell_$id","drawable","kr.co.metisinfo.iotbadsmellmonitoringand"))
+        binding.smellTypeText.setTextColor(Color.BLACK)
+        binding.smellTypeImage.setBackgroundResource(resource.getIdentifier("smell_$id","drawable","kr.co.metisinfo.iotbadsmellmonitoringand"))
+        binding.smellTypeImage.layoutParams = imageLayoutParams
+        binding.smellTypeLayout.setBackgroundResource(R.drawable.smell_type_button)
         selectedSmellTypeId = smellTypeList[index].codeId
     }
 
     override fun initData() {
-
         receivedIntensityId = intent.getStringExtra("intensityId").toString()
         receivedIntensityText = intent.getStringExtra("intensityText").toString()
         receivedIntensityResource = intent.getStringExtra("intensityResource").toString()
-
-        //getUserTodayRegisterInfo() //접수 현황
     }
 
     override fun initLayout() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_register)
 
-        Log.d("metis", "RegisterActivity 시작")
         binding.includeHeader.textTitle.setText(R.string.register) // 타이틀 제목
         binding.includeHeader.backButton.visibility = View.VISIBLE // 뒤로가기 버튼 보이게
         binding.includeHeader.navigationViewButton.visibility = View.GONE // 사이드 메뉴 버튼 안보이게
 
-        drawSmellTypeButton("001", 0)
-
         binding.intensityButton.text = receivedIntensityText
         binding.intensityButton.setBackgroundResource(resource.getIdentifier(receivedIntensityResource,"drawable", "kr.co.metisinfo.iotbadsmellmonitoringand"))
+
         recyclerView = findViewById(R.id.register_image_view)
+
+        imageLayoutParams = RelativeLayout.LayoutParams(convertToDp(60F), convertToDp(60F))
+        imageLayoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL)
+        imageLayoutParams.setMargins(0,convertToDp(20F),0,0)
     }
 
     override fun setOnClickListener() {

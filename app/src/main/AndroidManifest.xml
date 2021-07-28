@@ -34,7 +34,8 @@
         android:usesCleartextTraffic="true"
         android:requestLegacyExternalStorage="true"
         android:name=".MainApplication">
-        <activity android:name=".IntroActivity">
+        <activity android:name=".IntroActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -44,37 +45,44 @@
         </activity>
 
         <!--로그인-->
-        <activity android:name=".LoginActivity">
+        <activity android:name=".LoginActivity"
+            android:screenOrientation="portrait">
 
         </activity>
 
         <!--회원가입-->
-        <activity android:name=".SignUpActivity">
+        <activity android:name=".SignUpActivity"
+            android:screenOrientation="portrait">
 
         </activity>
 
         <!--MAIN-->
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"
+            android:screenOrientation="portrait">
 
         </activity>
 
         <!--악취 접수 이력-->
-        <activity android:name=".HistoryActivity">
+        <activity android:name=".HistoryActivity"
+            android:screenOrientation="portrait">
 
         </activity>
 
         <!--악취 접수 등록-->
-        <activity android:name=".RegisterActivity">
+        <activity android:name=".RegisterActivity"
+            android:screenOrientation="portrait">
 
         </activity>
 
         <!--My Page-->
-        <activity android:name=".MyPageActivity">
+        <activity android:name=".MyPageActivity"
+            android:screenOrientation="portrait">
 
         </activity>
 
         <!--악취 이력 이미지 상세-->
-        <activity android:name=".ImageDetailActivity">
+        <activity android:name=".ImageDetailActivity"
+            android:screenOrientation="portrait">
 
         </activity>
 
