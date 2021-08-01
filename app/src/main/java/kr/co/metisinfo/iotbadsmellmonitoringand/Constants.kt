@@ -4,7 +4,7 @@ object Constants {
 
     //Server Url
     //const val serverUrl = "http://101.101.219.152:8080" // 개발 서버 IP
-    const val serverUrl = "http://49.50.172.217:8080" // 개발 서버 IP
+    const val serverUrl = "http://49.50.172.217:8080" // 운영 서버 IP
 
     //Weather API
     const val weatherApiUrl = "http://apis.data.go.kr/1360000/VilageFcstInfoService/" // 날씨 API 주소

@@ -72,6 +72,7 @@
     <string name="main_choose_smell_intensity">악취 강도를 선택해주세요.</string>
 
     <string name="register_selected_data_text">선택한 취기 및 악취강도</string>
+    <string name="register_unselected_smell_type_text">취기를 선택해주세요</string>
     <string name="register_upload_image_text">촬영한 사진이 있다면 첨부해주세요</string>
     <string name="register_memo_text">추가 전달 사항이 있다면 입력해주세요</string>
     <string name="register_success_text">등록이 완료되었습니다.</string>

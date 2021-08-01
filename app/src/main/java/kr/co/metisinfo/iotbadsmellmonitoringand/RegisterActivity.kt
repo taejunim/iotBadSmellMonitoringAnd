@@ -153,30 +153,34 @@ class RegisterActivity : BaseActivity(), SmellTypeDialog.SmellTypeDialogListener
 
                     registerTime = getRegisterTime()
 
-                    when (registerTime) {
-                        //등록 시간이 아니면 return
-                        "" -> Toast.makeText(this@RegisterActivity, resource.getString(R.string.register_not_register_time_text), Toast.LENGTH_SHORT).show()
-                        /*"" -> {
-                            val builder = AlertDialog.Builder(this@RegisterActivity)
-                            builder.setMessage("해당 내용으로 등록하시겠습니까?") //AlertDialog의 내용 부분
-                            builder.setPositiveButton("예", DialogInterface.OnClickListener { dialog, which ->
-                                //getWeatherApiData() //날씨 데이터 받은 후 등록
-                                //locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0L, 0f, locationListener)
-                                getLocation()
-                            })
-                            builder.setNegativeButton("아니오", null)
-                            builder.create().show() //보이기
-                        }*/
+                    if (selectedSmellTypeId == "") {
+                        Toast.makeText(this@RegisterActivity, resource.getString(R.string.register_unselected_smell_type_text), Toast.LENGTH_SHORT).show()
+                    } else {
+                        when (registerTime) {
+                            //등록 시간이 아니면 return
+                            "" -> Toast.makeText(this@RegisterActivity, resource.getString(R.string.register_not_register_time_text), Toast.LENGTH_SHORT).show()
+                            /*"" -> {
+                                val builder = AlertDialog.Builder(this@RegisterActivity)
+                                builder.setMessage("해당 내용으로 등록하시겠습니까?") //AlertDialog의 내용 부분
+                                builder.setPositiveButton("예", DialogInterface.OnClickListener { dialog, which ->
+                                    //getWeatherApiData() //날씨 데이터 받은 후 등록
+                                    //locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0L, 0f, locationListener)
+                                    getLocation()
+                                })
+                                builder.setNegativeButton("아니오", null)
+                                builder.create().show() //보이기
+                            }*/
 
-                        else -> {
-                            val builder = AlertDialog.Builder(this@RegisterActivity)
-                            builder.setMessage("해당 내용으로 등록하시겠습니까?") //AlertDialog의 내용 부분
-                            builder.setPositiveButton("예", DialogInterface.OnClickListener { dialog, which ->
-                                //getWeatherApiData() //날씨 데이터 받은 후 등록
-                                getLocation()
-                            })
-                            builder.setNegativeButton("아니오", null)
-                            builder.create().show() //보이기
+                            else -> {
+                                val builder = AlertDialog.Builder(this@RegisterActivity)
+                                builder.setMessage("해당 내용으로 등록하시겠습니까?") //AlertDialog의 내용 부분
+                                builder.setPositiveButton("예", DialogInterface.OnClickListener { dialog, which ->
+                                    //getWeatherApiData() //날씨 데이터 받은 후 등록
+                                    getLocation()
+                                })
+                                builder.setNegativeButton("아니오", null)
+                                builder.create().show() //보이기
+                            }
                         }
                     }
                 }
