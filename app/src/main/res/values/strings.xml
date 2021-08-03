@@ -29,6 +29,10 @@
     <string name="sign_up_available_user_id">회원 가입이 가능한 아이디입니다.</string>
     <string name="sign_up_duplicate_user_id">이미 사용중인 아이디입니다.</string>
     <string name="sign_up_not_clicked_check_duplicate_user_id">아이디 중복 확인을 해주세요.</string>
+    <string name="sign_up_incorrect_form_user_id">아이디 형식이 올바르지 않습니다.\n띄어쓰기를 제외한 4~20자리 영문, 한글, 숫자로 입력해주세요.</string>
+    <string name="sign_up_incorrect_form_user_password">비밀번호 형식이 올바르지 않습니다.\n띄어쓰기를 제외한 4~15자 영문, 숫자, 특수문자로 입력해주세요.\n특수문자는 &#126;, &#33;, &#64;, &#35;, &#36;, &#37;, &#94;, &#38;, &#42;, &#40;, &#41;, &#43;, &#124;, &#61; 만 가능합니다.</string>
+    <string name="sign_up_incorrect_form_user_name">이름 형식이 올바르지 않습니다.\n띄어쓰기를 제외한 2~10자리 한글로 입력해주세요.</string>
+    <string name="sign_up_incorrect_form_user_age">나이 형식이 올바르지 않습니다.\n띄어쓰기를 제외한 1~3자리 숫자로 입력해주세요.</string>
 
     <string name="blank_user_id">아이디를 입력해주세요.</string>
     <string name="blank_user_password">비밀번호를 입력해주세요.</string>

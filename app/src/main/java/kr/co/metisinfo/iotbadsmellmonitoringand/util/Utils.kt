@@ -7,6 +7,7 @@ import androidx.core.content.ContextCompat
 import kr.co.metisinfo.iotbadsmellmonitoringand.MainApplication
 import kr.co.metisinfo.iotbadsmellmonitoringand.R
 import java.text.SimpleDateFormat
+import java.util.regex.Pattern
 
 class Utils {
 
@@ -30,6 +31,28 @@ class Utils {
         //Float 값을 DP 로 변환
         fun convertToDp(value : Float) : Int {
             return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, value, resource.displayMetrics).toInt()
+        }
+
+        fun checkRegex(type: String, value: String) : Boolean {
+
+            //val regex = "^[a-zA-Z0-9]+$"    // 영문 또는 숫자
+
+            var regex = ""
+            when (type) {
+                "id" -> regex = "^[a-zA-Z0-9ㄱ-ㅎ가-힣]+$"
+                "password" -> regex = "^[a-zA-Z0-9~!@#$%^&*()+|=]{4,15}$"
+                "name" -> regex = "^[ㄱ-ㅎ가-힣]{2,10}$"
+                "age" -> regex = "^[0-9]{1,3}$"
+            }
+
+            val pattern = Pattern.compile(regex)
+            val matcher = pattern.matcher(value)
+
+            if (matcher.matches()) {
+                return true
+            }
+
+            return false
         }
     }
 }

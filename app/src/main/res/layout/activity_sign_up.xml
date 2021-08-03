@@ -118,6 +118,7 @@
                     android:hint="@string/user_name_hint"
                     android:importantForAutofill="no"
                     android:inputType="text"
+                    android:maxLength="10"
                     style="@style/hint_edit_text"/>
 
                 <TextView
@@ -138,6 +139,7 @@
                     android:hint="@string/age_hint"
                     android:importantForAutofill="no"
                     android:inputType="text"
+                    android:maxLength="3"
                     style="@style/hint_edit_text"/>
 
                 <TextView

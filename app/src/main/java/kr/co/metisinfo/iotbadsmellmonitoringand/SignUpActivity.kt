@@ -16,11 +16,11 @@ import androidx.databinding.DataBindingUtil
 import kr.co.metisinfo.iotbadsmellmonitoringand.databinding.ActivitySignUpBinding
 import kr.co.metisinfo.iotbadsmellmonitoringand.model.ResponseResult
 import kr.co.metisinfo.iotbadsmellmonitoringand.model.UserModel
+import kr.co.metisinfo.iotbadsmellmonitoringand.util.Utils.Companion.checkRegex
 import kr.co.metisinfo.iotbadsmellmonitoringand.util.Utils.Companion.convertToDp
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-
 
 class SignUpActivity : BaseActivity() {
 
@@ -179,16 +179,23 @@ class SignUpActivity : BaseActivity() {
 
         when {
             //아이디
-            binding.signUpUserIdInput.text.toString() == "" -> {
+            binding.signUpUserIdInput.text.toString().trim() == "" -> {
 
                 Toast.makeText(this, resource.getString(R.string.blank_user_id), Toast.LENGTH_SHORT).show()
                 return false
             }
 
             //아이디 길이 체크
-            binding.signUpUserIdInput.text.toString().length < 4 || binding.signUpUserIdInput.text.toString().length > 20 -> {
+            binding.signUpUserIdInput.text.toString().trim().length < 4 || binding.signUpUserIdInput.text.toString().trim().length > 20 -> {
 
                 Toast.makeText(this, resource.getString(R.string.user_id_length_exceed), Toast.LENGTH_SHORT).show()
+                return false
+            }
+
+            //아이디
+            !checkRegex("id", binding.signUpUserIdInput.text.toString()) -> {
+
+                Toast.makeText(this, resource.getString(R.string.sign_up_incorrect_form_user_id), Toast.LENGTH_SHORT).show()
                 return false
             }
             else -> return true
@@ -234,6 +241,13 @@ class SignUpActivity : BaseActivity() {
                 return false
             }
 
+            //비밀번호 정규식
+            !checkRegex("password", binding.signUpPasswordInput.text.toString()) -> {
+
+                Toast.makeText(this, resource.getString(R.string.sign_up_incorrect_form_user_password), Toast.LENGTH_SHORT).show()
+                return false
+            }
+
             //이름
             binding.signUpUserNameInput.text.toString() == "" -> {
 
@@ -241,10 +255,31 @@ class SignUpActivity : BaseActivity() {
                 return false
             }
 
+            //이름 정규식
+            !checkRegex("name", binding.signUpUserNameInput.text.toString()) -> {
+
+                Toast.makeText(this, resource.getString(R.string.sign_up_incorrect_form_user_name), Toast.LENGTH_SHORT).show()
+                return false
+            }
+
             //나이
             binding.signUpUserAgeInput.text.toString() == "" -> {
 
                 Toast.makeText(this, resource.getString(R.string.blank_user_age), Toast.LENGTH_SHORT).show()
+                return false
+            }
+
+            //나이 정규식
+            !checkRegex("age", binding.signUpUserAgeInput.text.toString()) -> {
+
+                Toast.makeText(this, resource.getString(R.string.sign_up_incorrect_form_user_age), Toast.LENGTH_SHORT).show()
+                return false
+            }
+
+            //나이 범위
+            Integer.parseInt(binding.signUpUserAgeInput.text.toString()) < 1 || Integer.parseInt(binding.signUpUserAgeInput.text.toString()) > 120 -> {
+
+                Toast.makeText(this, resource.getString(R.string.sign_up_incorrect_form_user_age), Toast.LENGTH_SHORT).show()
                 return false
             }
 
