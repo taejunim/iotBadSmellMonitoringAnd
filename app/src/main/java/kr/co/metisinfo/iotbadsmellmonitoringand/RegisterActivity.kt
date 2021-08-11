@@ -29,6 +29,7 @@ import com.sangcomz.fishbun.adapter.image.impl.GlideAdapter
 import kr.co.metisinfo.iotbadsmellmonitoringand.adapter.MultiImageAdapter
 import kr.co.metisinfo.iotbadsmellmonitoringand.databinding.ActivityRegisterBinding
 import kr.co.metisinfo.iotbadsmellmonitoringand.dialog.SmellTypeDialog
+import kr.co.metisinfo.iotbadsmellmonitoringand.model.CurrentDateResult
 import kr.co.metisinfo.iotbadsmellmonitoringand.model.ResponseResult
 import kr.co.metisinfo.iotbadsmellmonitoringand.model.WeatherModel
 import kr.co.metisinfo.iotbadsmellmonitoringand.util.Utils.Companion.convertToDp
@@ -151,38 +152,7 @@ class RegisterActivity : BaseActivity(), SmellTypeDialog.SmellTypeDialogListener
 
                 } else {
 
-                    registerTime = getRegisterTime()
-
-                    if (selectedSmellTypeId == "") {
-                        Toast.makeText(this@RegisterActivity, resource.getString(R.string.register_unselected_smell_type_text), Toast.LENGTH_SHORT).show()
-                    } else {
-                        when (registerTime) {
-                            //등록 시간이 아니면 return
-                            "" -> Toast.makeText(this@RegisterActivity, resource.getString(R.string.register_not_register_time_text), Toast.LENGTH_SHORT).show()
-                            /*"" -> {
-                                val builder = AlertDialog.Builder(this@RegisterActivity)
-                                builder.setMessage("해당 내용으로 등록하시겠습니까?") //AlertDialog의 내용 부분
-                                builder.setPositiveButton("예", DialogInterface.OnClickListener { dialog, which ->
-                                    //getWeatherApiData() //날씨 데이터 받은 후 등록
-                                    //locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0L, 0f, locationListener)
-                                    getLocation()
-                                })
-                                builder.setNegativeButton("아니오", null)
-                                builder.create().show() //보이기
-                            }*/
-
-                            else -> {
-                                val builder = AlertDialog.Builder(this@RegisterActivity)
-                                builder.setMessage("해당 내용으로 등록하시겠습니까?") //AlertDialog의 내용 부분
-                                builder.setPositiveButton("예", DialogInterface.OnClickListener { dialog, which ->
-                                    //getWeatherApiData() //날씨 데이터 받은 후 등록
-                                    getLocation()
-                                })
-                                builder.setNegativeButton("아니오", null)
-                                builder.create().show() //보이기
-                            }
-                        }
-                    }
+                    checkCurrentDateBeforeRegister()
                 }
             }
         }
@@ -288,6 +258,43 @@ class RegisterActivity : BaseActivity(), SmellTypeDialog.SmellTypeDialogListener
     override fun callback(apiName: String, data: Any) {
 
         when (apiName) {
+            "serverDateReceived" -> {
+                val currentDate = data as Date
+                registerTime = getRegisterTime(currentDate)
+
+                if (selectedSmellTypeId == "") {
+                    Toast.makeText(this@RegisterActivity, resource.getString(R.string.register_unselected_smell_type_text), Toast.LENGTH_SHORT).show()
+                } else {
+                    when (registerTime) {
+                        //등록 시간이 아니면 return
+                        "" -> Toast.makeText(this@RegisterActivity, resource.getString(R.string.register_not_register_time_text), Toast.LENGTH_SHORT).show()
+                        /*"" -> {
+                            val builder = AlertDialog.Builder(this@RegisterActivity)
+                            builder.setMessage("해당 내용으로 등록하시겠습니까?") //AlertDialog의 내용 부분
+                            builder.setPositiveButton("예", DialogInterface.OnClickListener { dialog, which ->
+                                //getWeatherApiData() //날씨 데이터 받은 후 등록
+                                //locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0L, 0f, locationListener)
+                                getLocation()
+                            })
+                            builder.setNegativeButton("아니오", null)
+                            builder.create().show() //보이기
+                        }*/
+
+                        else -> {
+                            val builder = AlertDialog.Builder(this@RegisterActivity)
+                            builder.setMessage("해당 내용으로 등록하시겠습니까?") //AlertDialog의 내용 부분
+                            builder.setPositiveButton("예", DialogInterface.OnClickListener { dialog, which ->
+                                //getWeatherApiData() //날씨 데이터 받은 후 등록
+                                getLocation()
+                            })
+                            builder.setNegativeButton("아니오", null)
+                            builder.create().show() //보이기
+                        }
+                    }
+                }
+
+            }
+
             "location" -> {
                 getWeatherApiData() //날씨 데이터 받은 후 등록
             }
@@ -374,6 +381,7 @@ class RegisterActivity : BaseActivity(), SmellTypeDialog.SmellTypeDialogListener
 
                     override fun onFailure(call: Call<ResponseResult>, t: Throwable) {
                         Log.d("metis", t.message.toString())
+                        Toast.makeText(this@RegisterActivity, resource.getString(R.string.register_fail_text), Toast.LENGTH_SHORT).show()
                     }
                 })
             }
@@ -381,11 +389,12 @@ class RegisterActivity : BaseActivity(), SmellTypeDialog.SmellTypeDialogListener
     }
 
     //접수 등록 시간 가져오기
-    private fun getRegisterTime() : String {
+    private fun getRegisterTime(date: Date) : String {
 
         var registerTime = ""
 
-        calendar.time = Date()
+        //calendar.time = Date()
+        calendar.time = date
 
         val today = ymdFormatter.format(calendar.time)
         val currentTime = calendar.time.time
@@ -421,14 +430,66 @@ class RegisterActivity : BaseActivity(), SmellTypeDialog.SmellTypeDialogListener
         return registerTime
     }
 
+    private fun checkCurrentDate() {
+
+        instance.apiService.getCurrentDate().enqueue(object : Callback<CurrentDateResult> {
+            override fun onResponse(call: Call<CurrentDateResult>, response: Response<CurrentDateResult>) {
+
+                val result = response.body()!!.result
+
+                if (result == "success") {
+
+                    val currentDate = dateFormatter.parse(response.body()!!.data)
+
+                    if (getRegisterTime(currentDate!!) == "") {
+                        binding.registrationButton.setBackgroundResource(R.drawable.round_gray_button)
+                    } else {
+                        binding.registrationButton.setBackgroundResource(R.drawable.round_blue_button)
+                    }
+                } else {
+                    if (getRegisterTime(Date()) == "") {
+                        binding.registrationButton.setBackgroundResource(R.drawable.round_gray_button)
+                    } else {
+                        binding.registrationButton.setBackgroundResource(R.drawable.round_blue_button)
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<CurrentDateResult>, t: Throwable) {
+                Log.d("metis", "onFailure : " + t.message.toString())
+                Toast.makeText(this@RegisterActivity, resource.getString(R.string.server_no_response), Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
+    private fun checkCurrentDateBeforeRegister () {
+        instance.apiService.getCurrentDate().enqueue(object : Callback<CurrentDateResult> {
+            override fun onResponse(call: Call<CurrentDateResult>, response: Response<CurrentDateResult>) {
+
+                val result = response.body()!!.result
+
+                if (result == "success") {
+
+                    val currentDate = dateFormatter.parse(response.body()!!.data)
+
+                    callback("serverDateReceived",currentDate)
+
+                } else {
+                    Toast.makeText(this@RegisterActivity, resource.getString(R.string.register_impossible_registration_text), Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<CurrentDateResult>, t: Throwable) {
+                Log.d("metis", "onFailure : " + t.message.toString())
+                Toast.makeText(this@RegisterActivity, resource.getString(R.string.server_no_response), Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
     override fun onResume() {
         super.onResume()
 
-        if (getRegisterTime() == "") {
-            binding.registrationButton.setBackgroundResource(R.drawable.round_gray_button)
-        } else {
-            binding.registrationButton.setBackgroundResource(R.drawable.round_blue_button)
-        }
+        checkCurrentDate()
     }
 
 }

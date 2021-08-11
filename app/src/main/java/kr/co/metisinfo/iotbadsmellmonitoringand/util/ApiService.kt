@@ -132,6 +132,14 @@ interface ApiService {
         @Query("userId") userId: String
     ): Call<ResponseResult>
 
+    // 등록 가능한 시간 체크하기 위한 서버 시간 가져오기
+    @GET("/api/currentDate")
+    @Headers(
+        "Accept: application/json",
+        "Content-Type: application/json"
+    )
+    fun getCurrentDate(): Call<CurrentDateResult>
+
     companion object { // static 처럼 공유객체로 사용가능함. 모든 인스턴스가 공유하는 객체로서 동작함.
 
         fun create(): ApiService {
