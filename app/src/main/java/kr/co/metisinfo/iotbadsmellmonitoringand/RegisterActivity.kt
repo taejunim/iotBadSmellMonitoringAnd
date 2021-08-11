@@ -418,11 +418,11 @@ class RegisterActivity : BaseActivity(), SmellTypeDialog.SmellTypeDialogListener
             }
 
             //현재 시각이 시작 일시와 종료 일시 사이일 경우
-            if (startTime!! < currentTime && endTime > currentTime ) {
+            if (startTime!! <= currentTime && endTime > currentTime ) {
 
                 registerTime = instance.registerStatusList[i].smellRegisterTime
-                Log.d("metis", "startTime : " + startTime)
-                Log.d("metis", "endTime : " + endTime)
+                Log.d("metis", "startTime : " + dateFormatter.format(startTime))
+                Log.d("metis", "endTime : " + dateFormatter.format(endTime))
                 Log.d("metis", "registerTime : " + registerTime)
             }
         }
