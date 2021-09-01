@@ -320,7 +320,7 @@ class RegisterActivity : BaseActivity(), SmellTypeDialog.SmellTypeDialogListener
                     "5" -> weatherStatus = "008" //빗방울
                     "6" -> weatherStatus = "009" //빗방울/눈날림
                     "7" -> weatherStatus = "010" //눈날림
-                    "" -> weatherStatus = "011" //기타
+                    "-" -> weatherStatus = "011" //기타
                 }
 
                 //val locationMap = getLocation()
@@ -333,7 +333,11 @@ class RegisterActivity : BaseActivity(), SmellTypeDialog.SmellTypeDialogListener
                 val weatherState = RequestBody.create(MediaType.parse("text/plain"), weatherStatus)
                 val temperatureValue = RequestBody.create(MediaType.parse("text/plain"), weatherModel.temperature)
                 val humidityValue = RequestBody.create(MediaType.parse("text/plain"), weatherModel.humidity)
-                val windDirectionValue = RequestBody.create(MediaType.parse("text/plain"), String.format("%03d", instance.windDirectionMap.filter { weatherModel.windDirection == it.value }.keys.first().toInt() + 1))
+                val windDirectionValue = if (weatherModel.windDirection == "-") {
+                    RequestBody.create(MediaType.parse("text/plain"), "-")
+                } else {
+                    RequestBody.create(MediaType.parse("text/plain"), String.format("%03d", instance.windDirectionMap.filter { weatherModel.windDirection == it.value }.keys.first().toInt() + 1))
+                }
                 val windSpeedValue = RequestBody.create(MediaType.parse("text/plain"), weatherModel.windSpeed)
                 val gpsX = RequestBody.create(MediaType.parse("text/plain"), locationMap["longitude"].toString())
                 val gpsY = RequestBody.create(MediaType.parse("text/plain"), locationMap["latitude"].toString(),)
@@ -370,18 +374,26 @@ class RegisterActivity : BaseActivity(), SmellTypeDialog.SmellTypeDialogListener
                     override fun onResponse(call: Call<ResponseResult>, response: Response<ResponseResult>) {
                         Log.d("metis",response.toString())
                         Log.d("metis", " data -> " + data)
-                        Log.d("metis", " registerInsert getWindDirectionCode 결과 -> " + response.body().toString())
-                        Toast.makeText(this@RegisterActivity, resource.getString(R.string.register_success_text), Toast.LENGTH_SHORT).show()
+                        Log.d("metis", " 접수 등록  결과 -> " + response.body().toString())
 
-                        val handler = Handler(Looper.getMainLooper())
-                        handler.postDelayed ({
-                            finish()
-                        }, 2000)
+                        if (response.body()!!.result == "success") {
+                            Toast.makeText(this@RegisterActivity, resource.getString(R.string.register_success_text), Toast.LENGTH_SHORT).show()
+
+                            val handler = Handler(Looper.getMainLooper())
+                            handler.postDelayed ({
+                                finish()
+                            }, 2000)
+
+                        } else {
+                            Log.d("metis", "접수 등록 실패")
+                            Toast.makeText(this@RegisterActivity, resource.getString(R.string.register_fail_text), Toast.LENGTH_SHORT).show()
+                        }
+
                     }
 
                     override fun onFailure(call: Call<ResponseResult>, t: Throwable) {
                         Log.d("metis", t.message.toString())
-                        Toast.makeText(this@RegisterActivity, resource.getString(R.string.register_fail_text), Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@RegisterActivity, resource.getString(R.string.register_server_fail_text), Toast.LENGTH_SHORT).show()
                     }
                 })
             }

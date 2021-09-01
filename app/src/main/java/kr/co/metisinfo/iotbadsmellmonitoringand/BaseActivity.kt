@@ -208,8 +208,8 @@ abstract class BaseActivity : AppCompatActivity(){
             }
 
             override fun onFailure(call: Call<WeatherResponse>, t: Throwable) {
-                Log.d("metis", "onFailure : " + t.message.toString())
-                Toast.makeText(this@BaseActivity, resource.getString(R.string.server_no_response), Toast.LENGTH_SHORT).show()
+                Log.d("metis", "weatherApiService onFailure : " + t.message.toString())
+                Toast.makeText(this@BaseActivity, resource.getString(R.string.weather_server_no_response), Toast.LENGTH_SHORT).show()
                 callback("weather", weatherModel)
             }
         })

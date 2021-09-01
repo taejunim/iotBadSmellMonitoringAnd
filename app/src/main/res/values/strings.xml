@@ -4,6 +4,7 @@
     <string name="image_description">description</string>
 
     <string name="server_no_response">서버와 통신이 원활하지 않습니다.\n관리자에게 문의해주세요.</string>
+    <string name="weather_server_no_response">날씨 정보 서버와 통신이 원활하지 않습니다.\n문제 발생시 관리자에게 문의해주세요.</string>
 
     <string name="login">로그인</string>
     <string name="logout">로그아웃</string>
@@ -81,6 +82,7 @@
     <string name="register_memo_text">추가 전달 사항이 있다면 입력해주세요</string>
     <string name="register_success_text">등록이 완료되었습니다.</string>
     <string name="register_fail_text">등록이 실패하였습니다.\n문제 지속시 관리자에게 문의해주세요.</string>
+    <string name="register_server_fail_text">서버와 통신이 원활하지 않아 등록이 실패하였습니다.\n문제 지속시 관리자에게 문의해주세요.</string>
     <string name="register_not_register_time_text">등록 가능한 시간대가 아닙니다.</string>
     <string name="register_select_smell_type">취기 선택</string>
     <string name="register_impossible_registration_text">서버 응답이 없어 등록할 수 없습니다.</string>
