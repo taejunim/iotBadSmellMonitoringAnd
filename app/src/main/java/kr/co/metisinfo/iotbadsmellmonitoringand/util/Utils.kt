@@ -33,6 +33,11 @@ class Utils {
             return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, value, resource.displayMetrics).toInt()
         }
 
+        //dp 값을 px 로 변환
+        fun convertToPixel(dipValue: Float): Float {
+            return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dipValue, resource.displayMetrics)
+        }
+
         fun checkRegex(type: String, value: String) : Boolean {
 
             //val regex = "^[a-zA-Z0-9]+$"    // 영문 또는 숫자

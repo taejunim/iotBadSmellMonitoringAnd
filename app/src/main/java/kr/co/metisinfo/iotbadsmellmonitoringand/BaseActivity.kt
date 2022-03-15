@@ -80,6 +80,7 @@ abstract class BaseActivity : AppCompatActivity(){
 
     abstract fun callback(apiName: String, data: Any)
 
+    //좌표 가져오기
     fun getLocation() {
 
         //define the listener
@@ -111,52 +112,77 @@ abstract class BaseActivity : AppCompatActivity(){
     //코드 API
     fun getApiData() {
 
-        for (i in instance.codeGroupArray.indices) {
+        //풍향 코드 API
+        instance.apiService.getRegionList().enqueue(object : Callback<RegionResult> {
+            override fun onResponse(call: Call<RegionResult>, response: Response<RegionResult>) {
 
-            //풍향 코드 API
-            instance.apiService.getWindDirectionCode(instance.codeGroupArray[i]).enqueue(object : Callback<CodeResult> {
-                override fun onResponse(call: Call<CodeResult>, response: Response<CodeResult>) {
+                if (response.body() == null) {
+                    callback("baseData","fail")
+                } else {
 
-                    val dataList: List<CodeModel> = response.body()!!.data
+                    instance.regionList = response.body()!!.data.region.master //지역 데이터
 
-                    for (j in dataList.indices) {
+                    //코드 데이터 API 시작
+                    for (i in instance.codeGroupArray.indices) {
 
-                        //풍향 코드
-                        if (i == 0 ) {
-                            val convertedValue = (Integer.parseInt(dataList[j].codeId) - 1).toString() //풍향 변환값 => CODE_ID를 정수로 변환후 -1 한 값
-                            val directionName = dataList[j].codeIdName //풍향
+                        instance.apiService.getApiData(instance.codeGroupArray[i]).enqueue(object : Callback<CodeResult> {
+                            override fun onResponse(call: Call<CodeResult>, response: Response<CodeResult>) {
 
-                            instance.windDirectionMap.put(convertedValue,directionName)
-                        }
+                                val dataList: List<CodeModel> = response.body()!!.data
 
-                        //신고 시간대
-                        else if (i == 1) {
-                            instance.registerTimeZoneMap.put(dataList[j].codeId,dataList[j].codeIdName)
-                        }
-                    }
+                                if (response.body()!!.data == null) {
+                                    callback("baseData","fail")
+                                } else {
+                                    when (i) {
+                                        //냄새 강도
+                                        2 -> {
+                                            instance.intensityList = response.body()!!.data
+                                            callback("baseData","success")
+                                        }
 
-                    when (i) {
-                        //냄새 타입
-                        2 -> instance.intensityList = response.body()!!.data
+                                        //취기
+                                        3 -> {
+                                            instance.smellTypeList = response.body()!!.data
+                                            callback("baseData","success")
+                                        } else -> {
+                                            for (j in dataList.indices) {
+                                                //풍향 코드
+                                                if (i == 0 ) {
+                                                    val convertedValue = (Integer.parseInt(dataList[j].codeId) - 1).toString() //풍향 변환값 => CODE_ID를 정수로 변환후 -1 한 값
+                                                    val directionName = dataList[j].codeIdName //풍향
 
-                        //지역
-                        3 -> instance.regionList = response.body()!!.data
+                                                    instance.windDirectionMap.put(convertedValue,directionName)
+                                                }
 
-                        //취기
-                        4 -> {
-                            instance.smellTypeList = response.body()!!.data
-                            callback("baseData","")
-                        }
+                                                //신고 시간대
+                                                else if (i == 1) {
+                                                    Log.d("metis", " dataList[j].codeComment :  " + dataList[j].codeComment)
+                                                    instance.registerTimeZoneMap.put(dataList[j].codeId,dataList[j].codeIdName)
+                                                }
+
+                                                if (j == dataList.lastIndex) {
+                                                    callback("baseData","success")
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+
+                            override fun onFailure(call: Call<CodeResult>, t: Throwable) {
+                                Log.d("metis", "onFailure : " + t.message.toString())
+                                callback("noResponse","")
+                            }
+                        })
                     }
                 }
+            }
 
-                override fun onFailure(call: Call<CodeResult>, t: Throwable) {
-                    Log.d("metis", "onFailure : " + t.message.toString())
-                    Toast.makeText(this@BaseActivity, resource.getString(R.string.server_no_response), Toast.LENGTH_SHORT).show()
-                    callback("noResponse","")
-                }
-            })
-        }
+            override fun onFailure(call: Call<RegionResult>, t: Throwable) {
+                Log.d("metis", "onFailure : " + t.message.toString())
+                callback("noResponse","")
+            }
+        })
     }
 
     //날씨 API

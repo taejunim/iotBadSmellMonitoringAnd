@@ -4,6 +4,7 @@
     <string name="image_description">description</string>
 
     <string name="server_no_response">서버와 통신이 원활하지 않습니다.\n관리자에게 문의해주세요.</string>
+    <string name="app_termination">서버 응답이 없어 어플리케이션을 종료합니다.\n문제 지속시 관리자에게 문의해주세요.</string>
     <string name="weather_server_no_response">날씨 정보 서버와 통신이 원활하지 않습니다.\n문제 발생시 관리자에게 문의해주세요.</string>
 
     <string name="login">로그인</string>

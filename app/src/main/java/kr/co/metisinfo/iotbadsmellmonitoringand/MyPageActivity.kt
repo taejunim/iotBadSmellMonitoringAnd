@@ -61,7 +61,7 @@ class MyPageActivity : BaseActivity() {
             if (checkBlank()) {
                 val userId = MainApplication.prefs.getString("userId", "")
                 val userPassword = binding.myPageNewPasswordInput.text.toString()
-                val data = UserModel(userId,userPassword,"","","","","","","")
+                val data = UserModel(userId,userPassword,"","","","","","","", "", "")
 
                 changePassword(data)
             }

@@ -1,12 +1,12 @@
 package kr.co.metisinfo.iotbadsmellmonitoringand
 
-import android.app.AlarmManager
-import android.app.Application
-import android.app.PendingIntent
+import android.app.*
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.util.Log
 import kr.co.metisinfo.iotbadsmellmonitoringand.model.CodeModel
+import kr.co.metisinfo.iotbadsmellmonitoringand.model.RegionMaster
 import kr.co.metisinfo.iotbadsmellmonitoringand.model.RegisterModel
 import kr.co.metisinfo.iotbadsmellmonitoringand.receiver.AlarmReceiver
 import kr.co.metisinfo.iotbadsmellmonitoringand.util.ApiService
@@ -17,12 +17,12 @@ import java.util.*
 class MainApplication : Application() {
 
     val apiService = ApiService.create()
-    val codeGroupArray = arrayOf("WND", "REN", "SMT", "RGN", "STY")
-    val windDirectionMap: MutableMap<String, String> = mutableMapOf() //풍향 코드
-    val registerTimeZoneMap: MutableMap<String, String> = mutableMapOf() //신고 시간대
 
+    val codeGroupArray = arrayOf("WND", "REN", "SMT", "STY")
+    var windDirectionMap: MutableMap<String, String> = mutableMapOf() //풍향 코드
+    var registerTimeZoneMap: MutableMap<String, String> = mutableMapOf() //신고 시간대
     var intensityList: List<CodeModel> = mutableListOf() //강도
-    var regionList: List<CodeModel> = mutableListOf() //지역
+    var regionList: List<RegionMaster> = mutableListOf() //지역
     var smellTypeList: List<CodeModel> = mutableListOf() //취기
 
     var registerStatusList: List<RegisterModel> = mutableListOf() //접수 현황
@@ -112,5 +112,15 @@ class MainApplication : Application() {
     fun cancelAlarm() {
         pendingIntent = PendingIntent.getBroadcast(this, AlarmReceiver.NOTIFICATION_ID, alarmReceiver, PendingIntent.FLAG_NO_CREATE)
         alarmManager.cancel(pendingIntent)
+    }
+
+    fun finish(activity: Activity) {
+        val builder = AlertDialog.Builder(activity)
+        builder.setMessage(R.string.app_termination) //AlertDialog의 내용 부분
+        builder.setPositiveButton("확인", DialogInterface.OnClickListener { dialog, which ->
+            activity.finish()
+        })
+        builder.setCancelable(false)
+        builder.create().show() //보이기
     }
 }

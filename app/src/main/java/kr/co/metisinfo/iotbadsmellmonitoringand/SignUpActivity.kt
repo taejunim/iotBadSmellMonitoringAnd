@@ -3,21 +3,22 @@ package kr.co.metisinfo.iotbadsmellmonitoringand
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.graphics.Color
-import android.graphics.drawable.StateListDrawable
 import android.os.Handler
 import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
-import android.view.Gravity
 import android.view.View
-import android.widget.*
+import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.TextView
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import kr.co.metisinfo.iotbadsmellmonitoringand.databinding.ActivitySignUpBinding
-import kr.co.metisinfo.iotbadsmellmonitoringand.model.ResponseResult
-import kr.co.metisinfo.iotbadsmellmonitoringand.model.UserModel
+import kr.co.metisinfo.iotbadsmellmonitoringand.model.*
 import kr.co.metisinfo.iotbadsmellmonitoringand.util.Utils.Companion.checkRegex
-import kr.co.metisinfo.iotbadsmellmonitoringand.util.Utils.Companion.convertToDp
+import kr.co.metisinfo.iotbadsmellmonitoringand.util.Utils.Companion.convertToPixel
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -26,9 +27,15 @@ class SignUpActivity : BaseActivity() {
 
     private lateinit var binding: ActivitySignUpBinding
 
-    private var selectedRegionCode = ""
+    private var selectedRegionMasterCodeId = ""
+    private var selectedRegionMasterCodeName = ""
+    private var selectedRegionDetailCodeId = ""
+    private var selectedRegionDetailCodeName = ""
 
     private var isAvailableId = false
+
+    private var regionMasterList: MutableList<SpinnerModel> = ArrayList<SpinnerModel>() //지역 마스터 리스트
+    private var regionDetailList: MutableList<SpinnerModel> = ArrayList<SpinnerModel>() //지역 디테일 리스트
 
     override fun initData() {
     }
@@ -107,9 +114,11 @@ class SignUpActivity : BaseActivity() {
                     val userName = binding.signUpUserNameInput.text.toString()
                     val userAge = binding.signUpUserAgeInput.text.toString()
                     val userGender = getGender()
-                    val userRegion = selectedRegionCode
+                    val userRegionMaster = selectedRegionMasterCodeId
+                    val userRegionDetail = selectedRegionDetailCodeId
+                    val userPhone = "01050541386"
 
-                    val data = UserModel(userId,userPassword,userAge,userName,userGender,"","001","", userRegion)
+                    val data = UserModel(userId,userPassword,userAge,userName,userGender,"","001","", userRegionMaster, userRegionDetail, userPhone)
 
                     instance.apiService.signIn(data).enqueue(object : Callback<ResponseResult> {
                         override fun onResponse(call: Call<ResponseResult>, response: Response<ResponseResult>) {
@@ -291,9 +300,12 @@ class SignUpActivity : BaseActivity() {
             }
 
             //지역
-            selectedRegionCode == "" -> {
+            binding.regionMasterSpinner.selectedItem == null || binding.regionDetailSpinner.selectedItem == null
+                    || binding.regionMasterSpinner.selectedItem.toString() == "선택" || binding.regionDetailSpinner.selectedItem.toString() == "선택"
+                    || selectedRegionMasterCodeId == "" || selectedRegionMasterCodeName == "" || selectedRegionDetailCodeId == "" || selectedRegionDetailCodeName == "" -> {
 
                 Toast.makeText(this, resource.getString(R.string.blank_user_region), Toast.LENGTH_SHORT).show()
+
                 return false
             }
             else -> return true
@@ -303,46 +315,131 @@ class SignUpActivity : BaseActivity() {
     //지역 레이아웃 그리기
     private fun drawRegionGroup() {
 
-        val radioGroupParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT)
+        //지역 마스터 spinner adapter
+        val regionMasterAdapter = object : ArrayAdapter<SpinnerModel>(this,R.layout.item_spinner) {
 
-        val regionRadioGroup = RadioGroup(this)
-        regionRadioGroup.layoutParams = radioGroupParams
-        regionRadioGroup.setBackgroundResource(R.drawable.toggle_background)
-        regionRadioGroup.orientation = RadioGroup.HORIZONTAL
+            override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
 
-        val radioButtonParams = LinearLayout.LayoutParams(convertToDp(0F), LinearLayout.LayoutParams.MATCH_PARENT)
-        radioButtonParams.weight = 1F
-        radioButtonParams.setMargins(convertToDp(2F),convertToDp(2F),0,convertToDp(2F))
+                val v = super.getView(position, convertView, parent)
 
-        var firstRadioButton: RadioButton? = null
+                (v.findViewById<View>(R.id.item_text) as TextView).setTextColor(Color.WHITE)
 
-        val regionList = instance.regionList
+                if (position == count) {
+                    (v.findViewById<View>(R.id.item_text) as TextView).text = "" //마지막 포지션의 textView 를 힌트 용으로 사용합니다.
+                    (v.findViewById<View>(R.id.item_text) as TextView).setHintTextColor(Color.WHITE)
+                    (v.findViewById<View>(R.id.item_text) as TextView).hint = getItem(count).toString() //아이템의 마지막 값을 불러와 hint로 추가해 줍니다.
+                }
 
-        for (i in regionList.indices) {
-
-            val regionRadioButton = RadioButton(this)
-
-            regionRadioButton.id = i+1
-            regionRadioButton.layoutParams = radioButtonParams
-            regionRadioButton.setBackgroundResource(R.drawable.toggle_selected_button)
-            regionRadioButton.gravity = Gravity.CENTER
-            regionRadioButton.setTextColor(Color.WHITE)
-            regionRadioButton.text = regionList[i].codeIdName
-            regionRadioButton.buttonDrawable = StateListDrawable()
-            regionRadioButton.setOnClickListener {
-                selectedRegionCode = regionList[i].codeId
+                return v
             }
 
-            regionRadioGroup.addView(regionRadioButton)
-
-            if (i == 0) {
-                firstRadioButton = regionRadioButton
+            override fun getCount(): Int {
+                return super.getCount() - 1 //마지막 아이템은 힌트용으로만 사용하기 때문에 getCount에 1을 빼줍니다.
             }
         }
 
-        regionRadioGroup.check(firstRadioButton!!.id)
-        selectedRegionCode = regionList[0].codeId
+        //지역 마스터 리스트에 추가
+        for (i in instance.regionList.indices) {
+            val regionObject = SpinnerModel(instance.regionList[i].mCodeId, instance.regionList[i].mCodeIdName)
+            regionMasterList.add(regionObject)
+        }
 
-        binding.regionToggleLayout.addView(regionRadioGroup)
+        regionMasterAdapter.addAll(regionMasterList)
+        regionMasterAdapter.add(SpinnerModel("000","선택")) //마지막 항목을 "선택" 표시
+
+        binding.regionMasterSpinner.adapter = regionMasterAdapter
+        binding.regionMasterSpinner.setSelection(regionMasterAdapter.count) //spinner 초기값 "선택"
+        binding.regionMasterSpinner.dropDownVerticalOffset = convertToPixel(30f).toInt() //background 높이 조정
+
+        //지역 디테일 spinner adapter
+        val regionDetailAdapter = object : ArrayAdapter<SpinnerModel>(this ,R.layout.item_spinner) {
+
+            override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+
+                val v = super.getView(position, convertView, parent)
+
+                (v.findViewById<View>(R.id.item_text) as TextView).setTextColor(Color.WHITE)
+
+                if (position == count) {
+                    (v.findViewById<View>(R.id.item_text) as TextView).text = "" //마지막 포지션의 textView 를 힌트 용으로 사용합니다.
+                    (v.findViewById<View>(R.id.item_text) as TextView).setHintTextColor(Color.WHITE)
+                    (v.findViewById<View>(R.id.item_text) as TextView).hint = getItem(count).toString() //아이템의 마지막 값을 불러와 hint로 추가해 줍니다.
+                }
+
+                return v
+            }
+
+            override fun getCount(): Int {
+                return super.getCount() - 1 //마지막 아이템은 힌트용으로만 사용하기 때문에 getCount에 1을 빼줍니다.
+            }
+        }
+
+        regionDetailList.add(SpinnerModel("000","선택"))
+
+        regionDetailAdapter.addAll(regionDetailList)
+
+        binding.regionDetailSpinner.adapter = regionDetailAdapter
+        binding.regionDetailSpinner.dropDownVerticalOffset = convertToPixel(30f).toInt()
+
+        //지역 마스터 spinner 에서 항목 선택시
+        binding.regionMasterSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
+
+                //마지막 "선택" 항목 빼고 선택시
+                if (position != regionMasterList.size) {
+
+                    val spinnerModel : SpinnerModel = parent.getItemAtPosition(position) as SpinnerModel //spinner 에서 선택한 항목
+
+                    val regionMasterObject: RegionMaster = instance.regionList[position] //API 로 받아온 지역 목록
+
+                    if (spinnerModel.key == regionMasterObject.mCodeId && spinnerModel.value == regionMasterObject.mCodeIdName) {
+
+                        selectedRegionMasterCodeId = spinnerModel.key
+                        selectedRegionMasterCodeName = spinnerModel.value
+
+                        regionDetailList.clear()
+                        regionDetailAdapter.clear() //지역 마스터 선택시 지역 디테일도 초기값 "선택" 으로 표시 하려면 regionDetailAdapter 도 clear 해줘야 함
+
+                        for (i in regionMasterObject.detail.indices) {
+                            val regionObject = SpinnerModel(regionMasterObject.detail[i].dCodeId, regionMasterObject.detail[i].dCodeIdName)
+                            regionDetailList.add(regionObject)
+                        }
+
+                        regionDetailAdapter.addAll(regionDetailList)
+                        regionDetailAdapter.add(SpinnerModel("000","선택"))
+
+                        binding.regionDetailSpinner.adapter = regionDetailAdapter
+                        binding.regionDetailSpinner.setSelection(regionDetailAdapter.count)
+                    }
+                }
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>) {
+
+            }
+        }
+
+        //지역 디테일 spinner 에서 항목 선택시
+        binding.regionDetailSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected( parent: AdapterView<*>, view: View?, position: Int, id: Long) {
+
+                if (position != regionDetailList.size) {
+
+                    val spinnerModel : SpinnerModel = parent.getItemAtPosition(position) as SpinnerModel
+
+                    val regionDetailObject: RegionDetail = instance.regionList[binding.regionMasterSpinner.selectedItemPosition].detail[position]
+
+                    if (spinnerModel.key == regionDetailObject.dCodeId && spinnerModel.value == regionDetailObject.dCodeIdName) {
+
+                        selectedRegionDetailCodeId = spinnerModel.key
+                        selectedRegionDetailCodeName = spinnerModel.value
+                    }
+                }
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+
+            }
+        }
     }
 }

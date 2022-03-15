@@ -39,9 +39,17 @@ interface ApiService {
         "Accept: application/json",
         "Content-Type: application/json"
     )
-    fun getWindDirectionCode(
+    fun getApiData(
         @Query("codeGroup") codeGroup: String
     ): Call<CodeResult>
+
+    //지역 코드
+    @GET("/api/getRegionList")
+    @Headers(
+        "Accept: application/json",
+        "Content-Type: application/json"
+    )
+    fun getRegionList(): Call<RegionResult>
 
     //현재 날씨
     @GET("getUltraSrtFcst?serviceKey=${Constants.serviceKey}")

@@ -13,6 +13,8 @@ class IntroActivity : BaseActivity() {
     lateinit var fadeInAnimation: Animation
     private lateinit var binding: ActivityIntroBinding
 
+    var succeededApiCount = 0
+
     override fun initLayout() {
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_intro)
@@ -31,18 +33,40 @@ class IntroActivity : BaseActivity() {
     }
 
     override fun callback(apiName: String, data: Any) {
-        val handler = Handler(Looper.getMainLooper())
-        handler.postDelayed ({
 
-            var intent: Intent? = when (MainApplication.prefs.getBoolean("isLogin", false)) {
-                true -> Intent(this, MainActivity::class.java)
-                false -> Intent(this, LoginActivity::class.java)
+        if (apiName == "baseData") {
+
+            if (data == "success") {
+                succeededApiCount++
+
+                if (succeededApiCount == instance.codeGroupArray.lastIndex + 1) {
+                    val handler = Handler(Looper.getMainLooper())
+                    handler.postDelayed ({
+
+                        var intent: Intent? = when (MainApplication.prefs.getBoolean("isLogin", false)) {
+                            true -> Intent(this, MainActivity::class.java)
+                            false -> Intent(this, LoginActivity::class.java)
+                        }
+
+                        //val intent = Intent(this, HistoryActivity::class.java)
+                        //val intent = Intent(this, MainActivity::class.java)
+                        startActivity (intent)
+                    }, 2000)
+                }
             }
 
-            //val intent = Intent(this, HistoryActivity::class.java)
-            //val intent = Intent(this, MainActivity::class.java)
-            startActivity (intent)
-        }, 2000)
+            //API 응답 실패
+            else if (data == "fail") {
+                instance.finish(this@IntroActivity)
+            }
+        }
+
+        //서버 무응답
+        else if (apiName == "noResponse") {
+            instance.finish(this@IntroActivity)
+        } else {
+            instance.finish(this@IntroActivity)
+        }
     }
 
     override fun onPause() {

@@ -238,37 +238,6 @@
 
                             </LinearLayout>
 
-                            <LinearLayout
-                                android:layout_width="0dp"
-                                android:layout_height="match_parent"
-                                android:layout_weight="1">
-
-                                <RelativeLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent">
-
-                                    <ImageView
-                                        android:id="@+id/register_fourth_time_image"
-                                        android:layout_width="60dp"
-                                        android:layout_height="60dp"
-                                        android:layout_centerHorizontal="true"
-                                        android:contentDescription="@string/image_description"
-                                        android:background="@drawable/not_yet"
-                                        android:button="@android:color/transparent"/>
-
-                                    <TextView
-                                        android:id="@+id/register_fourth_time_text"
-                                        style="@style/tinyText"
-                                        android:layout_below="@+id/register_fourth_time_image"
-                                        android:layout_centerInParent="true"
-                                        android:layout_marginTop="5dp"
-                                        android:singleLine="true"
-                                        android:text="-" />
-
-                                </RelativeLayout>
-
-                            </LinearLayout>
-
                         </LinearLayout>
 
                     </RelativeLayout>

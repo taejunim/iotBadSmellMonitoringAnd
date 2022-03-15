@@ -60,7 +60,7 @@ class LoginActivity : BaseActivity() {
     private fun login() {
         val userId = binding.userId.text.toString()
         val userPassword = binding.userPassword.text.toString()
-        val data = UserModel(userId,userPassword,"","","","","","","")
+        val data = UserModel(userId,userPassword,"","","","","","","","","")
 
         instance.apiService.userLogin(data).enqueue(object : Callback<LoginResult> {
             override fun onResponse(call: Call<LoginResult>, response: Response<LoginResult>) {
