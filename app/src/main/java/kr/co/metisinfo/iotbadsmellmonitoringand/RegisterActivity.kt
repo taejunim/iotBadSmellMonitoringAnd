@@ -373,9 +373,8 @@ class RegisterActivity : BaseActivity(), SmellTypeDialog.SmellTypeDialogListener
                 ).enqueue(object : Callback<ResponseResult> {
                     override fun onResponse(call: Call<ResponseResult>, response: Response<ResponseResult>) {
                         Log.d("metis",response.toString())
-                        Log.d("metis", " data -> " + data)
-                        Log.d("metis", " 접수 등록  결과 -> " + response.body().toString())
 
+                        //등록 완료
                         if (response.body()!!.result == "success") {
                             Toast.makeText(this@RegisterActivity, resource.getString(R.string.register_success_text), Toast.LENGTH_SHORT).show()
 
@@ -383,12 +382,17 @@ class RegisterActivity : BaseActivity(), SmellTypeDialog.SmellTypeDialogListener
                             handler.postDelayed ({
                                 finish()
                             }, 2000)
-
-                        } else {
-                            Log.d("metis", "접수 등록 실패")
-                            Toast.makeText(this@RegisterActivity, resource.getString(R.string.register_fail_text), Toast.LENGTH_SHORT).show()
                         }
 
+                        //접수 불가 지역
+                        else if (response.body()!!.result == "fail" && response.body()!!.message.indexOf("NO REGIST REGION") != -1) {
+                            Toast.makeText(this@RegisterActivity, resource.getString(R.string.register_incorrect_region), Toast.LENGTH_SHORT).show()
+                        }
+
+                        //접수 등록 실패
+                        else {
+                            Toast.makeText(this@RegisterActivity, resource.getString(R.string.register_fail_text), Toast.LENGTH_SHORT).show()
+                        }
                     }
 
                     override fun onFailure(call: Call<ResponseResult>, t: Throwable) {
@@ -405,7 +409,6 @@ class RegisterActivity : BaseActivity(), SmellTypeDialog.SmellTypeDialogListener
 
         var registerTime = ""
 
-        //calendar.time = Date()
         calendar.time = date
 
         val today = ymdFormatter.format(calendar.time)

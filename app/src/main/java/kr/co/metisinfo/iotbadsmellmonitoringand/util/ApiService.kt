@@ -33,6 +33,14 @@ interface ApiService {
         @Body body: UserModel
     ): Call<ResponseResult>
 
+    //회원가입을 위한 인증번호
+    @GET("/api/getNumberGen")
+    @Headers(
+        "Accept: application/json",
+        "Content-Type: application/json"
+    )
+    fun getCertificationNumber(): Call<CertificationResult>
+
     //풍향 코드
     @GET("/api/codeListSelect")
     @Headers(
@@ -52,8 +60,9 @@ interface ApiService {
     fun getRegionList(): Call<RegionResult>
 
     //현재 날씨
-    @GET("getUltraSrtFcst?serviceKey=${Constants.serviceKey}")
+    @GET("getUltraSrtFcst")
     fun getCurrentWeather(
+        @Query("serviceKey") serviceKey: String,
         @Query("base_date") baseDate: String,
         @Query("base_time") baseTime: String,
         @Query("nx") nx: String,
@@ -61,6 +70,14 @@ interface ApiService {
         @Query("dataType") dataType : String,
         @Query("numOfRows") numOfRows : String
     ): Call<WeatherResponse>
+
+    //공지사항
+    @GET("/api/noticeInfo")
+    @Headers(
+        "Accept: application/json",
+        "Content-Type: application/json"
+    )
+    fun getNoticeInfo(): Call<NoticeResult>
 
     //금일 접수 현황
     @GET("/api/userTodayRegisterInfo")

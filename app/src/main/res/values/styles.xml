@@ -102,6 +102,33 @@
     </style>
 
     <!-- register_title_txt-->
+    <style name="user_phone_edit_text50">
+        <item name="android:layout_width">50dp</item>
+        <item name="android:layout_height">30dp</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:textColorHint">@color/under_line</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:background">@drawable/user_phone_background</item>
+    </style>
+
+    <!-- register_title_txt-->
+    <style name="user_phone_edit_text70">
+        <item name="android:layout_width">70dp</item>
+        <item name="android:layout_height">30dp</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:textColorHint">@color/under_line</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:background">@drawable/user_phone_background</item>
+    </style>
+
+    <style name="hyphen">
+        <item name="android:layout_width">15dp</item>
+        <item name="android:layout_height">30dp</item>
+        <item name="android:textColor">@color/color_plain_text</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <!-- register_title_txt-->
     <style name="myPageHintEditText" parent="hint_edit_text">
         <item name="android:layout_marginStart">20dp</item>
         <item name="android:layout_marginEnd">20dp</item>

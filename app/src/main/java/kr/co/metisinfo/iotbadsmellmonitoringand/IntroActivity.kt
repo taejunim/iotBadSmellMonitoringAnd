@@ -30,6 +30,7 @@ class IntroActivity : BaseActivity() {
 
     override fun initData() {
         getApiData()
+        getNoticeInfo()
     }
 
     override fun callback(apiName: String, data: Any) {
@@ -59,6 +60,11 @@ class IntroActivity : BaseActivity() {
             else if (data == "fail") {
                 instance.finish(this@IntroActivity)
             }
+        }
+
+        //공지사항 API 오류
+        else if (apiName == "noticeInfo" && data == "fail") {
+            instance.finish(this@IntroActivity)
         }
 
         //서버 무응답

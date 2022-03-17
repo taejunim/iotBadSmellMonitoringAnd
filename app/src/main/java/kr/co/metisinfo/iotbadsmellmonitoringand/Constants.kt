@@ -3,13 +3,13 @@ package kr.co.metisinfo.iotbadsmellmonitoringand
 object Constants {
 
     //Server Url
-    //const val serverUrl = "http://172.30.1.45:8080" // 로컬 서버 IP
-    const val serverUrl = "http://101.101.216.193:8007" // 개발 서버 IP
+    const val serverUrl = "http://172.30.1.45:8080" // 로컬 서버 IP
+    //const val serverUrl = "http://101.101.216.193:8007" // 개발 서버 IP
     //const val serverUrl = "http://49.50.172.217:8080" // 운영 서버 IP
 
     //Weather API
-    const val weatherApiUrl = "http://apis.data.go.kr/1360000/VilageFcstInfoService/" // 날씨 API 주소
-    const val serviceKey = "dFNlgyX4FFci5kW2VH%2FnG6IIFGt8NR2vvkjUw3C5RfN8IOUY1xE9D0HzzraWWPJpPfMUgjc55LHj4NCsQVRxwQ%3D%3D" // 날씨 API serviceKey
+    const val weatherApiUrl = "http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/" // 날씨 API 주소
+    const val serviceKey = "aDVsltIrJTOtDLpTA6qnVPhVhaT/aciIUGI30aiipGikIAAZOI4KxfVFBqW9q3s+3xgVzKx6c3gJdUVGaNJ9Bg==" // 날씨 API serviceKey
     const val dataType = "JSON" // 응답 자료 형식
     const val numOfRows = "1000" // 한 페이지당 결과 수
     const val nx = "48" //지역 X

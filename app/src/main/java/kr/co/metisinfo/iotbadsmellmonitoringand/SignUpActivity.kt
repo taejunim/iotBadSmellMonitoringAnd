@@ -37,6 +37,11 @@ class SignUpActivity : BaseActivity() {
     private var regionMasterList: MutableList<SpinnerModel> = ArrayList<SpinnerModel>() //지역 마스터 리스트
     private var regionDetailList: MutableList<SpinnerModel> = ArrayList<SpinnerModel>() //지역 디테일 리스트
 
+    private var userPhone = ""
+
+    private var isCertificated = false
+    private var certificationNumber = ""
+
     override fun initData() {
     }
 
@@ -82,6 +87,44 @@ class SignUpActivity : BaseActivity() {
             }
         }
 
+        binding.certificationRequestButton.setOnClickListener {
+
+            instance.apiService.getCertificationNumber().enqueue(object : Callback<CertificationResult> {
+                override fun onResponse(call: Call<CertificationResult>, response: Response<CertificationResult>) {
+                    Log.d("metis",response.toString())
+                    Log.d("metis", "getCertificationNumber 결과 -> " + response.body().toString())
+
+                    if (response.body() != null) {
+
+                        //인증요청 응답 성공
+                        if (response.body()!!.result == "success") {
+                            certificationNumber = response.body()!!.data.authNum //인증번호
+
+                            userPhone = binding.signUpUserPhoneInputFirst.text.toString() + binding.signUpUserPhoneInputSecond.text.toString() + binding.signUpUserPhoneInputThird.text.toString() //입력한 휴대전화번호
+
+                            isCertificated = true //인증 완료 플래그
+
+                        }
+
+                        //인증요청 API 오류
+                        else if (response.body()!!.result == "fail") {
+                            isCertificated = false
+                            Toast.makeText(this@SignUpActivity, resource.getString(R.string.server_no_response), Toast.LENGTH_SHORT).show()
+                        }
+
+                    } else {
+
+                        isCertificated = false
+                        Toast.makeText(this@SignUpActivity, resource.getString(R.string.server_no_response), Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<CertificationResult>, t: Throwable) {
+                    Toast.makeText(this@SignUpActivity, resource.getString(R.string.server_no_response), Toast.LENGTH_SHORT).show()
+                }
+            })
+        }
+
         binding.signUpUserIdInput.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
 
@@ -93,6 +136,66 @@ class SignUpActivity : BaseActivity() {
 
             override fun afterTextChanged(s: Editable?) {
                 isAvailableId = false
+            }
+        })
+
+        clearEditTextValue(binding.signUpUserPhoneInputFirst)
+        clearEditTextValue(binding.signUpUserPhoneInputSecond)
+        clearEditTextValue(binding.signUpUserPhoneInputThird)
+
+        binding.signUpUserPhoneInputFirst.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                if (s != null) {
+                    if (s.length == 3) {
+                        binding.signUpUserPhoneInputSecond.requestFocus()
+                        binding.signUpUserPhoneInputSecond.isCursorVisible = true
+                    }
+                }
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                isCertificated = false
+            }
+        })
+
+        binding.signUpUserPhoneInputSecond.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                if (s != null) {
+                    if (s.length == 4) {
+                        binding.signUpUserPhoneInputThird.requestFocus()
+                        binding.signUpUserPhoneInputThird.isCursorVisible = true
+                    }
+                }
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                isCertificated = false
+            }
+        })
+
+        binding.signUpUserPhoneInputThird.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                if (s != null) {
+                    if (s.length == 4) {
+                        hideKeyboard(binding.signUpUserPhoneInputThird)
+                    }
+                }
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                isCertificated = false
             }
         })
 
@@ -116,7 +219,7 @@ class SignUpActivity : BaseActivity() {
                     val userGender = getGender()
                     val userRegionMaster = selectedRegionMasterCodeId
                     val userRegionDetail = selectedRegionDetailCodeId
-                    val userPhone = "01050541386"
+                    val userPhone = userPhone
 
                     val data = UserModel(userId,userPassword,userAge,userName,userGender,"","001","", userRegionMaster, userRegionDetail, userPhone)
 
@@ -268,6 +371,28 @@ class SignUpActivity : BaseActivity() {
             !checkRegex("name", binding.signUpUserNameInput.text.toString()) -> {
 
                 Toast.makeText(this, resource.getString(R.string.sign_up_incorrect_form_user_name), Toast.LENGTH_SHORT).show()
+                return false
+            }
+
+            binding.signUpUserPhoneInputFirst.text.toString().trim().isEmpty() || binding.signUpUserPhoneInputSecond.text.toString().trim().isEmpty()
+                    || binding.signUpUserPhoneInputThird.text.toString().trim().isEmpty() -> {
+
+                Toast.makeText(this, resource.getString(R.string.blank_user_phone), Toast.LENGTH_SHORT).show()
+                return false
+            }
+
+            !isCertificated -> {
+                Toast.makeText(this, resource.getString(R.string.sign_up_not_clicked_certification_request_user_phone), Toast.LENGTH_SHORT).show()
+                return false
+            }
+
+            binding.signUpCertificationNumberInput.text.toString().trim().isEmpty() -> {
+                Toast.makeText(this, resource.getString(R.string.blank_certification_number), Toast.LENGTH_SHORT).show()
+                return false
+            }
+
+            certificationNumber.trim() != binding.signUpCertificationNumberInput.text.toString().trim() -> {
+                Toast.makeText(this, resource.getString(R.string.sign_up_incorrect_certification_number), Toast.LENGTH_SHORT).show()
                 return false
             }
 

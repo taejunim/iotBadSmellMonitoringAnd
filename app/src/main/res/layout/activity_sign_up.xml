@@ -14,145 +14,222 @@
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/include_header"
-            android:layout_above="@+id/registration_button">
+            android:layout_above="@+id/registration_button"
+            android:layout_below="@id/include_header">
 
             <RelativeLayout
+                style="@style/marginLeftRight_20"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                style="@style/marginLeftRight_20">
+                android:layout_height="match_parent">
 
                 <!-- 이름-->
                 <TextView
                     android:id="@+id/sign_up_user_id_text"
+                    style="@style/plainText"
                     android:layout_marginTop="30dp"
-                    android:text="@string/sign_up_user_id"
-                    style="@style/plainText"/>
+                    android:text="@string/sign_up_user_id" />
 
                 <TextView
-                    android:layout_toEndOf="@id/sign_up_user_id_text"
+                    style="@style/star_mark"
                     android:layout_alignTop="@id/sign_up_user_id_text"
-                    style="@style/star_mark"/>
+                    android:layout_toEndOf="@id/sign_up_user_id_text" />
 
                 <EditText
                     android:id="@+id/sign_up_user_id_input"
+                    style="@style/hint_edit_text"
                     android:layout_below="@id/sign_up_user_id_text"
                     android:hint="@string/user_id_hint"
                     android:importantForAutofill="no"
                     android:inputType="text"
-                    android:maxLength="20"
-                    style="@style/hint_edit_text"/>
+                    android:maxLength="20" />
 
                 <Button
                     android:id="@+id/register_duplication_check_button"
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
-                    android:layout_alignTop="@+id/sign_up_user_id_input"
-                    android:layout_alignEnd="@+id/sign_up_user_id_input"
-                    android:layout_alignBottom="@+id/sign_up_user_id_input"
+                    android:layout_below="@+id/sign_up_user_id_text"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="5dp"
                     android:background="@drawable/round_blue_button"
                     android:text="@string/sign_up_check_duplicate"
-                    android:textColor="@color/white"
-                    android:layout_marginStart="0dp"
-                    android:layout_marginEnd="4dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"/>
+                    android:textColor="@color/white" />
 
                 <TextView
                     android:id="@+id/sign_up_password_text"
+                    style="@style/plainText"
                     android:layout_below="@id/sign_up_user_id_input"
                     android:layout_marginTop="20dp"
-                    android:text="@string/sign_up_password"
-                    style="@style/plainText"/>
+                    android:text="@string/sign_up_password" />
 
                 <TextView
-                    android:layout_toEndOf="@id/sign_up_password_text"
+                    style="@style/star_mark"
                     android:layout_alignTop="@id/sign_up_password_text"
-                    style="@style/star_mark"/>
+                    android:layout_toEndOf="@id/sign_up_password_text" />
 
                 <EditText
                     android:id="@+id/sign_up_password_input"
+                    style="@style/hint_edit_text"
                     android:layout_below="@id/sign_up_password_text"
                     android:hint="@string/password_hint"
                     android:importantForAutofill="no"
                     android:inputType="textPassword"
-                    android:maxLength="15"
-                    style="@style/hint_edit_text"/>
+                    android:maxLength="15" />
 
                 <TextView
                     android:id="@+id/sign_up_password_confirm_text"
+                    style="@style/plainText"
                     android:layout_below="@id/sign_up_password_input"
                     android:layout_marginTop="20dp"
-                    android:text="@string/sign_up_password_confirm"
-                    style="@style/plainText"/>
+                    android:text="@string/sign_up_password_confirm" />
 
                 <TextView
-                    android:layout_toEndOf="@id/sign_up_password_confirm_text"
+                    style="@style/star_mark"
                     android:layout_alignTop="@id/sign_up_password_confirm_text"
-                    style="@style/star_mark"/>
+                    android:layout_toEndOf="@id/sign_up_password_confirm_text" />
 
                 <EditText
                     android:id="@+id/sign_up_password_confirm_input"
+                    style="@style/hint_edit_text"
                     android:layout_below="@id/sign_up_password_confirm_text"
                     android:hint="@string/password_hint"
                     android:importantForAutofill="no"
                     android:inputType="textPassword"
-                    android:maxLength="15"
-                    style="@style/hint_edit_text"/>
+                    android:maxLength="15" />
 
                 <TextView
                     android:id="@+id/sign_up_user_name_text"
+                    style="@style/plainText"
                     android:layout_below="@id/sign_up_password_confirm_input"
                     android:layout_marginTop="20dp"
-                    android:text="@string/sign_up_user_name"
-                    style="@style/plainText"/>
+                    android:text="@string/sign_up_user_name" />
 
                 <TextView
-                    android:layout_toEndOf="@id/sign_up_user_name_text"
+                    style="@style/star_mark"
                     android:layout_alignTop="@id/sign_up_user_name_text"
-                    style="@style/star_mark"/>
+                    android:layout_toEndOf="@id/sign_up_user_name_text" />
 
                 <EditText
                     android:id="@+id/sign_up_user_name_input"
+                    style="@style/hint_edit_text"
                     android:layout_below="@id/sign_up_user_name_text"
                     android:hint="@string/user_name_hint"
                     android:importantForAutofill="no"
                     android:inputType="text"
-                    android:maxLength="10"
-                    style="@style/hint_edit_text"/>
+                    android:maxLength="10" />
+
+                <TextView
+                    android:id="@+id/sign_up_user_phone_text"
+                    style="@style/plainText"
+                    android:layout_below="@id/sign_up_user_name_input"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="15dp"
+                    android:text="@string/sign_up_user_phone" />
+
+                <TextView
+                    style="@style/star_mark"
+                    android:layout_alignTop="@id/sign_up_user_phone_text"
+                    android:layout_toEndOf="@id/sign_up_user_phone_text" />
+
+                <EditText
+                    android:id="@+id/sign_up_user_phone_input_first"
+                    style="@style/user_phone_edit_text50"
+                    android:layout_below="@id/sign_up_user_phone_text"
+                    android:gravity="center"
+                    android:importantForAutofill="no"
+                    android:inputType="number"
+                    android:maxLength="3"
+                    android:nextFocusDown="@+id/sign_up_user_phone_input_second"/>
+
+                <TextView
+                    android:id="@+id/sign_up_user_phone_hyphen_first"
+                    style="@style/hyphen"
+                    android:layout_below="@id/sign_up_user_phone_text"
+                    android:layout_toRightOf="@id/sign_up_user_phone_input_first"
+                    android:gravity="center"
+                    android:text="-" />
+
+                <EditText
+                    android:id="@+id/sign_up_user_phone_input_second"
+                    style="@style/user_phone_edit_text70"
+                    android:layout_below="@id/sign_up_user_phone_text"
+                    android:layout_toRightOf="@+id/sign_up_user_phone_hyphen_first"
+                    android:gravity="center"
+                    android:importantForAutofill="no"
+                    android:inputType="number"
+                    android:maxLength="4"
+                    android:nextFocusDown="@+id/sign_up_user_phone_input_third"/>
+
+                <TextView
+                    android:id="@+id/sign_up_user_phone_hyphen_second"
+                    style="@style/hyphen"
+                    android:layout_below="@id/sign_up_user_phone_text"
+                    android:layout_toRightOf="@id/sign_up_user_phone_input_second"
+                    android:gravity="center"
+                    android:text="-" />
+
+                <EditText
+                    android:id="@+id/sign_up_user_phone_input_third"
+                    style="@style/user_phone_edit_text70"
+                    android:layout_below="@id/sign_up_user_phone_text"
+                    android:layout_toRightOf="@+id/sign_up_user_phone_hyphen_second"
+                    android:gravity="center"
+                    android:importantForAutofill="no"
+                    android:inputType="number"
+                    android:maxLength="4"/>
+
+                <Button
+                    android:id="@+id/certification_request_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_below="@+id/sign_up_user_phone_text"
+                    android:layout_alignParentRight="true"
+                    android:background="@drawable/round_blue_button"
+                    android:text="@string/sign_up_certification_request"
+                    android:textColor="@color/white" />
+
+                <TextView
+                    android:id="@+id/sign_up_certification_number_text"
+                    style="@style/plainText"
+                    android:layout_below="@id/sign_up_user_phone_input_first"
+                    android:layout_marginTop="20dp"
+                    android:text="@string/sign_up_certification_number" />
+
+                <TextView
+                    style="@style/star_mark"
+                    android:layout_alignTop="@id/sign_up_certification_number_text"
+                    android:layout_toEndOf="@id/sign_up_certification_number_text" />
+
+                <EditText
+                    android:id="@+id/sign_up_certification_number_input"
+                    style="@style/hint_edit_text"
+                    android:layout_below="@id/sign_up_certification_number_text"
+                    android:hint="@string/certification_number_hint"
+                    android:importantForAutofill="no"
+                    android:inputType="number"
+                    android:maxLength="6" />
 
                 <TextView
                     android:id="@+id/sign_up_user_age_text"
-                    android:layout_below="@id/sign_up_user_name_input"
+                    style="@style/plainText"
+                    android:layout_below="@id/sign_up_certification_number_input"
                     android:layout_marginTop="20dp"
-                    android:text="@string/sign_up_user_age"
-                    style="@style/plainText"/>
-
-                <TextView
-                    android:layout_toEndOf="@id/sign_up_user_age_text"
-                    android:layout_alignTop="@id/sign_up_user_age_text"
-                    style="@style/star_mark"/>
+                    android:text="@string/sign_up_user_age" />
 
                 <EditText
                     android:id="@+id/sign_up_user_age_input"
+                    style="@style/hint_edit_text"
                     android:layout_below="@id/sign_up_user_age_text"
                     android:hint="@string/age_hint"
                     android:importantForAutofill="no"
-                    android:inputType="text"
-                    android:maxLength="3"
-                    style="@style/hint_edit_text"/>
+                    android:inputType="number"
+                    android:maxLength="3" />
 
                 <TextView
                     android:id="@+id/sign_up_gender_text"
+                    style="@style/plainText"
                     android:layout_below="@id/sign_up_user_age_input"
                     android:layout_marginTop="20dp"
-                    android:text="@string/sign_up_gender"
-                    style="@style/plainText"/>
-
-                <TextView
-                    android:layout_toEndOf="@id/sign_up_gender_text"
-                    android:layout_alignTop="@id/sign_up_gender_text"
-                    style="@style/star_mark"/>
+                    android:text="@string/sign_up_gender" />
 
                 <LinearLayout
                     android:id="@+id/gender_toggle_layout"
@@ -165,21 +242,23 @@
                         android:id="@+id/gender_toggle"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:checkedButton="@+id/gender_male"
                         android:background="@drawable/toggle_background"
+                        android:checkedButton="@+id/gender_male"
                         android:orientation="horizontal">
 
                         <RadioButton
                             android:id="@+id/gender_male"
                             style="@style/GenderRadioGroup"
                             android:layout_marginStart="2dp"
-                            android:text="@string/male"/>
+                            android:text="@string/male"
+                            android:textSize="15sp" />
 
                         <RadioButton
                             android:id="@+id/gender_female"
                             style="@style/GenderRadioGroup"
                             android:layout_marginEnd="2dp"
-                            android:text="@string/female"/>
+                            android:text="@string/female"
+                            android:textSize="15sp" />
 
                     </RadioGroup>
 
@@ -187,42 +266,42 @@
 
                 <TextView
                     android:id="@+id/sign_up_region_text"
+                    style="@style/plainText"
                     android:layout_below="@id/gender_toggle_layout"
                     android:layout_marginTop="20dp"
-                    android:text="@string/sign_up_region"
-                    style="@style/plainText"/>
+                    android:text="@string/sign_up_region" />
 
                 <TextView
-                    android:layout_toEndOf="@id/sign_up_region_text"
+                    style="@style/star_mark"
                     android:layout_alignTop="@id/sign_up_region_text"
-                    style="@style/star_mark"/>
+                    android:layout_toEndOf="@id/sign_up_region_text" />
 
                 <LinearLayout
                     android:id="@+id/region_toggle_layout"
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
                     android:layout_below="@id/sign_up_region_text"
-                    android:orientation="horizontal"
                     android:layout_marginTop="15dp"
-                    android:layout_marginBottom="30dp">
+                    android:layout_marginBottom="30dp"
+                    android:orientation="horizontal">
 
                     <Spinner
                         android:id="@+id/region_master_spinner"
                         android:layout_width="0dp"
                         android:layout_height="30dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/spinner_background"
                         android:layout_marginLeft="5dp"
-                        android:layout_marginRight="5dp"/>
+                        android:layout_marginRight="5dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/spinner_background" />
 
                     <Spinner
                         android:id="@+id/region_detail_spinner"
                         android:layout_width="0dp"
                         android:layout_height="30dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/spinner_background"
                         android:layout_marginLeft="5dp"
-                        android:layout_marginRight="5dp"/>
+                        android:layout_marginRight="5dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/spinner_background" />
 
                 </LinearLayout>
 

@@ -16,6 +16,7 @@ import androidx.databinding.DataBindingUtil
 import com.google.android.material.navigation.NavigationView
 import kr.co.metisinfo.iotbadsmellmonitoringand.databinding.ActivityMainBinding
 import kr.co.metisinfo.iotbadsmellmonitoringand.databinding.NavigationViewHeaderBinding
+import kr.co.metisinfo.iotbadsmellmonitoringand.dialog.NoticeDialog
 import kr.co.metisinfo.iotbadsmellmonitoringand.model.RegisterModel
 import kr.co.metisinfo.iotbadsmellmonitoringand.model.WeatherModel
 import kr.co.metisinfo.iotbadsmellmonitoringand.util.Utils.Companion.convertToDp
@@ -48,6 +49,9 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
         //네비게이션 뷰 그리기
         drawNavigationView()
+
+        val dialog = NoticeDialog()
+        dialog.show(supportFragmentManager, "NoticeDialog")
     }
 
     override fun setOnClickListener() {

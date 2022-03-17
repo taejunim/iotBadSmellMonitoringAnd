@@ -10,6 +10,7 @@ import android.location.LocationManager
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.View.OnFocusChangeListener
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.Toast
@@ -46,24 +47,6 @@ abstract class BaseActivity : AppCompatActivity(){
 
     val locationManager = instance.getSystemService(LOCATION_SERVICE) as LocationManager
 
-    /*var locationManager = instance.getSystemService(LOCATION_SERVICE) as LocationManager
-    //define the listener
-    val locationListener: LocationListener = object : LocationListener {
-        override fun onLocationChanged(location: Location) {
-
-            Log.d("metis", " LocationListener 위치 " + location.longitude + ":" + location.latitude)
-            locationManager.removeUpdates(this)
-
-            locationMap["latitude"] = location.latitude.toString()
-            locationMap["longitude"] = location.longitude.toString()
-
-            callback("location", "")
-        }
-        override fun onStatusChanged(provider: String, status: Int, extras: Bundle) {}
-        override fun onProviderEnabled(provider: String) {}
-        override fun onProviderDisabled(provider: String) {}
-    }*/
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -87,11 +70,8 @@ abstract class BaseActivity : AppCompatActivity(){
         val locationListener: LocationListener = object : LocationListener {
             override fun onLocationChanged(location: Location) {
 
-                Log.d("metis", " LocationListener 위치 " + location.longitude + ":" + location.latitude)
                 locationMap["latitude"] = location.latitude.toString()
                 locationMap["longitude"] = location.longitude.toString()
-
-                //callback("location", "")
 
                 if (locationMap["latitude"] != "" && locationMap["latitude"] != null) {
                     locationManager.removeUpdates(this)
@@ -192,7 +172,7 @@ abstract class BaseActivity : AppCompatActivity(){
 
         val parameterMap = getParameters() // 날씨 API를 위한 Parameter
 
-        weatherApiService.getCurrentWeather(parameterMap["base_date"].toString(), parameterMap["base_time"].toString(), Constants.nx, Constants.ny,
+        weatherApiService.getCurrentWeather(Constants.serviceKey, parameterMap["base_date"].toString(), parameterMap["base_time"].toString(), Constants.nx, Constants.ny,
             Constants.dataType, Constants.numOfRows).enqueue(object : Callback<WeatherResponse> {
             override fun onResponse(call: Call<WeatherResponse>, response: Response<WeatherResponse>) {
 
@@ -237,6 +217,28 @@ abstract class BaseActivity : AppCompatActivity(){
                 Log.d("metis", "weatherApiService onFailure : " + t.message.toString())
                 Toast.makeText(this@BaseActivity, resource.getString(R.string.weather_server_no_response), Toast.LENGTH_SHORT).show()
                 callback("weather", weatherModel)
+            }
+        })
+    }
+
+    fun getNoticeInfo() {
+
+        //풍향 코드 API
+        instance.apiService.getNoticeInfo().enqueue(object : Callback<NoticeResult> {
+            override fun onResponse(call: Call<NoticeResult>, response: Response<NoticeResult>) {
+
+                if (response.body() == null) {
+                    callback("noticeInfo","fail")
+                } else {
+                    instance.noticeModel = response.body()!!.data
+
+                    Log.d("metis", "instance.noticeModel : " + instance.noticeModel)
+                }
+            }
+
+            override fun onFailure(call: Call<NoticeResult>, t: Throwable) {
+                Log.d("metis", "onFailure : " + t.message.toString())
+                callback("noResponse","")
             }
         })
     }
@@ -332,6 +334,15 @@ abstract class BaseActivity : AppCompatActivity(){
             false
         } else {
             true
+        }
+    }
+
+    fun clearEditTextValue(editText: EditText) {
+        //포커스가 주어졌을 때 동작
+        editText.onFocusChangeListener = OnFocusChangeListener { _, gainFocus ->
+            if (gainFocus) {
+                editText.setText("")
+            }
         }
     }
 }

@@ -20,10 +20,13 @@
     <string name="sign_in_ask_text">관리자에게 문의해 주십시오.</string>
 
     <string name="sign_up_user_id">아이디</string>
-    <string name="sign_up_check_duplicate">중복 확인</string>
+    <string name="sign_up_check_duplicate">중복확인</string>
     <string name="sign_up_password">비밀번호</string>
     <string name="sign_up_password_confirm">비밀번호 확인</string>
     <string name="sign_up_user_name">이름</string>
+    <string name="sign_up_user_phone">휴대전화번호</string>
+    <string name="sign_up_certification_request">인증요청</string>
+    <string name="sign_up_certification_number">인증번호</string>
     <string name="sign_up_user_age">나이</string>
     <string name="sign_up_gender">성별</string>
     <string name="sign_up_region">지역</string>
@@ -31,6 +34,8 @@
     <string name="sign_up_available_user_id">회원 가입이 가능한 아이디입니다.</string>
     <string name="sign_up_duplicate_user_id">이미 사용중인 아이디입니다.</string>
     <string name="sign_up_not_clicked_check_duplicate_user_id">아이디 중복 확인을 해주세요.</string>
+    <string name="sign_up_not_clicked_certification_request_user_phone">인증요청을 해주세요.</string>
+    <string name="sign_up_incorrect_certification_number">인증번호가 일치하지 않습니다.</string>
     <string name="sign_up_incorrect_form_user_id">아이디 형식이 올바르지 않습니다.\n띄어쓰기를 제외한 4~20자리 영문, 한글, 숫자로 입력해주세요.</string>
     <string name="sign_up_incorrect_form_user_password">비밀번호 형식이 올바르지 않습니다.\n띄어쓰기를 제외한 4~15자 영문, 숫자, 특수문자로 입력해주세요.\n특수문자는 &#126;, &#33;, &#64;, &#35;, &#36;, &#37;, &#94;, &#38;, &#42;, &#40;, &#41;, &#43;, &#124;, &#61; 만 가능합니다.</string>
     <string name="sign_up_incorrect_form_user_name">이름 형식이 올바르지 않습니다.\n띄어쓰기를 제외한 2~10자리 한글로 입력해주세요.</string>
@@ -40,6 +45,8 @@
     <string name="blank_user_password">비밀번호를 입력해주세요.</string>
     <string name="blank_user_password_confirm">비밀번호 확인을 입력해주세요.</string>
     <string name="blank_user_name">이름을 입력해주세요.</string>
+    <string name="blank_user_phone">휴대전화번호를 입력해주세요.</string>
+    <string name="blank_certification_number">인증번호를 입력해주세요.</string>
     <string name="blank_user_age">나이를 입력해주세요.</string>
     <string name="blank_user_incorrect_password">비밀번호가 서로 일치하지 않습니다.</string>
     <string name="blank_user_gender">성별을 선택해주세요.</string>
@@ -63,6 +70,7 @@
     <string name="user_id_hint">4자리 이상 20자리 이하 입력</string>
     <string name="password_hint">4자리 이상 15자리 이하 입력</string>
     <string name="user_name_hint">실명 입력</string>
+    <string name="certification_number_hint">인증번호 입력</string>
     <string name="age_hint">나이 입력</string>
     <string name="gender_hint">성별 선택</string>
 
@@ -83,6 +91,7 @@
     <string name="register_memo_text">추가 전달 사항이 있다면 입력해주세요</string>
     <string name="register_success_text">등록이 완료되었습니다.</string>
     <string name="register_fail_text">등록이 실패하였습니다.\n문제 지속시 관리자에게 문의해주세요.</string>
+    <string name="register_incorrect_region">가입시 설정한 지역과 현재 지역이 일치하지 않아 등록이 실패하였습니다.\n가입시 설정한 지역에서 다시 시도해주세요.</string>
     <string name="register_server_fail_text">서버와 통신이 원활하지 않아 등록이 실패하였습니다.\n문제 지속시 관리자에게 문의해주세요.</string>
     <string name="register_not_register_time_text">등록 가능한 시간대가 아닙니다.</string>
     <string name="register_select_smell_type">취기 선택</string>
@@ -106,5 +115,9 @@
     <string name="my_page_blank_new_password_confirm_text">새 비밀번호 확인을 입력해주세요.</string>
     <string name="my_page_incorrect_new_password_text">새 비밀번호가 서로 일치하지 않습니다.</string>
     <string name="my_page_password_change_fail_text">새 비밀번호가 서로 일치하지 않습니다.</string>
+
+    <string name="notice_text">공지사항</string>
+    <string name="notice_title">제목</string>
+    <string name="notice_contents">내용</string>
 
 </resources>
