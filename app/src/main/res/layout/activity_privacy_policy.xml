@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <include
+            android:id="@+id/include_header"
+            layout="@layout/layout_header"
+            android:layout_width="match_parent"
+            android:layout_height="60dp" />
+
+        <CheckBox
+            android:id="@+id/privacy_policy_agreement_check_box"
+            style="@style/plainText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/include_header"
+            android:layout_marginTop="30dp"
+            android:layout_marginLeft="10dp"
+            android:text="@string/privacy_policy_agreement"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/privacy_policy_essential_text"
+            style="@style/plainText"
+            android:layout_below="@+id/include_header"
+            android:layout_toRightOf="@+id/privacy_policy_agreement_check_box"
+            android:layout_marginLeft="5dp"
+            android:layout_alignBaseline="@+id/privacy_policy_agreement_check_box"
+            android:text="@string/privacy_policy_essential"
+            android:textStyle="bold"
+            android:textColor="@color/color_red"
+            android:textSize="16sp"/>
+
+        <FrameLayout
+            android:id="@+id/web_view_frame"
+            android:layout_width="match_parent"
+            android:layout_height="400dp"
+            android:layout_above="@+id/confirmation_button"
+            android:layout_below="@+id/privacy_policy_agreement_check_box"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/privacy_policy_background">
+
+            <WebView
+                android:id="@+id/web_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+        </FrameLayout>
+
+
+
+        <!--<TextView
+            android:id="@+id/privacy_policy_contents_text"
+            style="@style/plainText"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/confirmation_button"
+            android:layout_below="@+id/privacy_policy_agreement_check_box"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/privacy_policy_background"
+            android:padding="5dp"
+            android:scrollbarAlwaysDrawVerticalTrack="true"
+            android:scrollbarFadeDuration="0"
+            android:scrollbarSize="2dp"
+            android:scrollbarThumbVertical="@color/color_gray"
+            android:scrollbarTrackVertical="@color/color_EEEEEEF"
+            android:scrollbars="vertical"
+            android:text="-"
+            android:textColor="@color/color_plain_text"
+            android:textSize="16sp" />-->
+
+        <!-- 완료버튼-->
+        <Button
+            android:id="@+id/confirmation_button"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/round_blue_button"
+            android:text="@string/confirmation"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+    </RelativeLayout>
+
+</layout>

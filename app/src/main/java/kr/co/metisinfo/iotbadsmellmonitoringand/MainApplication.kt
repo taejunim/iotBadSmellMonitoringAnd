@@ -5,10 +5,7 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.util.Log
-import kr.co.metisinfo.iotbadsmellmonitoringand.model.CodeModel
-import kr.co.metisinfo.iotbadsmellmonitoringand.model.NoticeModel
-import kr.co.metisinfo.iotbadsmellmonitoringand.model.RegionMaster
-import kr.co.metisinfo.iotbadsmellmonitoringand.model.RegisterModel
+import kr.co.metisinfo.iotbadsmellmonitoringand.model.*
 import kr.co.metisinfo.iotbadsmellmonitoringand.receiver.AlarmReceiver
 import kr.co.metisinfo.iotbadsmellmonitoringand.util.ApiService
 import kr.co.metisinfo.iotbadsmellmonitoringand.util.PreferenceUtil
@@ -19,16 +16,29 @@ class MainApplication : Application() {
 
     val apiService = ApiService.create()
 
+    var nx = "48" //지역 X
+    var ny = "36" //지역 Y
+
+    /**
+     * code API 불러올 항목 array
+     * WND : 풍향
+     * REN : 악취 접수 시간대
+     * SMT : 악취 강도
+     * STY : 취기
+     */
     val codeGroupArray = arrayOf("WND", "REN", "SMT", "STY")
     var windDirectionMap: MutableMap<String, String> = mutableMapOf() //풍향 코드
-    var registerTimeZoneMap: MutableMap<String, String> = mutableMapOf() //신고 시간대
-    var intensityList: List<CodeModel> = mutableListOf() //강도
-    var regionList: List<RegionMaster> = mutableListOf() //지역
+    var registerTimeZoneMap: MutableMap<String, String> = mutableMapOf() //악취 접수 시간대
+    var intensityList: List<CodeModel> = mutableListOf() //악취 강도
     var smellTypeList: List<CodeModel> = mutableListOf() //취기
+
+    var regionList: List<RegionMaster> = mutableListOf() //지역
+    var regionMasterList: MutableList<SpinnerModel> = ArrayList<SpinnerModel>() //지역 마스터 리스트
+    var regionDetailList: MutableList<SpinnerModel> = ArrayList<SpinnerModel>() //지역 디테일 리스트
 
     var registerStatusList: List<RegisterModel> = mutableListOf() //접수 현황
 
-    var noticeModel: NoticeModel = NoticeModel("", "")
+    var noticeModel: NoticeModel = NoticeModel("", "") //공지사항
 
     /** 푸시 관련 **/
     private lateinit var alarmManager: AlarmManager
@@ -57,6 +67,7 @@ class MainApplication : Application() {
         pendingIntent = PendingIntent.getBroadcast(this, AlarmReceiver.NOTIFICATION_ID, alarmReceiver, PendingIntent.FLAG_UPDATE_CURRENT)
     }
 
+    //푸시 알람 시간 계산
     private fun getAlarmTime() : Long {
 
         val currentDate: Calendar = Calendar.getInstance()
@@ -69,37 +80,29 @@ class MainApplication : Application() {
         val tomorrow = Utils.ymdFormatter.format(currentDate.time)
 
         val time00 = Utils.dateFormatter.parse("$today ${Constants.PUSH_TIME_00}").time
-        val time07 = Utils.dateFormatter.parse("$today ${Constants.PUSH_TIME_07}").time
-        val time12 = Utils.dateFormatter.parse("$today ${Constants.PUSH_TIME_12}").time
-        val time18 = Utils.dateFormatter.parse("$today ${Constants.PUSH_TIME_18}").time
-        val time22 = Utils.dateFormatter.parse("$today ${Constants.PUSH_TIME_22}").time
+        val time06 = Utils.dateFormatter.parse("$today ${Constants.PUSH_TIME_06}").time
+        val time11 = Utils.dateFormatter.parse("$today ${Constants.PUSH_TIME_11}").time
+        val time19 = Utils.dateFormatter.parse("$today ${Constants.PUSH_TIME_19}").time
         val time24 = Utils.dateFormatter.parse("$tomorrow ${Constants.PUSH_TIME_00}").time
-        val tomorrow07 = Utils.dateFormatter.parse("$tomorrow ${Constants.PUSH_TIME_07}").time
-
-        //val testTime = Utils.dateFormatter.parse("$today ${Constants.TEST_TIME}").time
+        val tomorrow06 = Utils.dateFormatter.parse("$tomorrow ${Constants.PUSH_TIME_06}").time
 
         var timeValue : Long? = null
         when (currentTime) {
 
-            //07 에 push
-            in time00 .. time07 -> timeValue = time07
+            //06 에 push
+            in time00 .. time06 -> timeValue = time06
 
-            //12 push
-            in time07 .. time12 -> timeValue = time12
+            //11 push
+            in time06 .. time11 -> timeValue = time11
 
-            //18 push
-            in time12 .. time18 -> timeValue = time18
+            //19 push
+            in time11 .. time19 -> timeValue = time19
 
-            //22 push
-            in time18 .. time22 -> timeValue = time22
-
-            //tomorrow 07 push
-            in time22 .. time24 -> timeValue = tomorrow07
+            //tomorrow 06 push
+            in time19 .. time24 -> timeValue = tomorrow06
         }
 
-        //Log.d("metis", "다음 알람 시간 : " + Utils.timeFormatter.format(testTime) )
         Log.d("metis", "다음 알람 시간 : " + Utils.timeFormatter.format(timeValue) )
-
 
         return timeValue!!
     }
@@ -117,6 +120,7 @@ class MainApplication : Application() {
         alarmManager.cancel(pendingIntent)
     }
 
+    //앱 종료
     fun finish(activity: Activity) {
         val builder = AlertDialog.Builder(activity)
         builder.setMessage(R.string.app_termination) //AlertDialog의 내용 부분

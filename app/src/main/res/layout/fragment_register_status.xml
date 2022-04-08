@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/register_status_text"
+            style="@style/plainText"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:textStyle="bold"
+            android:text="@string/main_register_status" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/register_status_text"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:id="@+id/register_first_time_image"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_centerHorizontal="true"
+                        android:background="@drawable/not_yet"
+                        android:button="@android:color/transparent"
+                        android:contentDescription="@string/image_description" />
+
+                    <TextView
+                        android:id="@+id/register_first_time_text"
+                        style="@style/tinyText"
+                        android:layout_below="@+id/register_first_time_image"
+                        android:layout_centerInParent="true"
+                        android:layout_marginTop="5dp"
+                        android:singleLine="true"
+                        android:text="-" />
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:id="@+id/register_second_time_image"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_centerHorizontal="true"
+                        android:contentDescription="@string/image_description"
+                        android:background="@drawable/not_yet"
+                        android:button="@android:color/transparent"/>
+
+                    <TextView
+                        android:id="@+id/register_second_time_text"
+                        style="@style/tinyText"
+                        android:layout_below="@+id/register_second_time_image"
+                        android:layout_centerInParent="true"
+                        android:layout_marginTop="5dp"
+                        android:singleLine="true"
+                        android:text="-" />
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:id="@+id/register_third_time_image"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_centerHorizontal="true"
+                        android:contentDescription="@string/image_description"
+                        android:background="@drawable/not_yet"
+                        android:button="@android:color/transparent"/>
+
+                    <TextView
+                        android:id="@+id/register_third_time_text"
+                        style="@style/tinyText"
+                        android:layout_below="@+id/register_third_time_image"
+                        android:layout_centerInParent="true"
+                        android:layout_marginTop="5dp"
+                        android:singleLine="true"
+                        android:text="-" />
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</layout>

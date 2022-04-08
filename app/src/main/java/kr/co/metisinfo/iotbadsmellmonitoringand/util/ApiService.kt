@@ -39,7 +39,9 @@ interface ApiService {
         "Accept: application/json",
         "Content-Type: application/json"
     )
-    fun getCertificationNumber(): Call<CertificationResult>
+    fun getCertificationNumber(
+        @Query("userPhone") userPhone: String
+    ): Call<CertificationResult>
 
     //풍향 코드
     @GET("/api/codeListSelect")
@@ -50,6 +52,16 @@ interface ApiService {
     fun getApiData(
         @Query("codeGroup") codeGroup: String
     ): Call<CodeResult>
+
+    //기상청 데이터를 가져오기 위한 x,y 좌표 API
+    @GET("/api/userWeather")
+    @Headers(
+        "Accept: application/json",
+        "Content-Type: application/json"
+    )
+    fun getCoordinates(
+        @Query("userRegion") userRegion: String,
+    ): Call<CoordinatesResult>
 
     //지역 코드
     @GET("/api/getRegionList")
@@ -88,6 +100,17 @@ interface ApiService {
     fun getUserTodayRegisterInfo(
         @Query("userId") userId: String
     ): Call<RegisterResult>
+
+    //우리동네 악취 현황
+    @GET("/api/myTownSmellInfo")
+    @Headers(
+        "Accept: application/json",
+        "Content-Type: application/json"
+    )
+    fun getStatisticsInfo(
+        @Query("regionMaster") regionMaster: String,
+        @Query("regionDetail") regionDetail: String
+    ): Call<StatisticsResult>
 
     @Multipart
     @POST("/api/registerInsert")

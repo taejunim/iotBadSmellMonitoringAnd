@@ -19,7 +19,6 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.util.*
-import kotlin.collections.ArrayList
 
 /**
  * @ Class Name   : HistoryActivity.kt
@@ -133,15 +132,12 @@ class HistoryActivity : BaseActivity(), AdapterView.OnItemSelectedListener {
 
         val userId = MainApplication.prefs.getString("userId", "")
 
-        Log.d("metis", "pageNum : $pageNum")
-        Log.d("metis", "pageCount : $pageCount")
-        Log.d("metis", "selectedSmellValeCode : $selectedSmellValeCode")
-        Log.d("metis", "selectedStartDate : $selectedStartDate")
-        Log.d("metis", "selectedEndDate : $selectedEndDate")
+        showLoading(binding.loading)
 
         instance.apiService.getRegisterMasterHistory(pageNum, pageCount, selectedSmellValeCode, selectedStartDate, selectedEndDate, userId).enqueue(object : Callback<HistoryResult> {
             override fun onResponse(call: Call<HistoryResult>, response: Response<HistoryResult>) {
 
+                hideLoading(binding.loading)
 
                 if(response.body()!!.data != null) {
 
@@ -158,6 +154,7 @@ class HistoryActivity : BaseActivity(), AdapterView.OnItemSelectedListener {
             }
 
             override fun onFailure(call: Call<HistoryResult>, t: Throwable) {
+                hideLoading(binding.loading)
                 Log.d("metis",t.message.toString())
                 Log.d("metis", "onFailure : fail")
             }

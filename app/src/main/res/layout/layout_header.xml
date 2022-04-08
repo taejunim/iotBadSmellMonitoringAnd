@@ -49,11 +49,11 @@
             android:textStyle="bold"
             tools:text="제목"/>
 
-        <View
+        <!--<View
             android:layout_width="match_parent"
             android:layout_height="6dp"
             android:layout_alignParentBottom="true"
-            android:background="@color/include_header_line"/>
+            android:background="@color/include_header_line"/>-->
 
     </RelativeLayout>
 

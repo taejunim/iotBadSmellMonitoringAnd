@@ -1,9 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <array name="array_distance_radius">
-        <item>전체</item>
-        <item>3 km</item>
-        <item>10 km</item>
-        <item>40 km</item>
-    </array>
+
 </resources>

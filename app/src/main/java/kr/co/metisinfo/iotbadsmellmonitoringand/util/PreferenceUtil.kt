@@ -22,5 +22,13 @@ class PreferenceUtil(context: Context) {
     fun setBoolean(key: String, str: Boolean) {
         prefs.edit().putBoolean(key, str).apply()
     }
+
+    fun getLong(key: String, defValue: Long): String {
+        return prefs.getLong(key, defValue).toString()
+    }
+
+    fun setLong(key: String, str: Long) {
+        prefs.edit().putLong(key, str).apply()
+    }
 }
 

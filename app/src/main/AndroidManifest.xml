@@ -50,6 +50,13 @@
 
         </activity>
 
+        <!--개인정보 처리방침-->
+        <activity android:name=".PrivacyPolicyActivity"
+            android:hardwareAccelerated="true"
+            android:screenOrientation="portrait">
+
+        </activity>
+
         <!--회원가입-->
         <activity android:name=".SignUpActivity"
             android:screenOrientation="portrait">

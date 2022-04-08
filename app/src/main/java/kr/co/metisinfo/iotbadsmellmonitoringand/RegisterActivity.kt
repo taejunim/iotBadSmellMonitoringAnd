@@ -98,6 +98,8 @@ class RegisterActivity : BaseActivity(), SmellTypeDialog.SmellTypeDialogListener
         imageLayoutParams = RelativeLayout.LayoutParams(convertToDp(60F), convertToDp(60F))
         imageLayoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL)
         imageLayoutParams.setMargins(0,convertToDp(20F),0,0)
+
+        binding.loading.bringToFront()
     }
 
     override fun setOnClickListener() {
@@ -112,6 +114,8 @@ class RegisterActivity : BaseActivity(), SmellTypeDialog.SmellTypeDialogListener
 
         binding.registrationButton.setOnClickListener {
 
+            binding.registrationButton.isEnabled = false
+
             //위치 권한 체크
             if (Build.VERSION.SDK_INT >= 23 && ContextCompat.checkSelfPermission(applicationContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(this@RegisterActivity, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION) ,0)
@@ -121,6 +125,8 @@ class RegisterActivity : BaseActivity(), SmellTypeDialog.SmellTypeDialogListener
                 //사용자가 승인 거절을 누른경우
                 if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
                     Log.d("metis","사용자가 승인 거절을 누른경우")
+
+                    binding.registrationButton.isEnabled = true
                 }
 
                 //사용자가 승인 거절과 동시에 다시 표시하지 않기 옵션을 선택한 경우
@@ -263,11 +269,19 @@ class RegisterActivity : BaseActivity(), SmellTypeDialog.SmellTypeDialogListener
                 registerTime = getRegisterTime(currentDate)
 
                 if (selectedSmellTypeId == "") {
+                    binding.registrationButton.isEnabled = true
                     Toast.makeText(this@RegisterActivity, resource.getString(R.string.register_unselected_smell_type_text), Toast.LENGTH_SHORT).show()
                 } else {
                     when (registerTime) {
                         //등록 시간이 아니면 return
-                        "" -> Toast.makeText(this@RegisterActivity, resource.getString(R.string.register_not_register_time_text), Toast.LENGTH_SHORT).show()
+
+                        // ** 앱 업로드시 아래 코드로 적용할 것!
+                        "" -> {
+                            binding.registrationButton.isEnabled = true
+                            Toast.makeText(this@RegisterActivity, resource.getString(R.string.register_not_register_time_text), Toast.LENGTH_SHORT).show()
+                        }
+
+                        // ** 앱 업로드시 아래 부분은 주석 처리할 것!
                         /*"" -> {
                             val builder = AlertDialog.Builder(this@RegisterActivity)
                             builder.setMessage("해당 내용으로 등록하시겠습니까?") //AlertDialog의 내용 부분
@@ -285,9 +299,12 @@ class RegisterActivity : BaseActivity(), SmellTypeDialog.SmellTypeDialogListener
                             builder.setMessage("해당 내용으로 등록하시겠습니까?") //AlertDialog의 내용 부분
                             builder.setPositiveButton("예", DialogInterface.OnClickListener { dialog, which ->
                                 //getWeatherApiData() //날씨 데이터 받은 후 등록
+                                showLoading(binding.loading)
                                 getLocation()
                             })
-                            builder.setNegativeButton("아니오", null)
+                            builder.setNegativeButton("아니오", DialogInterface.OnClickListener { dialog, which ->
+                                binding.registrationButton.isEnabled = true
+                            })
                             builder.create().show() //보이기
                         }
                     }
@@ -323,8 +340,6 @@ class RegisterActivity : BaseActivity(), SmellTypeDialog.SmellTypeDialogListener
                     "-" -> weatherStatus = "011" //기타
                 }
 
-                //val locationMap = getLocation()
-
                 Log.d("metis", " locationMap[\"longitude\"].toString() -> " + locationMap["longitude"].toString())
                 Log.d("metis", " locationMap[\"latitude\"].toString() -> " + locationMap["latitude"].toString())
 
@@ -340,7 +355,9 @@ class RegisterActivity : BaseActivity(), SmellTypeDialog.SmellTypeDialogListener
                 }
                 val windSpeedValue = RequestBody.create(MediaType.parse("text/plain"), weatherModel.windSpeed)
                 val gpsX = RequestBody.create(MediaType.parse("text/plain"), locationMap["longitude"].toString())
-                val gpsY = RequestBody.create(MediaType.parse("text/plain"), locationMap["latitude"].toString(),)
+                val gpsY = RequestBody.create(MediaType.parse("text/plain"), locationMap["latitude"].toString())
+                /*val gpsX = RequestBody.create(MediaType.parse("text/plain"), "126.295648753881")
+                val gpsY = RequestBody.create(MediaType.parse("text/plain"), "33.35672261619293")*/
                 val smellComment = RequestBody.create(MediaType.parse("text/plain"), binding.registerMemoInput.text.toString())
                 val smellRegisterTime = RequestBody.create(MediaType.parse("text/plain"), registerTime)
                 val regId = RequestBody.create(MediaType.parse("text/plain"), MainApplication.prefs.getString("userId", ""))
@@ -350,6 +367,8 @@ class RegisterActivity : BaseActivity(), SmellTypeDialog.SmellTypeDialogListener
                 var imageFile3: MultipartBody.Part? = try { getRealPathFromURI(3,uriList[2]) } catch (e: IndexOutOfBoundsException) { null }
                 var imageFile4: MultipartBody.Part? = try { getRealPathFromURI(4,uriList[3]) } catch (e: IndexOutOfBoundsException) { null }
                 var imageFile5: MultipartBody.Part? = try { getRealPathFromURI(5,uriList[4]) } catch (e: IndexOutOfBoundsException) { null }
+
+                //showLoading(binding.loading)
 
                 instance.apiService.registerInsert(
                     smellType,
@@ -374,6 +393,9 @@ class RegisterActivity : BaseActivity(), SmellTypeDialog.SmellTypeDialogListener
                     override fun onResponse(call: Call<ResponseResult>, response: Response<ResponseResult>) {
                         Log.d("metis",response.toString())
 
+                        binding.registrationButton.isEnabled = true
+                        hideLoading(binding.loading)
+
                         //등록 완료
                         if (response.body()!!.result == "success") {
                             Toast.makeText(this@RegisterActivity, resource.getString(R.string.register_success_text), Toast.LENGTH_SHORT).show()
@@ -397,6 +419,8 @@ class RegisterActivity : BaseActivity(), SmellTypeDialog.SmellTypeDialogListener
 
                     override fun onFailure(call: Call<ResponseResult>, t: Throwable) {
                         Log.d("metis", t.message.toString())
+                        binding.registrationButton.isEnabled = true
+                        hideLoading(binding.loading)
                         Toast.makeText(this@RegisterActivity, resource.getString(R.string.register_server_fail_text), Toast.LENGTH_SHORT).show()
                     }
                 })
@@ -497,12 +521,15 @@ class RegisterActivity : BaseActivity(), SmellTypeDialog.SmellTypeDialogListener
             override fun onFailure(call: Call<CurrentDateResult>, t: Throwable) {
                 Log.d("metis", "onFailure : " + t.message.toString())
                 Toast.makeText(this@RegisterActivity, resource.getString(R.string.server_no_response), Toast.LENGTH_SHORT).show()
+                binding.registrationButton.isEnabled = true
             }
         })
     }
 
     override fun onResume() {
         super.onResume()
+
+        binding.registrationButton.isEnabled = true
 
         checkCurrentDate()
     }

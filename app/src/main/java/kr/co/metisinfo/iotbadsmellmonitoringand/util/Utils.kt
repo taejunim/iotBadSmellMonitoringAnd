@@ -1,11 +1,14 @@
 package kr.co.metisinfo.iotbadsmellmonitoringand.util
 
+import android.app.Activity
 import android.content.res.ColorStateList
 import android.content.res.Resources
+import android.graphics.Point
 import android.util.TypedValue
 import androidx.core.content.ContextCompat
 import kr.co.metisinfo.iotbadsmellmonitoringand.MainApplication
 import kr.co.metisinfo.iotbadsmellmonitoringand.R
+import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.regex.Pattern
 
@@ -15,6 +18,11 @@ class Utils {
         val ymdFormatter = SimpleDateFormat("yyyy-MM-dd")
         val dateFormatter = SimpleDateFormat("yyyy-MM-dd HH:mm")
         val timeFormatter = SimpleDateFormat("HH:mm")
+        val baseDateFormatter = SimpleDateFormat("yyyyMMdd")
+        val baseTimeFormatter = SimpleDateFormat("HH30")
+        val simpleTimeFormatter = SimpleDateFormat("HH00")
+
+        val decimalFormat = DecimalFormat("###,###")
 
         private val resource: Resources = MainApplication.getContext().resources
 
@@ -44,7 +52,7 @@ class Utils {
 
             var regex = ""
             when (type) {
-                "id" -> regex = "^[a-zA-Z0-9ㄱ-ㅎ가-힣]+$"
+                "id" -> regex = "^[a-zA-Z0-9]+$"
                 "password" -> regex = "^[a-zA-Z0-9~!@#$%^&*()+|=]{4,15}$"
                 "name" -> regex = "^[ㄱ-ㅎ가-힣]{2,10}$"
                 "age" -> regex = "^[0-9]{1,3}$"
@@ -58,6 +66,19 @@ class Utils {
             }
 
             return false
+        }
+
+        fun setComma(value: String) : String {
+            return decimalFormat.format(Integer.parseInt(value))
+        }
+
+        //기기의 너비구해서 % 값 리턴
+        fun getPercentWidth(activity: Activity, percent: Int): Int {
+            val display = activity.windowManager.defaultDisplay // in Activity
+            val size = Point()
+            display.getRealSize(size) // or getSize(size)
+            val width = size.x
+            return width * percent / 100
         }
     }
 }

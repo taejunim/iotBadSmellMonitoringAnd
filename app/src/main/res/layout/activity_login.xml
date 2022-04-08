@@ -51,13 +51,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="#5E5E5E">
+                android:background="@color/color_gary_5e5e5e">
 
                 <Button
                     android:id="@+id/sign_up_button"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="#5E5E5E"
+                    android:background="@color/color_gary_5e5e5e"
                     android:text="@string/sign_up"
                     android:textColor="@color/white"
                     android:textSize="18sp"/>
@@ -74,6 +74,13 @@
             android:layout_centerInParent="true"
             android:layout_marginTop="20dp"
             android:text="@string/sign_in_lost_password_text"/>
+
+        <ProgressBar
+            android:visibility="invisible"
+            android:id="@+id/loading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"/>
 
     </RelativeLayout>
 </layout>

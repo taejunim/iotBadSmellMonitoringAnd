@@ -9,6 +9,7 @@
 
     <string name="login">로그인</string>
     <string name="logout">로그아웃</string>
+    <string name="privacy_policy">개인정보 처리방침</string>
     <string name="sign_up">회원가입</string>
     <string name="main">악취 접수</string>
     <string name="register">악취 접수 등록</string>
@@ -18,6 +19,10 @@
     <string name="sign_in_welcome_text">환영합니다!</string>
     <string name="sign_in_lost_password_text"><u>비밀번호를 잊으셨나요?</u></string>
     <string name="sign_in_ask_text">관리자에게 문의해 주십시오.</string>
+
+    <string name="privacy_policy_agreement">개인정보 수집 및 이용 동의</string>
+    <string name="privacy_policy_essential">(필수)</string>
+    <string name="privacy_policy_not_checked">개인정보 수집 및 이용 동의에 동의해주세요.</string>
 
     <string name="sign_up_user_id">아이디</string>
     <string name="sign_up_check_duplicate">중복확인</string>
@@ -33,13 +38,17 @@
 
     <string name="sign_up_available_user_id">회원 가입이 가능한 아이디입니다.</string>
     <string name="sign_up_duplicate_user_id">이미 사용중인 아이디입니다.</string>
+    <string name="sign_up_duplicate_user_phone">이미 가입된 휴대전화번호입니다.</string>
     <string name="sign_up_not_clicked_check_duplicate_user_id">아이디 중복 확인을 해주세요.</string>
     <string name="sign_up_not_clicked_certification_request_user_phone">인증요청을 해주세요.</string>
+    <string name="sign_up_certification_request_fail">인증 요청에 실패하였습니다.\n문제 지속시 관리자에게 문의해주세요.</string>
+    <string name="sign_up_certification_request_success">인증 번호를 문자메시지로 발송하였습니다.\n확인후 입력해주세요.</string>
     <string name="sign_up_incorrect_certification_number">인증번호가 일치하지 않습니다.</string>
-    <string name="sign_up_incorrect_form_user_id">아이디 형식이 올바르지 않습니다.\n띄어쓰기를 제외한 4~20자리 영문, 한글, 숫자로 입력해주세요.</string>
+    <string name="sign_up_incorrect_form_user_id">아이디 형식이 올바르지 않습니다.\n띄어쓰기를 제외한 4~20자리 영문과 숫자 조합으로 입력해주세요.</string>
     <string name="sign_up_incorrect_form_user_password">비밀번호 형식이 올바르지 않습니다.\n띄어쓰기를 제외한 4~15자 영문, 숫자, 특수문자로 입력해주세요.\n특수문자는 &#126;, &#33;, &#64;, &#35;, &#36;, &#37;, &#94;, &#38;, &#42;, &#40;, &#41;, &#43;, &#124;, &#61; 만 가능합니다.</string>
     <string name="sign_up_incorrect_form_user_name">이름 형식이 올바르지 않습니다.\n띄어쓰기를 제외한 2~10자리 한글로 입력해주세요.</string>
     <string name="sign_up_incorrect_form_user_age">나이 형식이 올바르지 않습니다.\n띄어쓰기를 제외한 1~3자리 숫자로 입력해주세요.</string>
+    <string name="sign_up_fail">회원가입에 실패하였습니다.\n문제 지속시 관리자에게 문의해주세요.</string>
 
     <string name="blank_user_id">아이디를 입력해주세요.</string>
     <string name="blank_user_password">비밀번호를 입력해주세요.</string>
@@ -61,6 +70,8 @@
     <string name="permission_text">위치 권한이 필요합니다. 확인을 누르면 설정 화면으로 이동합니다.</string>
     <string name="location_text">위치 기능이 꺼져있습니다. 확인을 누르면 설정 화면으로 이동합니다.</string>
 
+    <string name="do_not_show_up">오늘 하루 동안 보지 않기</string>
+    <string name="confirmation">확인</string>
     <string name="registration">등록</string>
     <string name="cancellation">취소</string>
     <string name="completion">완료</string>
@@ -74,10 +85,11 @@
     <string name="age_hint">나이 입력</string>
     <string name="gender_hint">성별 선택</string>
 
+    <string name="none">선택안함</string>
     <string name="male">남성</string>
     <string name="female">여성</string>
 
-    <string name="main_current_weather">현재 날씨</string>
+    <string name="main_current_weather">%1$s 현재 날씨</string>
     <string name="main_temperature">기온 : %1$s °C</string>
     <string name="main_humidity">습도 : %1$s %%</string>
     <string name="main_wind">풍향 : %1$s</string>
@@ -98,8 +110,8 @@
     <string name="register_impossible_registration_text">서버 응답이 없어 등록할 수 없습니다.</string>
 
     <string name="history_search_text">조회</string>
-    <string name="histroy_search_date_text">일자</string>
-    <string name="histroy_search_smell_value_text">악취 강도</string>
+    <string name="history_search_date_text">일자</string>
+    <string name="history_search_smell_value_text">악취 강도</string>
     <string name="history_text">이력</string>
     <string name="history_no_more_data">더 이상 데이터가 존재하지 않습니다.</string>
     <string name="history_no_data">검색 결과가 존재하지 않습니다.</string>
@@ -119,5 +131,151 @@
     <string name="notice_text">공지사항</string>
     <string name="notice_title">제목</string>
     <string name="notice_contents">내용</string>
+
+    <string name="statistics_current_status">우리동네 악취 현황</string>
+    <string name="statistics_sensing_count_text">감지 횟수</string>
+    <string name="statistics_sensing_count">%1$s 건</string>
+    <string name="statistics_sensing_ratio_text">감지 비율</string>
+    <string name="statistics_sensing_ratio">%1$s %%</string>
+    <string name="statistics_sensing_intensity_text">주요 감지 악취 강도</string>
+    <string name="statistics_sensing_intensity">%1$s</string>
+    <string name="statistics_sensing_type_text">주요 악취</string>
+    <string name="statistics_sensing_type">%1$s</string>
+
+    <string name="privacy_policy_contents">개인정보처리방침\n
+\n
+\n
+&lt; 제주악취관리센터 &gt;(은)는 「개인정보 보호법」 제30조에 따라 정보 주체의 개인정보를 보호하고 이와 관련한 고충을 신속하고  원활하게 처리할 수 있도록 하기 위하여 다음과 같이 개인정보 처리방침을 수립·공개합니다.\n
+\n
+\n
+제1조(개인정보의 처리목적)\n
+\n
+&lt; 제주악취관리센터 &gt;(이)가 개인정보 보호법 제32조에 따라 등록․공개하는 개인정보파일의 처리목적은 다음과 같습니다.\n
+\n
+\n
+1. 개인정보 파일명 : 회원정보 관리\n
+개인정보의 처리목적 : 애플리케이션 회원가입 및 관리\n
+수집방법 : 애플리케이션\n
+보유근거 : 회원가입 및 관리\n
+보유기간 : 지체없이 파기\n
+\n
+제2조(정보주체와 법정대리인의 권리·의무 및 그 행사방법)\n
+\n
+① 정보주체는 제주악취관리센터에 대해 언제든지 개인정보 열람·정정·삭제·처리정지 요구 등의 권리를 행사할 수 있습니다.\n
+\n
+② 제1항에 따른 권리 행사는제주악취관리센터에 대해 「개인정보 보호법」 시행령 제41조제1항에 따라 서면, 전자우편, 모사전송(FAX) 등을 통하여 하실 수 있으며 제주악취관리센터은(는) 이에 대해 지체 없이 조치하겠습니다.\n
+\n
+③ 제1항에 따른 권리 행사는 정보주체의 법정대리인이나 위임을 받은 자 등 대리인을 통하여 하실 수 있습니다.이 경우 “개인정보 처리 방법에 관한 고시(제2020-7호)” 별지 제11호 서식에 따른 위임장을 제출하셔야 합니다.\n
+\n
+④ 개인정보 열람 및 처리정지 요구는 「개인정보 보호법」 제35조 제4항, 제37조 제2항에 의하여 정보주체의 권리가 제한 될 수 있습니다.\n
+\n
+⑤ 개인정보의 정정 및 삭제 요구는 다른 법령에서 그 개인정보가 수집 대상으로 명시되어 있는 경우에는 그 삭제를 요구할 수 없습니다.\n
+\n
+⑥ 제주악취관리센터은(는) 정보주체 권리에 따른 열람의 요구, 정정·삭제의 요구, 처리정지의 요구 시 열람 등 요구를 한 자가 본인이거나 정당한 대리인인지를 확인합니다.\n
+\n
+\n
+\n
+제3조(처리하는 개인정보의 항목 작성)\n
+\n
+① &lt; 제주악취관리센터 &gt;은(는) 다음의 개인정보 항목을 처리하고 있습니다.\n
+\n
+\n
+\n
+1&lt; 회원정보 관리 &gt;\n
+필수항목 : 휴대전화번호, 비밀번호, 로그인ID, 이름, 지역\n
+선택항목 : 성별, 나이\n
+\n
+\n
+\n
+제4조(개인정보의 파기)\n
+\n
+\n
+① &lt; 제주악취관리센터 &gt; 은(는) 개인정보 보유기간의 경과, 처리목적 달성 등 개인정보가 불필요하게 되었을 때에는 지체없이 해당 개인정보를 파기합니다.\n
+\n
+② 정보주체로부터 동의받은 개인정보 보유기간이 경과하거나 처리목적이 달성되었음에도 불구하고 다른 법령에 따라 개인정보를 계속 보존하여야 하는 경우에는, 해당 개인정보를 별도의 데이터베이스(DB)로 옮기거나 보관장소를 달리하여 보존합니다.\n
+1. 법령 근거 :\n
+2. 보존하는 개인정보 항목 : 등록자ID, 등록일자\n
+\n
+③ 개인정보 파기의 절차 및 방법은 다음과 같습니다.\n
+1. 파기절차\n
+&lt; 제주악취관리센터 &gt; 은(는) 파기 사유가 발생한 개인정보를 선정하고, &lt; 제주악취관리센터 &gt; 의 개인정보 보호책임자의 승인을 받아 개인정보를 파기합니다.\n
+\n
+2. 파기방법\n
+\n
+전자적 파일 형태의 정보는 기록을 재생할 수 없는 기술적 방법을 사용합니다\n
+\n
+\n
+\n
+제5조(개인정보의 안전성 확보 조치)\n
+\n
+&lt; 제주악취관리센터 &gt;은(는) 개인정보의 안전성 확보를 위해 다음과 같은 조치를 취하고 있습니다.\n
+\n
+\n
+\n
+1. 개인정보 취급 직원의 최소화 및 교육\n
+개인정보를 취급하는 직원을 지정하고 담당자에 한정시켜 최소화 하여 개인정보를 관리하는 대책을 시행하고 있습니다.\n
+\n
+2. 개인정보의 암호화\n
+이용자의 개인정보는 비밀번호는 암호화 되어 저장 및 관리되고 있어, 본인만이 알 수 있으며 중요한 데이터는 파일 및 전송 데이터를 암호화 하거나 파일 잠금 기능을 사용하는 등의 별도 보안기능을 사용하고 있습니다.\n
+\n
+3. 개인정보에 대한 접근 제한\n
+개인정보를 처리하는 데이터베이스시스템에 대한 접근권한의 부여,변경,말소를 통하여 개인정보에 대한 접근통제를 위하여 필요한 조치를 하고 있으며 침입차단시스템을 이용하여 외부로부터의 무단 접근을 통제하고 있습니다.\n
+\n
+\n
+\n
+\n
+\n
+제6조(개인정보 자동 수집 장치의 설치•운영 및 거부에 관한 사항)\n
+\n
+제주악취관리센터 은(는) 정보주체의 이용정보를 저장하고 수시로 불러오는 ‘쿠키(cookie)’를 사용하지 않습니다.\n
+\n
+제7조 (개인정보 보호책임자)\n
+\n
+① 제주악취관리센터 은(는) 개인정보 처리에 관한 업무를 총괄해서 책임지고, 개인정보 처리와 관련한 정보주체의 불만처리 및 피해구제 등을 위하여 아래와 같이 개인정보 보호책임자를 지정하고 있습니다.\n
+\n
+▶ 개인정보 보호책임자\n
+성명 : 고용국\n
+직책 : 연구원\n
+연락처 : 064-756-6507, 팩스 : 064-796-6501\n
+\n
+※ 개인정보 보호 담당부서로 연결됩니다.\n
+\n
+▶ 개인정보 보호 담당부서\n
+부서명 : 기술지원팀\n
+담당자 : 고용국\n
+연락처 : 064-756-6507, 팩스 : 064-756-6501\n
+\n
+② 정보주체께서는 제주악취관리센터 의 서비스(또는 사업)을 이용하시면서 발생한 모든 개인정보 보호 관련 문의, 불만처리, 피해구제 등에 관한 사항을 개인정보 보호책임자 및 담당부서로 문의하실 수 있습니다. 제주악취관리센터 은(는) 정보주체의 문의에 대해 지체 없이 답변 및 처리해드릴 것입니다.\n
+\n
+제8조(개인정보 열람청구)\n
+정보주체는 ｢개인정보 보호법｣ 제35조에 따른 개인정보의 열람 청구를 아래의 부서에 할 수 있습니다.\n
+&lt; 제주악취관리센터 &gt;은(는) 정보주체의 개인정보 열람청구가 신속하게 처리되도록 노력하겠습니다.\n
+\n
+▶ 개인정보 열람청구 접수·처리 부서\n
+부서명 : 기술지원팀\n
+담당자 : 고용국\n
+연락처 : 064-756-6507, 팩스 : 064-756-6501\n
+\n
+\n
+\n
+제9조(권익침해 구제방법)\n
+\n
+\n
+\n
+정보주체는 개인정보침해로 인한 구제를 받기 위하여 개인정보분쟁조정위원회, 한국인터넷진흥원 개인정보침해신고센터 등에 분쟁해결이나 상담 등을 신청할 수 있습니다. 이 밖에 기타 개인정보침해의 신고, 상담에 대하여는 아래의 기관에 문의하시기 바랍니다.\n
+\n
+1. 개인정보분쟁조정위원회 : (국번없이) 1833-6972 (www.kopico.go.kr)\n
+2. 개인정보침해신고센터 : (국번없이) 118 (privacy.kisa.or.kr)\n
+3. 대검찰청 : (국번없이) 1301 (www.spo.go.kr)\n
+4. 경찰청 : (국번없이) 182 (ecrm.cyber.go.kr)\n
+\n
+「개인정보보호법」제35조(개인정보의 열람), 제36조(개인정보의 정정·삭제), 제37조(개인정보의 처리정지 등)의 규정에 의한 요구에 대 하여 공공기관의 장이 행한 처분 또는 부작위로 인하여 권리 또는 이익의 침해를 받은 자는 행정심판법이 정하는 바에 따라 행정심판을 청구할 수 있습니다.\n
+\n
+※ 행정심판에 대해 자세한 사항은 중앙행정심판위원회(www.simpan.go.kr) 홈페이지를 참고하시기 바랍니다.\n
+\n
+제10조(개인정보 처리방침 변경)\n
+\n
+\n
+① 이 개인정보처리방침은 2022년 3월 21부터 적용됩니다.\n</string>
 
 </resources>

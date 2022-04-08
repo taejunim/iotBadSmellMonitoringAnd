@@ -140,8 +140,18 @@
                     android:orientation="horizontal"
                     android:id="@+id/imageListView">
                 </LinearLayout>
+
             </HorizontalScrollView>
+
         </RelativeLayout>
+
+        <ProgressBar
+            android:visibility="invisible"
+            android:id="@+id/loading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"/>
+
     </RelativeLayout>
 
 </layout>

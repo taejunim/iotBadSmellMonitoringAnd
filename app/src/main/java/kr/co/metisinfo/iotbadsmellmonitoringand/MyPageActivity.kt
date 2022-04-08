@@ -24,7 +24,6 @@ class MyPageActivity : BaseActivity() {
     override fun initLayout() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_my_page)
 
-        Log.d("metis", "MyPageActivity 시작")
         binding.includeHeader.textTitle.setText(R.string.my_page) // 타이틀 제목
         binding.includeHeader.backButton.visibility = View.VISIBLE // 뒤로가기 버튼 보이게
         binding.includeHeader.navigationViewButton.visibility = View.GONE // 사이드 메뉴 버튼 안보이게
@@ -43,15 +42,11 @@ class MyPageActivity : BaseActivity() {
 
         binding.myPagePushSwitch.setOnCheckedChangeListener { _, isChecked ->
             if(isChecked) {
-                Log.d("metis", "MyPageActivity on")
                 MainApplication.prefs.setBoolean("pushStatus", true)
-
                 MainApplication.instance.setAlarm()
 
             } else {
-                Log.d("metis", "MyPageActivity off")
                 MainApplication.prefs.setBoolean("pushStatus", false)
-
                 MainApplication.instance.cancelAlarm()
             }
         }
@@ -61,7 +56,7 @@ class MyPageActivity : BaseActivity() {
             if (checkBlank()) {
                 val userId = MainApplication.prefs.getString("userId", "")
                 val userPassword = binding.myPageNewPasswordInput.text.toString()
-                val data = UserModel(userId,userPassword,"","","","","","","", "", "")
+                val data = UserModel(userId,userPassword,"","","","","","","", "", "","","")
 
                 changePassword(data)
             }
@@ -81,7 +76,6 @@ class MyPageActivity : BaseActivity() {
 
                 Toast.makeText(this, resource.getString(R.string.my_page_incorrect_current_password__text), Toast.LENGTH_SHORT).show()
                 return false
-
             }
             binding.myPageNewPasswordInput.text.toString() == "" -> {
 
@@ -112,16 +106,15 @@ class MyPageActivity : BaseActivity() {
         }
     }
 
+    //비밀번호 변경
     private fun changePassword(data: UserModel) {
 
-        MainApplication.instance.apiService.userPasswordChange(data).enqueue(object :
-            Callback<ResponseResult> {
-            override fun onResponse(
-                call: Call<ResponseResult>,
-                response: Response<ResponseResult>
-            ) {
-                Log.d("metis", response.toString())
-                Log.d("metis", "changePassword 결과 -> " + response.body().toString())
+        showLoading(binding.loading)
+
+        MainApplication.instance.apiService.userPasswordChange(data).enqueue(object :Callback<ResponseResult> {
+            override fun onResponse(call: Call<ResponseResult>, response: Response<ResponseResult>) {
+
+                hideLoading(binding.loading)
 
                 val result = response.body()?.result
 
@@ -137,11 +130,15 @@ class MyPageActivity : BaseActivity() {
 
                 } else if (result == "fail") {
                     Toast.makeText(this@MyPageActivity, resource.getString(R.string.my_page_password_change_fail_text), Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(this@MyPageActivity, resource.getString(R.string.server_no_response), Toast.LENGTH_SHORT).show()
                 }
             }
 
             override fun onFailure(call: Call<ResponseResult>, t: Throwable) {
                 Log.d("metis", t.message.toString())
+                hideLoading(binding.loading)
+                Toast.makeText(this@MyPageActivity, resource.getString(R.string.server_no_response), Toast.LENGTH_SHORT).show()
             }
         })
     }

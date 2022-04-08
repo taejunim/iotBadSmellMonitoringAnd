@@ -112,6 +112,13 @@
 
         </ScrollView>
 
+        <ProgressBar
+            android:visibility="invisible"
+            android:id="@+id/loading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"/>
+
         <!-- 완료버튼-->
         <Button
             android:id="@+id/modification_button"

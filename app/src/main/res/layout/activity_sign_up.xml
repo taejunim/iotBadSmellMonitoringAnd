@@ -44,7 +44,7 @@
                     android:maxLength="20" />
 
                 <Button
-                    android:id="@+id/register_duplication_check_button"
+                    android:id="@+id/duplication_check_button"
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
                     android:layout_below="@+id/sign_up_user_id_text"
@@ -243,8 +243,15 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="@drawable/toggle_background"
-                        android:checkedButton="@+id/gender_male"
+                        android:checkedButton="@+id/gender_none"
                         android:orientation="horizontal">
+
+                        <RadioButton
+                            android:id="@+id/gender_none"
+                            style="@style/GenderRadioGroup"
+                            android:layout_marginStart="2dp"
+                            android:text="@string/none"
+                            android:textSize="15sp" />
 
                         <RadioButton
                             android:id="@+id/gender_male"
@@ -308,6 +315,13 @@
             </RelativeLayout>
 
         </ScrollView>
+
+        <ProgressBar
+            android:visibility="invisible"
+            android:id="@+id/loading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"/>
 
         <!-- 완료버튼-->
         <Button

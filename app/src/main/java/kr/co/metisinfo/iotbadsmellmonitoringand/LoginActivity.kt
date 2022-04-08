@@ -38,7 +38,7 @@ class LoginActivity : BaseActivity() {
 
         binding.signUpButton.setOnClickListener {
 
-            var intent = Intent(this, SignUpActivity::class.java)
+            val intent = Intent(this, PrivacyPolicyActivity::class.java)
             startActivity(intent)
         }
 
@@ -60,12 +60,14 @@ class LoginActivity : BaseActivity() {
     private fun login() {
         val userId = binding.userId.text.toString()
         val userPassword = binding.userPassword.text.toString()
-        val data = UserModel(userId,userPassword,"","","","","","","","","")
+        val data = UserModel(userId,userPassword,"","","","","","","","","","","")
+
+        showLoading(binding.loading)
 
         instance.apiService.userLogin(data).enqueue(object : Callback<LoginResult> {
             override fun onResponse(call: Call<LoginResult>, response: Response<LoginResult>) {
-                Log.d("metis",response.toString())
-                Log.d("metis", "결과 -> " + response.body().toString())
+
+                hideLoading(binding.loading)
 
                 val result = response.body()?.result
                 val userData: UserModel = response.body()!!.data
@@ -76,30 +78,34 @@ class LoginActivity : BaseActivity() {
                     MainApplication.prefs.setString("userId", userData.userId)
                     MainApplication.prefs.setString("userName", userData.userName)
                     MainApplication.prefs.setString("userPassword", userPassword)
+                    MainApplication.prefs.setString("userRegionMaster", userData.userRegionMaster)
+                    MainApplication.prefs.setString("userRegionMasterName", userData.userRegionMasterName)
+                    MainApplication.prefs.setString("userRegionDetail", userData.userRegionDetail)
 
                     val initialRun = MainApplication.prefs.getBoolean("initialRun", true)
                     if (initialRun) {
-                        Log.d("metis", "==================== initialRun -> " + initialRun)
                         MainApplication.prefs.setBoolean("pushStatus", true)
                         MainApplication.prefs.setBoolean("initialRun", false)
                     }
-
 
                     Toast.makeText(this@LoginActivity, resource.getString(R.string.sign_in_welcome_text), Toast.LENGTH_SHORT).show()
 
                     val handler = Handler(Looper.getMainLooper())
                     handler.postDelayed ({
-                        var intent = Intent(this@LoginActivity, MainActivity::class.java)
+                        val intent = Intent(this@LoginActivity, MainActivity::class.java)
                         startActivity(intent)
                         finish()
                     }, 1000)
 
                 } else if (result == "fail") {
                     Toast.makeText(this@LoginActivity, resource.getString(R.string.incorrect_data), Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(this@LoginActivity, resource.getString(R.string.server_no_response), Toast.LENGTH_SHORT).show()
                 }
             }
 
             override fun onFailure(call: Call<LoginResult>, t: Throwable) {
+                hideLoading(binding.loading)
                 Log.d("metis", "onFailure : " + t.message.toString())
                 Toast.makeText(this@LoginActivity, resource.getString(R.string.server_no_response), Toast.LENGTH_SHORT).show()
             }

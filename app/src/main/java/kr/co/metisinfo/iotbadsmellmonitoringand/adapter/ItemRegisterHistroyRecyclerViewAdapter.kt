@@ -21,7 +21,6 @@ import kr.co.metisinfo.iotbadsmellmonitoringand.util.ToggleAnimation
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.util.*
 
 /**
  * @ Class Name   : ItemRegisterHistroyRecyclerViewAdapter.kt
@@ -39,10 +38,7 @@ import java.util.*
 class ItemRegisterHistroyRecyclerViewAdapter(private val context: Context, private val historyList: List<HistoryModel>) :
     RecyclerView.Adapter<ItemRegisterHistroyRecyclerViewAdapter.CowViewHolder>() {
 
-    class CowViewHolder(
-        itemView: View,
-        context: Context
-    ) : RecyclerView.ViewHolder(itemView) {
+    class CowViewHolder(itemView: View, context: Context) : RecyclerView.ViewHolder(itemView) {
         var mContext: Context? = context
         private val instance = MainApplication.instance
         val resource: Resources = MainApplication.getContext().resources

@@ -10,6 +10,8 @@ data class UserModel(
     val userType: String,
     val userTypeName: String,
     val userRegionMaster: String,
+    val userRegionMasterName: String,
     val userRegionDetail: String,
+    val userRegionDetailName: String,
     val userPhone: String
 )
