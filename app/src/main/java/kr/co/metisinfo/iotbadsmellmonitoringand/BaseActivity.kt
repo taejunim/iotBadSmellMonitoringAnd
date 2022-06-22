@@ -224,38 +224,52 @@ abstract class BaseActivity : AppCompatActivity() {
 
                 if (response.isSuccessful) {
 
-                    val nearestTime = parameterMap["nearestTime"]
-                    val itemList = response.body()!!.response.body.items.item
+                    if (response.body() != null) {
 
-                    for (i in itemList.indices) {
+                        if (response.body()!!.response.header.resultCode == "00") {
+                            val nearestTime = parameterMap["nearestTime"]
+                            val itemList = response.body()!!.response.body.items.item
 
-                        // 가까운 시간대의 데이터 가져오기
-                        if (itemList[i].fcstTime == nearestTime) {
+                            for (i in itemList.indices) {
 
-                            when (itemList[i].category) {
-                                //온도
-                                "T1H" -> weatherModel.temperature = itemList[i].fcstValue
+                                // 가까운 시간대의 데이터 가져오기
+                                if (itemList[i].fcstTime == nearestTime) {
 
-                                //습도
-                                "REH" -> weatherModel.humidity = itemList[i].fcstValue
+                                    when (itemList[i].category) {
+                                        //온도
+                                        "T1H" -> weatherModel.temperature = itemList[i].fcstValue
 
-                                //풍향
-                                "VEC" -> weatherModel.windDirection = getWindDirectionText(itemList[i].fcstValue)
+                                        //습도
+                                        "REH" -> weatherModel.humidity = itemList[i].fcstValue
 
-                                //풍속
-                                "WSD" -> weatherModel.windSpeed = itemList[i].fcstValue
+                                        //풍향
+                                        "VEC" -> weatherModel.windDirection = getWindDirectionText(itemList[i].fcstValue)
 
-                                //강수 상태
-                                "PTY" -> weatherModel.precipitationStatus = itemList[i].fcstValue
+                                        //풍속
+                                        "WSD" -> weatherModel.windSpeed = itemList[i].fcstValue
 
-                                //기상 상태
-                                "SKY" -> weatherModel.skyStatus = itemList[i].fcstValue
+                                        //강수 상태
+                                        "PTY" -> weatherModel.precipitationStatus = itemList[i].fcstValue
+
+                                        //기상 상태
+                                        "SKY" -> weatherModel.skyStatus = itemList[i].fcstValue
+                                    }
+                                }
                             }
+                        } else {
+                            Toast.makeText(this@BaseActivity, resource.getString(R.string.weather_server_no_response), Toast.LENGTH_SHORT).show()
                         }
+
+                    } else {
+                        Toast.makeText(this@BaseActivity, resource.getString(R.string.weather_server_no_response), Toast.LENGTH_SHORT).show()
                     }
 
-                    callback("weather", weatherModel) //날씨 데이터 콜백
+
+                } else {
+                    Toast.makeText(this@BaseActivity, resource.getString(R.string.weather_server_no_response), Toast.LENGTH_SHORT).show()
                 }
+
+                callback("weather", weatherModel) //날씨 데이터 콜백
             }
 
             override fun onFailure(call: Call<WeatherResponse>, t: Throwable) {

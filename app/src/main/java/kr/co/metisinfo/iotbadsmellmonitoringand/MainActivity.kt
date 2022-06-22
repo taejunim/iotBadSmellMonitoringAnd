@@ -68,7 +68,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             }
         } catch (e: IndexOutOfBoundsException) {
             Log.d("metis", "지역 데이터 없음 ")
-            binding.currentWeatherText.text = "현재 날씨"
+            binding.currentWeatherText.text = instance.defaultRegionTitle + " 현재 날씨"
         }
 
         //현재 날씨 레이아웃 그리기

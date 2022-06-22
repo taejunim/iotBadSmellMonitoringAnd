@@ -16,8 +16,10 @@ class MainApplication : Application() {
 
     val apiService = ApiService.create()
 
-    var nx = "48" //지역 X
-    var ny = "36" //지역 Y
+    var nx = "53" //제주시 지역 기본 X
+    var ny = "38" //제주시 지역 기본 Y
+
+    val defaultRegionTitle = "제주도"
 
     /**
      * code API 불러올 항목 array

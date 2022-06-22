@@ -4,7 +4,12 @@ data class WeatherResponse (
     val response : ResponseObject
 )
 data class ResponseObject (
+    val header : ResponseHeader,
     val body : ResponseBody
+)
+data class ResponseHeader(
+    val resultCode : String,
+    val resultMsg : String
 )
 data class ResponseBody(
     val items : Items
