@@ -268,7 +268,7 @@ class SignUpActivity : BaseActivity() {
 
                                 if (result == "success") {
 
-                                    Toast.makeText(this@SignUpActivity, resource.getString(R.string.register_success_text), Toast.LENGTH_SHORT).show()
+                                    Toast.makeText(this@SignUpActivity, resource.getString(R.string.sign_up_success), Toast.LENGTH_SHORT).show()
 
                                     //회원가입 완료후 로그인 화면으로 이동
                                     val handler = Handler(Looper.getMainLooper())

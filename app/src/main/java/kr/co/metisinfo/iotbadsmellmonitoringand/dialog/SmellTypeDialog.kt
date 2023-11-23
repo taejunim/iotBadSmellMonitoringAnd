@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.res.Resources
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.util.TypedValue
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -108,95 +109,107 @@ class SmellTypeDialog : DialogFragment() {
 
         for (k in 0 until smellTypeLineCount) {
 
+            var codeIndex = 0;
+
             val lineLayout = LinearLayout(context)
             lineLayout.layoutParams = lineLayoutParams
             lineLayout.orientation = LinearLayout.HORIZONTAL
             lineLayout.weightSum = 3F
+            lineLayout.gravity = Gravity.CENTER
 
             for (i in 0 until 3) {
 
-                var codeIndex = k * 3 + i
-                var imageIndex = codeIndex + 1
+                codeIndex = k * 3 + i
 
-                val itemLayout = LinearLayout(context)
-                itemLayout.layoutParams = itemLayoutParams
+                if (smellTypeList[codeIndex].codeIdName != "취기없음") {
+                    val itemLayout = LinearLayout(context)
+                    itemLayout.layoutParams = itemLayoutParams
 
-                val totalAreaLayout = RelativeLayout(context)
-                totalAreaLayout.layoutParams = totalAreaLayoutParams
+                    val totalAreaLayout = RelativeLayout(context)
+                    totalAreaLayout.layoutParams = totalAreaLayoutParams
 
-                val areaLayout = RelativeLayout(context)
-                areaLayout.layoutParams = areaLayoutParams
-                areaLayout.id = codeIndex + 101
+                    val areaLayout = RelativeLayout(context)
+                    areaLayout.layoutParams = areaLayoutParams
+                    areaLayout.id = codeIndex + 101
 
-                val smellRadioButton = RadioButton(context)
-                smellRadioButton.layoutParams = radioButtonParams
-                smellRadioButton.id = codeIndex + 1
-                smellRadioButton.buttonTintList = radioButtonColorStateList
+                    val smellRadioButton = RadioButton(context)
+                    smellRadioButton.layoutParams = radioButtonParams
+                    smellRadioButton.id = codeIndex + 1
+                    smellRadioButton.buttonTintList = radioButtonColorStateList
 
-                when (codeIndex) {
-                    0 -> {
-                        areaLayout.setBackgroundResource(R.drawable.smell_type_button)
-                        currentLayout = areaLayout
-                        currentRadioButton = smellRadioButton
+                    val imageIndex = smellRadioButton.id
 
-                        selectedCodeId = smellTypeList[codeIndex].codeId
-                        selectedIndex = codeIndex
+                    when (codeIndex) {
+                        0 -> {
+                            areaLayout.setBackgroundResource(R.drawable.smell_type_button)
+                            currentLayout = areaLayout
+                            currentRadioButton = smellRadioButton
+
+                            val index = smellRadioButton.id - 1
+
+                            selectedCodeId = smellTypeList[index].codeId
+                            selectedIndex = index
+                        }
+                        else -> areaLayout.setBackgroundResource(R.drawable.smell_type_unselected_button)
                     }
-                    else -> areaLayout.setBackgroundResource(R.drawable.smell_type_unselected_button)
-                }
 
-                areaLayout.setOnClickListener {
-                    if (areaLayout.id != currentLayout.id && smellRadioButton.id != currentRadioButton.id){
-                        areaLayout.setBackgroundResource(R.drawable.smell_type_button)
-                        currentLayout.setBackgroundResource(R.drawable.smell_type_unselected_button)
-                        currentLayout = areaLayout
-                        currentRadioButton = smellRadioButton
+                    areaLayout.setOnClickListener {
+                        if (areaLayout.id != currentLayout.id && smellRadioButton.id != currentRadioButton.id){
+                            areaLayout.setBackgroundResource(R.drawable.smell_type_button)
+                            currentLayout.setBackgroundResource(R.drawable.smell_type_unselected_button)
+                            currentLayout = areaLayout
+                            currentRadioButton = smellRadioButton
 
-                        binding.smellTypeRadioGroup.check(smellRadioButton.id)
+                            binding.smellTypeRadioGroup.check(smellRadioButton.id)
 
-                        selectedCodeId = smellTypeList[codeIndex].codeId
-                        selectedIndex = codeIndex
+                            val index = smellRadioButton.id - 1
+
+                            selectedCodeId = smellTypeList[index].codeId
+                            selectedIndex = index
+                        }
                     }
-                }
 
-                smellRadioButton.setOnClickListener {
-                    if (areaLayout.id != currentLayout.id && smellRadioButton.id != currentRadioButton.id){
-                        areaLayout.setBackgroundResource(R.drawable.smell_type_button)
-                        currentLayout.setBackgroundResource(R.drawable.smell_type_unselected_button)
-                        currentLayout = areaLayout
-                        currentRadioButton = smellRadioButton
+                    smellRadioButton.setOnClickListener {
+                        if (areaLayout.id != currentLayout.id && smellRadioButton.id != currentRadioButton.id){
+                            areaLayout.setBackgroundResource(R.drawable.smell_type_button)
+                            currentLayout.setBackgroundResource(R.drawable.smell_type_unselected_button)
+                            currentLayout = areaLayout
+                            currentRadioButton = smellRadioButton
 
-                        binding.smellTypeRadioGroup.check(smellRadioButton.id)
+                            binding.smellTypeRadioGroup.check(smellRadioButton.id)
 
-                        selectedCodeId = smellTypeList[codeIndex].codeId
-                        selectedIndex = codeIndex
+                            val index = smellRadioButton.id - 1
+
+                            selectedCodeId = smellTypeList[index].codeId
+                            selectedIndex = index
+                        }
                     }
-                }
 
-                val smellTypeImage = ImageView(context)
-                smellTypeImage.layoutParams = imageLayoutParams
-                smellTypeImage.setImageResource(
-                    resource.getIdentifier(
-                        "smell_00$imageIndex",
-                        "drawable",
-                        "kr.co.metisinfo.iotbadsmellmonitoringand"
+                    val smellTypeImage = ImageView(context)
+                    smellTypeImage.layoutParams = imageLayoutParams
+                    smellTypeImage.setImageResource(
+                        resource.getIdentifier(
+                            "smell_00$imageIndex",
+                            "drawable",
+                            "kr.co.metisinfo.iotbadsmellmonitoringand"
+                        )
                     )
-                )
 
-                val smellTypeText = TextView(context)
-                smellTypeText.layoutParams = textLayoutParams
-                smellTypeText.gravity = Gravity.CENTER
-                smellTypeText.setTextColor(Color.BLACK)
-                smellTypeText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14F)
-                smellTypeText.text = smellTypeList[codeIndex].codeIdName
+                    val smellTypeText = TextView(context)
+                    smellTypeText.layoutParams = textLayoutParams
+                    smellTypeText.gravity = Gravity.CENTER
+                    smellTypeText.setTextColor(Color.BLACK)
+                    smellTypeText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14F)
+                    smellTypeText.text = smellTypeList[codeIndex].codeIdName
 
-                areaLayout.addView(smellTypeImage)
-                areaLayout.addView(smellTypeText)
+                    areaLayout.addView(smellTypeImage)
+                    areaLayout.addView(smellTypeText)
 
-                totalAreaLayout.addView(areaLayout)
-                totalAreaLayout.addView(smellRadioButton)
-                itemLayout.addView(totalAreaLayout)
-                lineLayout.addView(itemLayout)
+                    totalAreaLayout.addView(areaLayout)
+                    totalAreaLayout.addView(smellRadioButton)
+                    itemLayout.addView(totalAreaLayout)
+                    lineLayout.addView(itemLayout)
+                }
             }
 
             totalLayout.addView(lineLayout)

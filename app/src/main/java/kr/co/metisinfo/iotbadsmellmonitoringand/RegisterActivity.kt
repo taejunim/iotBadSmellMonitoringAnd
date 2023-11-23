@@ -90,8 +90,12 @@ class RegisterActivity : BaseActivity(), SmellTypeDialog.SmellTypeDialogListener
         binding.includeHeader.backButton.visibility = View.VISIBLE // 뒤로가기 버튼 보이게
         binding.includeHeader.navigationViewButton.visibility = View.GONE // 사이드 메뉴 버튼 안보이게
 
-        binding.intensityButton.text = receivedIntensityText
-        binding.intensityButton.setBackgroundResource(resource.getIdentifier(receivedIntensityResource,"drawable", "kr.co.metisinfo.iotbadsmellmonitoringand"))
+        if (receivedIntensityId == "001") {
+            binding.smellTypeTotalLayout.visibility = View.GONE
+        } else {
+            binding.intensityButton.text = receivedIntensityText
+            binding.intensityButton.setBackgroundResource(resource.getIdentifier(receivedIntensityResource,"drawable", "kr.co.metisinfo.iotbadsmellmonitoringand"))
+        }
 
         recyclerView = findViewById(R.id.register_image_view)
 
@@ -117,8 +121,8 @@ class RegisterActivity : BaseActivity(), SmellTypeDialog.SmellTypeDialogListener
             binding.registrationButton.isEnabled = false
 
             //위치 권한 체크
-            if (Build.VERSION.SDK_INT >= 23 && ContextCompat.checkSelfPermission(applicationContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(this@RegisterActivity, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION) ,0)
+            if (Build.VERSION.SDK_INT >= 23 && ContextCompat.checkSelfPermission(applicationContext, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_DENIED) {
+                ActivityCompat.requestPermissions(this@RegisterActivity, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION) ,101)
 
                 Log.d("metis","위치 권한 팝업 출력")
 
@@ -132,15 +136,7 @@ class RegisterActivity : BaseActivity(), SmellTypeDialog.SmellTypeDialogListener
                 //사용자가 승인 거절과 동시에 다시 표시하지 않기 옵션을 선택한 경우
                 else {
                     Log.d("metis","사용자가 승인 거절과 동시에 다시 표시하지 않기 옵션을 선택한 경우")
-                    val snackBar = Snackbar.make(binding.registerMain,R.string.permission_text, Snackbar.LENGTH_INDEFINITE)
-                    snackBar.setAction ("확인") {
-                        val intent = Intent()
-                        intent.action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
-                        val uri = Uri.fromParts("package",packageName,null)
-                        intent.data = uri
-                        startActivity(intent)
-                    }
-                    snackBar.show()
+                    //showSettingActivity(R.string.permission_location_text)
                 }
             }
 
@@ -165,40 +161,41 @@ class RegisterActivity : BaseActivity(), SmellTypeDialog.SmellTypeDialogListener
 
         binding.registerBlankLayout.setOnClickListener {
 
-            FishBun.with(this@RegisterActivity)
-                .setImageAdapter(GlideAdapter())
-                .setMaxCount(5)
-                .setMinCount(1)
-                .setPickerSpanCount(5)
-                .setActionBarColor(
-                    Color.parseColor("#FFFFFF"),
-                    Color.parseColor("#FFFFFF"),
-                    false
-                )
-                .setActionBarTitleColor(Color.parseColor("#010101"))
-                .setSelectedImages(uriList)
-                .setAlbumSpanCount(2, 3)
-                //.setButtonInAlbumActivity(false)
-                .hasCameraInPickerPage(true)
-                .exceptMimeType(arrayListOf(MimeType.GIF))
-                .setReachLimitAutomaticClose(false)
-                .setHomeAsUpIndicatorDrawable(
-                    ContextCompat.getDrawable(
-                        this,
-                        R.drawable.back
-                    )
-                )
-                .setDoneButtonDrawable(
-                    ContextCompat.getDrawable(
-                        this,
-                        R.drawable.check_black
-                    )
-                )
-                .setAllViewTitle("전체")
-                .setActionBarTitle("사진을 선택해주세요")
-                .textOnNothingSelected("최소 1개 이상 선택해주세요!")
-                .startAlbum()
+            binding.registerBlankLayout.isEnabled = false
 
+            var permissionItem = ""
+
+            //SDK 33 이상
+            if (Build.VERSION.SDK_INT >= 33) {
+                permissionItem = Manifest.permission.READ_MEDIA_IMAGES
+            }
+
+            //SDK 32 이하
+            else {
+                permissionItem = Manifest.permission.READ_EXTERNAL_STORAGE
+            }
+
+            if(ContextCompat.checkSelfPermission(applicationContext, permissionItem) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this@RegisterActivity, arrayOf(permissionItem) ,102)
+                Log.d("metis","이미지 권한 팝업 출력")
+
+                //사용자가 승인 거절을 누른경우
+                if (ActivityCompat.shouldShowRequestPermissionRationale(this, permissionItem)) {
+                    Log.d("metis","사용자가 승인 거절을 누른경우")
+
+                    binding.registerBlankLayout.isEnabled = true
+                }
+
+                //사용자가 승인 거절과 동시에 다시 표시하지 않기 옵션을 선택한 경우
+                else {
+                    Log.d("metis","사용자가 승인 거절과 동시에 다시 표시하지 않기 옵션을 선택한 경우")
+
+                    //showSettingActivity(R.string.permission_camera_text)
+                }
+
+            } else {
+                getImageData()
+            }
         }
 
         binding.registerRefreshButton.setOnClickListener {
@@ -213,6 +210,42 @@ class RegisterActivity : BaseActivity(), SmellTypeDialog.SmellTypeDialogListener
                 binding.registerScrollView.smoothScrollTo(0, binding.registerScrollView.bottom)
             }
         }
+    }
+
+    private fun getImageData() {
+        FishBun.with(this@RegisterActivity)
+            .setImageAdapter(GlideAdapter())
+            .setMaxCount(5)
+            .setMinCount(1)
+            .setPickerSpanCount(5)
+            .setActionBarColor(
+                Color.parseColor("#FFFFFF"),
+                Color.parseColor("#FFFFFF"),
+                false
+            )
+            .setActionBarTitleColor(Color.parseColor("#010101"))
+            .setSelectedImages(uriList)
+            .setAlbumSpanCount(2, 3)
+            //.setButtonInAlbumActivity(false)
+            .hasCameraInPickerPage(true)
+            .exceptMimeType(arrayListOf(MimeType.GIF))
+            .setReachLimitAutomaticClose(false)
+            .setHomeAsUpIndicatorDrawable(
+                ContextCompat.getDrawable(
+                    this,
+                    R.drawable.back
+                )
+            )
+            .setDoneButtonDrawable(
+                ContextCompat.getDrawable(
+                    this,
+                    R.drawable.check_black
+                )
+            )
+            .setAllViewTitle("전체")
+            .setActionBarTitle("사진을 선택해주세요")
+            .textOnNothingSelected("최소 1개 이상 선택해주세요!")
+            .startAlbum()
     }
 
     private fun getRealPathFromURI(index: Int, contentURI: Uri): MultipartBody.Part? {
@@ -256,6 +289,8 @@ class RegisterActivity : BaseActivity(), SmellTypeDialog.SmellTypeDialogListener
 
             binding.registerScrollView.scrollTo(0, binding.registrationButton.top)
         }
+
+        binding.registerBlankLayout.isEnabled = true
     }
 
     /**
@@ -268,7 +303,7 @@ class RegisterActivity : BaseActivity(), SmellTypeDialog.SmellTypeDialogListener
                 val currentDate = data as Date
                 registerTime = getRegisterTime(currentDate)
 
-                if (selectedSmellTypeId == "") {
+                if (selectedSmellTypeId == "" && receivedIntensityId != "001") {
                     binding.registrationButton.isEnabled = true
                     Toast.makeText(this@RegisterActivity, resource.getString(R.string.register_unselected_smell_type_text), Toast.LENGTH_SHORT).show()
                 } else {
@@ -297,6 +332,7 @@ class RegisterActivity : BaseActivity(), SmellTypeDialog.SmellTypeDialogListener
                         else -> {
                             val builder = AlertDialog.Builder(this@RegisterActivity)
                             builder.setMessage("해당 내용으로 등록하시겠습니까?") //AlertDialog의 내용 부분
+                            builder.setCancelable(false)
                             builder.setPositiveButton("예", DialogInterface.OnClickListener { dialog, which ->
                                 //getWeatherApiData() //날씨 데이터 받은 후 등록
                                 showLoading(binding.loading)
@@ -529,9 +565,33 @@ class RegisterActivity : BaseActivity(), SmellTypeDialog.SmellTypeDialogListener
     override fun onResume() {
         super.onResume()
 
+        binding.registerBlankLayout.isEnabled = true
         binding.registrationButton.isEnabled = true
 
         checkCurrentDate()
     }
 
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        var text = 0
+        if (requestCode == 101) {
+            text = R.string.permission_location_text
+        } else if (requestCode == 102) {
+
+            if (Build.VERSION.SDK_INT >= 33) {
+                text = R.string.permission_camera_text_higher_33
+            } else {
+                text = R.string.permission_camera_text
+            }
+        }
+
+        if (grantResults[0] == PackageManager.PERMISSION_DENIED) { //거부
+            showSettingActivity(text, this@RegisterActivity, Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+        }
+    }
 }

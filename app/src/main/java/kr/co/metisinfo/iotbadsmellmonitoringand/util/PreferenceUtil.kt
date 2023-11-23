@@ -30,5 +30,9 @@ class PreferenceUtil(context: Context) {
     fun setLong(key: String, str: Long) {
         prefs.edit().putLong(key, str).apply()
     }
+
+    fun isExist(key: String): Boolean {
+        return prefs.contains(key)
+    }
 }
 

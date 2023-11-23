@@ -66,7 +66,11 @@ class MainApplication : Application() {
 
         alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
         alarmReceiver = Intent(this, AlarmReceiver::class.java)
-        pendingIntent = PendingIntent.getBroadcast(this, AlarmReceiver.NOTIFICATION_ID, alarmReceiver, PendingIntent.FLAG_UPDATE_CURRENT)
+        pendingIntent = PendingIntent.getBroadcast(this, AlarmReceiver.NOTIFICATION_ID, alarmReceiver, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
+
+        if (!prefs.isExist("pushStatus")) {
+            prefs.setBoolean("pushStatus", true)
+        }
     }
 
     //푸시 알람 시간 계산
@@ -85,6 +89,7 @@ class MainApplication : Application() {
         val time06 = Utils.dateFormatter.parse("$today ${Constants.PUSH_TIME_06}").time
         val time11 = Utils.dateFormatter.parse("$today ${Constants.PUSH_TIME_11}").time
         val time19 = Utils.dateFormatter.parse("$today ${Constants.PUSH_TIME_19}").time
+        //val time19 = Utils.dateFormatter.parse("$today ${Constants.TEST_TIME}").time
         val time24 = Utils.dateFormatter.parse("$tomorrow ${Constants.PUSH_TIME_00}").time
         val tomorrow06 = Utils.dateFormatter.parse("$tomorrow ${Constants.PUSH_TIME_06}").time
 
@@ -111,14 +116,13 @@ class MainApplication : Application() {
 
     //푸시 알람 설정 -> getAlarmTime() 로 가져온 가까운 시간대에
     fun setAlarm() {
-        //cancelAlarm()
-        pendingIntent = PendingIntent.getBroadcast(this, AlarmReceiver.NOTIFICATION_ID, alarmReceiver, PendingIntent.FLAG_UPDATE_CURRENT)
-        alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, getAlarmTime(), pendingIntent)
+        pendingIntent = PendingIntent.getBroadcast(this, AlarmReceiver.NOTIFICATION_ID, alarmReceiver, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
+        alarmManager.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, getAlarmTime(), pendingIntent)
     }
 
     //푸시 알람 취소
     fun cancelAlarm() {
-        pendingIntent = PendingIntent.getBroadcast(this, AlarmReceiver.NOTIFICATION_ID, alarmReceiver, PendingIntent.FLAG_NO_CREATE)
+        pendingIntent = PendingIntent.getBroadcast(this, AlarmReceiver.NOTIFICATION_ID, alarmReceiver,PendingIntent.FLAG_NO_CREATE or PendingIntent.FLAG_IMMUTABLE)
         alarmManager.cancel(pendingIntent)
     }
 

@@ -50,6 +50,8 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         if (pushStatus) {
             instance.setAlarm()
         }
+
+        checkPermission()
     }
 
     override fun initLayout() {

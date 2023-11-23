@@ -1,12 +1,16 @@
 package kr.co.metisinfo.iotbadsmellmonitoringand
 
 import android.Manifest
+import android.app.AlertDialog
 import android.content.Context
+import android.content.DialogInterface
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.Resources
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -364,14 +368,36 @@ abstract class BaseActivity : AppCompatActivity() {
         imm.hideSoftInputFromWindow(editText.windowToken, 0)
     }
 
-    //위치 권한 퍼미션 체크
-    fun checkLocationPermission(): Boolean {
-        return if (Build.VERSION.SDK_INT >= 23 && ContextCompat.checkSelfPermission(applicationContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this@BaseActivity, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),0)
-            false
+    //위치/알림 권한 퍼미션 체크
+    fun checkPermission() {
+
+        var tempPermissionArray : MutableList<String> = mutableListOf<String>()
+
+        if (Build.VERSION.SDK_INT >= 33) {
+            tempPermissionArray = mutableListOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.POST_NOTIFICATIONS)
         } else {
-            true
+            tempPermissionArray = mutableListOf(Manifest.permission.ACCESS_FINE_LOCATION)
         }
+
+        val permissionArray = checkPermissionArray(tempPermissionArray)
+
+        //권한 허용되지 않은게 있다면
+        if (permissionArray.isNotEmpty()) {
+            ActivityCompat.requestPermissions(this@BaseActivity, permissionArray.toTypedArray(),0)
+        }
+    }
+
+    private fun checkPermissionArray(tempPermissionArray : MutableList<String>): MutableList<String> {
+
+        val permissionArray : MutableList<String> = mutableListOf<String>()
+
+        for (permission in tempPermissionArray) {
+            if (ContextCompat.checkSelfPermission(applicationContext, permission) != PackageManager.PERMISSION_GRANTED) {
+                permissionArray.add(permission)
+            }
+        }
+
+        return permissionArray
     }
 
     //포커싱됐을 때 value clear
@@ -382,6 +408,22 @@ abstract class BaseActivity : AppCompatActivity() {
                 editText.setText("")
             }
         }
+    }
+
+    //설정창 표출
+    fun showSettingActivity(text: Int, context: Context, action: String) {
+        Log.d("metis", "action : " + action)
+        val builder = AlertDialog.Builder(context)
+        builder.setMessage(text) //AlertDialog의 내용 부분
+        builder.setPositiveButton("설정", DialogInterface.OnClickListener { dialog, which ->
+            val intent = Intent()
+            intent.action = action
+            val uri = Uri.fromParts("package", packageName, null)
+            intent.data = uri
+            startActivity(intent)
+        })
+        builder.setNegativeButton("취소", null)
+        builder.create().show() //보이기
     }
 
     override fun onBackPressed() {

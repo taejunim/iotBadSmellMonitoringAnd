@@ -9,10 +9,9 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Build
 import androidx.core.app.NotificationCompat
-import kr.co.metisinfo.iotbadsmellmonitoringand.MainActivity
+import kr.co.metisinfo.iotbadsmellmonitoringand.IntroActivity
 import kr.co.metisinfo.iotbadsmellmonitoringand.MainApplication
 import kr.co.metisinfo.iotbadsmellmonitoringand.R
-
 
 class AlarmReceiver : BroadcastReceiver() {
 
@@ -32,12 +31,12 @@ class AlarmReceiver : BroadcastReceiver() {
     }
 
     private fun deliverNotification(context: Context) {
-        val contentIntent = Intent(context, MainActivity::class.java)
+        val contentIntent = Intent(context, IntroActivity::class.java)
         val contentPendingIntent = PendingIntent.getActivity(
             context,
             NOTIFICATION_ID,
             contentIntent,
-            PendingIntent.FLAG_UPDATE_CURRENT
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
         val builder =
             NotificationCompat.Builder(context, PRIMARY_CHANNEL_ID)

@@ -21,7 +21,6 @@ class LoginActivity : BaseActivity() {
 
     override fun initData() {
 
-        checkLocationPermission()
     }
 
     override fun initLayout() {
@@ -82,12 +81,6 @@ class LoginActivity : BaseActivity() {
                     MainApplication.prefs.setString("userRegionMasterName", userData.userRegionMasterName)
                     MainApplication.prefs.setString("userRegionDetail", userData.userRegionDetail)
 
-                    val initialRun = MainApplication.prefs.getBoolean("initialRun", true)
-                    if (initialRun) {
-                        MainApplication.prefs.setBoolean("pushStatus", true)
-                        MainApplication.prefs.setBoolean("initialRun", false)
-                    }
-
                     Toast.makeText(this@LoginActivity, resource.getString(R.string.sign_in_welcome_text), Toast.LENGTH_SHORT).show()
 
                     val handler = Handler(Looper.getMainLooper())
@@ -99,6 +92,8 @@ class LoginActivity : BaseActivity() {
 
                 } else if (result == "fail") {
                     Toast.makeText(this@LoginActivity, resource.getString(R.string.incorrect_data), Toast.LENGTH_SHORT).show()
+                } else if (result == "statusNotChange") {
+                    Toast.makeText(this@LoginActivity, resource.getString(R.string.sign_in_unapproved), Toast.LENGTH_SHORT).show()
                 } else {
                     Toast.makeText(this@LoginActivity, resource.getString(R.string.server_no_response), Toast.LENGTH_SHORT).show()
                 }
