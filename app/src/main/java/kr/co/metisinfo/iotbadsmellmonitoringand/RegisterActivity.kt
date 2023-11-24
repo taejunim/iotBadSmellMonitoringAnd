@@ -92,10 +92,11 @@ class RegisterActivity : BaseActivity(), SmellTypeDialog.SmellTypeDialogListener
 
         if (receivedIntensityId == "001") {
             binding.smellTypeTotalLayout.visibility = View.GONE
-        } else {
-            binding.intensityButton.text = receivedIntensityText
-            binding.intensityButton.setBackgroundResource(resource.getIdentifier(receivedIntensityResource,"drawable", "kr.co.metisinfo.iotbadsmellmonitoringand"))
         }
+
+        binding.intensityButton.text = receivedIntensityText
+        binding.intensityButton.setBackgroundResource(resource.getIdentifier(receivedIntensityResource,"drawable", "kr.co.metisinfo.iotbadsmellmonitoringand"))
+
 
         recyclerView = findViewById(R.id.register_image_view)
 

@@ -2,9 +2,11 @@ package kr.co.metisinfo.iotbadsmellmonitoringand
 
 import android.os.Handler
 import android.os.Looper
+import android.provider.Settings
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.core.app.NotificationManagerCompat
 import androidx.databinding.DataBindingUtil
 import kr.co.metisinfo.iotbadsmellmonitoringand.databinding.ActivityMyPageBinding
 import kr.co.metisinfo.iotbadsmellmonitoringand.model.ResponseResult
@@ -30,11 +32,31 @@ class MyPageActivity : BaseActivity() {
 
         binding.myPageUserInformation.navigationUserName.text = MainApplication.prefs.getString("userName", "")
         binding.myPageUserInformation.navigationUserId.text = MainApplication.prefs.getString("userId", "")
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        checkPushStatus()
+    }
+
+    fun checkPushStatus() {
 
         var pushStatus = MainApplication.prefs.getBoolean("pushStatus", false)
-        when (pushStatus) {
-            true -> binding.myPagePushSwitch.isChecked = true
-            false -> binding.myPagePushSwitch.isChecked = false
+
+        //알람 허용
+        if (NotificationManagerCompat.from(this@MyPageActivity).areNotificationsEnabled()) {
+            when (pushStatus) {
+                true -> binding.myPagePushSwitch.isChecked = true
+                false -> binding.myPagePushSwitch.isChecked = false
+            }
+        }
+
+        //알람 거부 -> 푸시 허용하든 거부하든 알람 취소
+        else {
+            binding.myPagePushSwitch.isChecked = false
+            MainApplication.prefs.setBoolean("pushStatus", false)
+            MainApplication.instance.cancelAlarm()
         }
     }
     override fun setOnClickListener() {
@@ -42,8 +64,16 @@ class MyPageActivity : BaseActivity() {
 
         binding.myPagePushSwitch.setOnCheckedChangeListener { _, isChecked ->
             if(isChecked) {
-                MainApplication.prefs.setBoolean("pushStatus", true)
-                MainApplication.instance.setAlarm()
+
+                if (!NotificationManagerCompat.from(this@MyPageActivity).areNotificationsEnabled()) {
+                    MainApplication.prefs.setBoolean("pushStatus", false)
+                    MainApplication.instance.cancelAlarm()
+                    binding.myPagePushSwitch.isChecked = false
+                    showSettingActivity(R.string.permission_notification_text, this@MyPageActivity, Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                } else {
+                    MainApplication.prefs.setBoolean("pushStatus", true)
+                    MainApplication.instance.setAlarm()
+                }
 
             } else {
                 MainApplication.prefs.setBoolean("pushStatus", false)
@@ -147,6 +177,6 @@ class MyPageActivity : BaseActivity() {
      * DATA CALLBACK
      */
     override fun callback(apiName: String, data: Any) {
-        Log.d("metis", "callback data : $data")
+
     }
 }

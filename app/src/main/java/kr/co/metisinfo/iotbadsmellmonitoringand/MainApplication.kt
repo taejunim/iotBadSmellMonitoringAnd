@@ -4,6 +4,7 @@ import android.app.*
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
+import android.os.Build
 import android.util.Log
 import kr.co.metisinfo.iotbadsmellmonitoringand.model.*
 import kr.co.metisinfo.iotbadsmellmonitoringand.receiver.AlarmReceiver
@@ -117,7 +118,15 @@ class MainApplication : Application() {
     //푸시 알람 설정 -> getAlarmTime() 로 가져온 가까운 시간대에
     fun setAlarm() {
         pendingIntent = PendingIntent.getBroadcast(this, AlarmReceiver.NOTIFICATION_ID, alarmReceiver, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
-        alarmManager.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, getAlarmTime(), pendingIntent)
+        if (Build.VERSION.SDK_INT >= 31) {
+            if (alarmManager.canScheduleExactAlarms()) {
+                alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, getAlarmTime(), pendingIntent)
+            } else {
+                alarmManager.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, getAlarmTime(), pendingIntent)
+            }
+        } else {
+            alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, getAlarmTime(), pendingIntent)
+        }
     }
 
     //푸시 알람 취소

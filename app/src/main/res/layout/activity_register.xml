@@ -24,72 +24,83 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
-                <LinearLayout
-                    android:id="@+id/smell_type_total_layout"
+                <RelativeLayout
+
                     android:layout_width="match_parent"
-                    android:layout_height="200dp"
+                    android:layout_height="match_parent"
                     android:layout_marginBottom="20dp">
 
                     <RelativeLayout
+                        android:id="@+id/smell_type_total_layout"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-
-                        <TextView
-                            android:id="@+id/current_weather_text"
-                            style="@style/plainText"
-                            android:layout_alignParentTop="true"
-                            android:layout_centerHorizontal="true"
-                            android:layout_centerVertical="true"
-                            android:layout_marginTop="10dp"
-                            android:layout_marginBottom="10dp"
-                            android:text="@string/register_selected_data_text"/>
+                        android:layout_height="160dp">
 
                         <RelativeLayout
-                            android:id="@+id/smell_type_layout"
-                            android:layout_width="120dp"
-                            android:layout_height="120dp"
-                            android:layout_below="@+id/current_weather_text"
-                            android:layout_centerHorizontal="true"
-                            android:background="@drawable/smell_type_unselected_button">
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <TextView
+                                android:id="@+id/current_weather_text"
+                                style="@style/plainText"
+                                android:layout_alignParentTop="true"
+                                android:layout_centerHorizontal="true"
+                                android:layout_centerVertical="true"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginBottom="10dp"
+                                android:text="@string/register_selected_data_text"/>
 
                             <RelativeLayout
-                                android:id="@+id/smell_type_image_layout"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent">
+                                android:id="@+id/smell_type_layout"
+                                android:layout_width="120dp"
+                                android:layout_height="120dp"
+                                android:layout_below="@+id/current_weather_text"
+                                android:layout_centerHorizontal="true"
+                                android:background="@drawable/smell_type_unselected_button">
 
-                                <ImageView
-                                    android:id="@+id/smell_type_image"
-                                    android:layout_width="90dp"
-                                    android:layout_height="70dp"
-                                    android:layout_marginTop="20dp"
+                                <RelativeLayout
+                                    android:id="@+id/smell_type_image_layout"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent">
+
+                                    <ImageView
+                                        android:id="@+id/smell_type_image"
+                                        android:layout_width="90dp"
+                                        android:layout_height="70dp"
+                                        android:layout_marginTop="20dp"
+                                        android:layout_centerHorizontal="true"
+                                        android:contentDescription="@string/image_description"
+                                        android:background="@drawable/add_smell_type"
+                                        android:button="@android:color/transparent"/>
+
+                                </RelativeLayout>
+
+                                <TextView
+                                    android:id="@+id/smell_type_text"
+                                    style="@style/smellTypeText"
+                                    android:layout_alignParentBottom="true"
                                     android:layout_centerHorizontal="true"
-                                    android:contentDescription="@string/image_description"
-                                    android:background="@drawable/add_smell_type"
-                                    android:button="@android:color/transparent"/>
+                                    android:layout_marginBottom="5dp"
+                                    android:textColor="@color/color_bright_gray"
+                                    android:text="@string/register_select_smell_type"/>
 
                             </RelativeLayout>
 
-                            <TextView
-                                android:id="@+id/smell_type_text"
-                                style="@style/smellTypeText"
-                                android:layout_alignParentBottom="true"
-                                android:layout_centerHorizontal="true"
-                                android:layout_marginBottom="5dp"
-                                android:textColor="@color/color_bright_gray"
-                                android:text="@string/register_select_smell_type"/>
+
 
                         </RelativeLayout>
 
-                        <Button
-                            android:id="@+id/intensity_button"
-                            style="@style/intensityButton"
-                            android:layout_below="@+id/smell_type_layout"
-                            android:background="@drawable/intensity_0_button"
-                            android:text="0도 - 무취 / 평상시에 감지하지 못함"/>
+
 
                     </RelativeLayout>
 
-                </LinearLayout>
+                    <Button
+                        android:id="@+id/intensity_button"
+                        style="@style/intensityButton"
+                        android:layout_below="@+id/smell_type_total_layout"
+                        android:background="@drawable/intensity_0_button"
+                        android:text="0도 - 무취 / 평상시에 감지하지 못함"/>
+
+                </RelativeLayout>
 
                 <View
                     android:layout_width="match_parent"

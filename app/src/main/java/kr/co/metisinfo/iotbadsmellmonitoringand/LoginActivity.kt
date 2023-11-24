@@ -21,6 +21,7 @@ class LoginActivity : BaseActivity() {
 
     override fun initData() {
 
+        checkPermission()
     }
 
     override fun initLayout() {
@@ -106,12 +107,12 @@ class LoginActivity : BaseActivity() {
             }
         })
     }
-    
+
     /**
      * DATA CALLBACK
      */
     override fun callback(apiName: String, data: Any) {
-        Log.d("metis", "callback data : $data")
+
     }
 
     //빈칸 체크

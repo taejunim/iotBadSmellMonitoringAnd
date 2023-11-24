@@ -43,6 +43,8 @@ import java.util.*
 
 abstract class BaseActivity : AppCompatActivity() {
 
+    var succeededApiCount = 0
+
     val resource: Resources = MainApplication.getContext().resources
 
     private val weatherApiService = ApiService.weatherApiCreate()
@@ -268,7 +270,6 @@ abstract class BaseActivity : AppCompatActivity() {
                         Toast.makeText(this@BaseActivity, resource.getString(R.string.weather_server_no_response), Toast.LENGTH_SHORT).show()
                     }
 
-
                 } else {
                     Toast.makeText(this@BaseActivity, resource.getString(R.string.weather_server_no_response), Toast.LENGTH_SHORT).show()
                 }
@@ -296,6 +297,7 @@ abstract class BaseActivity : AppCompatActivity() {
                     instance.noticeModel = NoticeModel("", "")
                 } else if (response.body()!!.result == "success") {
                     instance.noticeModel = response.body()!!.data
+                    callback("noticeInfo", "success")
                 }
             }
 
@@ -387,7 +389,7 @@ abstract class BaseActivity : AppCompatActivity() {
         }
     }
 
-    private fun checkPermissionArray(tempPermissionArray : MutableList<String>): MutableList<String> {
+    fun checkPermissionArray(tempPermissionArray : MutableList<String>): MutableList<String> {
 
         val permissionArray : MutableList<String> = mutableListOf<String>()
 

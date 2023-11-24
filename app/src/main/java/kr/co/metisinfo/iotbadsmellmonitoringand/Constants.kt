@@ -26,5 +26,5 @@ object Constants {
     const val PUSH_TIME_11 = "11:00:00"
     const val PUSH_TIME_19 = "19:00:00"
     const val PUSH_TIME_22 = "22:00:00"
-    const val TEST_TIME = "22:36:20"
+    const val TEST_TIME = "16:35:20"
 }

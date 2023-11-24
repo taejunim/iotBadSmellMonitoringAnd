@@ -13,6 +13,7 @@ import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
+import androidx.core.app.NotificationManagerCompat
 import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.viewpager2.adapter.FragmentStateAdapter
@@ -44,18 +45,13 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
     override fun initData() {
 
-        //푸시 상태 체크하여 푸시 알람 설정
-        var pushStatus = MainApplication.prefs.getBoolean("pushStatus", false)
-
-        if (pushStatus) {
-            instance.setAlarm()
-        }
-
-        checkPermission()
     }
 
     override fun initLayout() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+    }
+
+    fun drawLayout() {
 
         binding.includeHeader.textTitle.setText(R.string.main) // 타이틀 제목
         binding.includeHeader.backButton.visibility = View.GONE // 뒤로가기 버튼 안보이게
@@ -87,9 +83,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
         //악취 강도 레이아웃 그리기
         drawSmellIntensityLayout()
-    }
 
-    override fun setOnClickListener() {
         binding.includeHeader.navigationViewButton.setOnClickListener {
             binding.navigationViewLayout.openDrawer(GravityCompat.START)
         }
@@ -100,26 +94,64 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         }
     }
 
+    override fun setOnClickListener() {
+
+    }
+
     /**
      * DATA CALLBACK
      */
     override fun callback(apiName: String, data: Any) {
 
-        Log.d("metis", "callback data : $data")
+        if (apiName == "baseData") {
 
-        hideLoading(binding.loading)
+            if (data == "success") {
+                succeededApiCount++
 
-        when (apiName) {
-            //가입시 설정한 사용자의 X,Y 좌표
-            "coordinates" -> {
-                getWeatherApiData() //현재 날씨 API
+                if (succeededApiCount == instance.codeGroupArray.lastIndex + 1) {
+                    getNoticeInfo()
+                    succeededApiCount = 0
+                }
             }
 
-            //현재 날씨 API callback
-            "weather" -> {
-                val weatherModel = data as WeatherModel
-                drawWeatherLayout(weatherModel.temperature, weatherModel.humidity, weatherModel.windDirection, weatherModel.windSpeed, weatherModel.precipitationStatus, weatherModel.skyStatus)
+            //API 응답 실패
+            else if (data == "fail") {
+                instance.finish(this@MainActivity)
             }
+        }
+
+        else if (apiName == "noticeInfo" && data == "success") {
+
+            hideLoading(binding.loading)
+
+            drawLayout()
+
+            getCoordinates() //기상청 데이터를 가져오기 위한 x,y 좌표 API
+        }
+
+        //공지사항 API 오류
+        else if (apiName == "noticeInfo" && data == "fail") {
+            instance.finish(this@MainActivity)
+        }
+
+        //가입시 설정한 사용자의 X,Y 좌표
+        else if (apiName == "coordinates") {
+            getWeatherApiData() //현재 날씨 API
+        }
+
+        //가입시 설정한 사용자의 X,Y 좌표
+        else if (apiName == "weather") {
+
+            //drawLayout()
+            hideLoading(binding.loading)
+            val weatherModel = data as WeatherModel
+            drawWeatherLayout(weatherModel.temperature, weatherModel.humidity, weatherModel.windDirection, weatherModel.windSpeed, weatherModel.precipitationStatus, weatherModel.skyStatus)
+        }
+        //서버 무응답
+        else if (apiName == "noResponse") {
+            instance.finish(this@MainActivity)
+        } else {
+            instance.finish(this@MainActivity)
         }
     }
 
@@ -311,7 +343,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     //공지사항 표출
     private fun popUpNoticeDialog() {
 
-        dialog = Dialog(this)
+        dialog = Dialog(this@MainActivity)
 
         val inf = layoutInflater
         val dialogView: View = inf.inflate(R.layout.dialog_notice, null)
@@ -372,6 +404,29 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     override fun onResume() {
         super.onResume()
 
-        getCoordinates() //기상청 데이터를 가져오기 위한 x,y 좌표 API
+        //알람 허용
+        if (NotificationManagerCompat.from(this@MainActivity).areNotificationsEnabled()) {
+            val pushStatus = MainApplication.prefs.getBoolean("pushStatus", false)
+            if (pushStatus) {
+                instance.setAlarm()
+            } else {
+                instance.cancelAlarm()
+            }
+        }
+
+        //알람 거부 -> 푸시 허용하든 거부하든 알람 취소
+        else {
+            MainApplication.prefs.setBoolean("pushStatus", false)
+            MainApplication.instance.cancelAlarm()
+        }
+
+        showLoading(binding.loading)
+
+        getApiData()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        dialog?.dismiss()
     }
 }
