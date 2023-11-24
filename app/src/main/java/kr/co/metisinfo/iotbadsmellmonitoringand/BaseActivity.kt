@@ -7,6 +7,7 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.Resources
+import android.hardware.display.DisplayManager
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
@@ -400,6 +401,18 @@ abstract class BaseActivity : AppCompatActivity() {
         }
 
         return permissionArray
+    }
+
+    fun checkFoldedDisplay() : Int {
+        var width = 1000
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.P){
+
+            val dm = applicationContext.getSystemService(Context.DISPLAY_SERVICE) as? DisplayManager
+            dm?.displays?.forEach {
+                width = it.mode.physicalWidth
+            }
+        }
+        return width
     }
 
     //포커싱됐을 때 value clear

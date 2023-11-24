@@ -14,10 +14,12 @@ import android.os.Looper
 import android.provider.MediaStore
 import android.provider.Settings
 import android.util.Log
+import android.util.TypedValue
 import android.view.View
 import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -565,6 +567,12 @@ class RegisterActivity : BaseActivity(), SmellTypeDialog.SmellTypeDialogListener
 
     override fun onResume() {
         super.onResume()
+
+        if (checkFoldedDisplay() < 900) {
+            binding.intensityButton.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14F)
+        } else {
+            binding.intensityButton.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16F)
+        }
 
         binding.registerBlankLayout.isEnabled = true
         binding.registrationButton.isEnabled = true

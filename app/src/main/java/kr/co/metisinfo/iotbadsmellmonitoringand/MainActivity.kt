@@ -43,6 +43,8 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
     var dialog: Dialog? = null
 
+    var fontSize = 16F
+
     override fun initData() {
 
     }
@@ -82,7 +84,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         setViewPager()
 
         //악취 강도 레이아웃 그리기
-        drawSmellIntensityLayout()
+        drawSmellIntensityLayout(fontSize)
 
         binding.includeHeader.navigationViewButton.setOnClickListener {
             binding.navigationViewLayout.openDrawer(GravityCompat.START)
@@ -234,7 +236,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     }
 
     //악취 강도 레이아웃 그리기
-    private fun drawSmellIntensityLayout() {
+    private fun drawSmellIntensityLayout(fontSize: Float) {
 
         val intensityList = instance.intensityList
         var tempButton = Button(this)
@@ -258,7 +260,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             intensityButton.layoutParams = layoutParams
             intensityButton.gravity = Gravity.LEFT or Gravity.CENTER
             intensityButton.setPadding(convertToDp(20F),0,0,0)
-            intensityButton.setTextSize(TypedValue.COMPLEX_UNIT_SP,16F)
+            intensityButton.setTextSize(TypedValue.COMPLEX_UNIT_SP,fontSize)
             intensityButton.setTextColor(Color.WHITE)
             intensityButton.setBackgroundResource(resource.getIdentifier("intensity_"+i+"_button", "drawable", "kr.co.metisinfo.iotbadsmellmonitoringand"))
             intensityButton.setOnClickListener {
@@ -403,6 +405,12 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
     override fun onResume() {
         super.onResume()
+
+        if (checkFoldedDisplay() < 900) {
+            fontSize = 14F
+        } else {
+            fontSize = 16F
+        }
 
         //알람 허용
         if (NotificationManagerCompat.from(this@MainActivity).areNotificationsEnabled()) {
