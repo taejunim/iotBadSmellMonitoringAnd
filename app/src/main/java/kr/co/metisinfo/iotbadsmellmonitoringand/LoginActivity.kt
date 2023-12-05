@@ -6,10 +6,12 @@ import android.os.Looper
 import android.util.Log
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
+import androidx.core.app.NotificationManagerCompat
 import androidx.databinding.DataBindingUtil
 import kr.co.metisinfo.iotbadsmellmonitoringand.databinding.ActivityLoginBinding
 import kr.co.metisinfo.iotbadsmellmonitoringand.model.LoginResult
 import kr.co.metisinfo.iotbadsmellmonitoringand.model.UserModel
+import kr.co.metisinfo.iotbadsmellmonitoringand.model.WeatherModel
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -112,7 +114,29 @@ class LoginActivity : BaseActivity() {
      * DATA CALLBACK
      */
     override fun callback(apiName: String, data: Any) {
+        if (apiName == "baseData") {
 
+            if (data == "success") {
+                succeededApiCount++
+
+                if (succeededApiCount == instance.codeGroupArray.lastIndex + 1) {
+                    hideLoading(binding.loading)
+                    succeededApiCount = 0
+                }
+            }
+
+            //API 응답 실패
+            else if (data == "fail") {
+                instance.finish(this@LoginActivity)
+            }
+        }
+
+        //서버 무응답
+        else if (apiName == "noResponse") {
+            instance.finish(this@LoginActivity)
+        } else {
+            instance.finish(this@LoginActivity)
+        }
     }
 
     //빈칸 체크
@@ -130,5 +154,13 @@ class LoginActivity : BaseActivity() {
         }
 
         return true
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        showLoading(binding.loading)
+
+        getApiData()
     }
 }
