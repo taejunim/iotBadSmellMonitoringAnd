@@ -3,6 +3,9 @@ package kr.co.metisinfo.iotbadsmellmonitoringand
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.app.DatePickerDialog.OnDateSetListener
+import android.content.Intent
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.View
 import android.widget.AdapterView
@@ -15,6 +18,8 @@ import kr.co.metisinfo.iotbadsmellmonitoringand.adapter.ItemRegisterHistroyRecyc
 import kr.co.metisinfo.iotbadsmellmonitoringand.databinding.ActivityHistoryBinding
 import kr.co.metisinfo.iotbadsmellmonitoringand.model.HistoryModel
 import kr.co.metisinfo.iotbadsmellmonitoringand.model.HistoryResult
+import kr.co.metisinfo.iotbadsmellmonitoringand.model.LoginResult
+import kr.co.metisinfo.iotbadsmellmonitoringand.model.UserModel
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -246,6 +251,54 @@ class HistoryActivity : BaseActivity(), AdapterView.OnItemSelectedListener {
     }
 
     override fun onNothingSelected(parent: AdapterView<*>?) {
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        val userId = MainApplication.prefs.getString("userId","")
+        val userPassword = MainApplication.prefs.getString("userPassword", "")
+        val data = UserModel(userId,userPassword,"","","","","","","","","","","")
+
+        showLoading(binding.loading)
+
+        instance.apiService.userLogin(data).enqueue(object : Callback<LoginResult> {
+            override fun onResponse(call: Call<LoginResult>, response: Response<LoginResult>) {
+
+                hideLoading(binding.loading)
+
+                val result = response.body()?.result
+                val userData: UserModel = response.body()!!.data
+
+                if (result != "success") {
+
+                    MainApplication.prefs.setBoolean("isLogin", false)
+                    MainApplication.prefs.setString("userId", "")
+                    MainApplication.prefs.setString("userName", "")
+                    MainApplication.prefs.setString("userPassword", "")
+                    MainApplication.prefs.setString("userRegionMaster", "")
+                    MainApplication.prefs.setString("userRegionMasterName", "")
+                    MainApplication.prefs.setString("userRegionDetail", "")
+
+                    Toast.makeText(this@HistoryActivity, resource.getString(R.string.sign_in_status), Toast.LENGTH_LONG).show()
+
+                    val handler = Handler(Looper.getMainLooper())
+                    handler.postDelayed ({
+                        var intent = Intent(this@HistoryActivity, LoginActivity::class.java)
+                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK // 최상단 액티비티 제외한 모든 액티비티 제거
+                        startActivity(intent)
+                        finish()
+                    }, 2000)
+
+                }
+            }
+
+            override fun onFailure(call: Call<LoginResult>, t: Throwable) {
+                hideLoading(binding.loading)
+                Log.d("metis", "onFailure : " + t.message.toString())
+            }
+        })
 
     }
 

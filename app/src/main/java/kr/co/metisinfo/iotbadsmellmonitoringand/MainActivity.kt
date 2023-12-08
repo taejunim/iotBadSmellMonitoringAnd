@@ -3,6 +3,8 @@ package kr.co.metisinfo.iotbadsmellmonitoringand
 import android.app.Dialog
 import android.content.Intent
 import android.graphics.Color
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.util.TypedValue
 import android.view.Gravity
@@ -13,6 +15,7 @@ import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
@@ -22,12 +25,17 @@ import com.google.android.material.navigation.NavigationView
 import kr.co.metisinfo.iotbadsmellmonitoringand.adapter.ViewPagerAdapter
 import kr.co.metisinfo.iotbadsmellmonitoringand.databinding.ActivityMainBinding
 import kr.co.metisinfo.iotbadsmellmonitoringand.databinding.NavigationViewHeaderBinding
+import kr.co.metisinfo.iotbadsmellmonitoringand.model.LoginResult
 import kr.co.metisinfo.iotbadsmellmonitoringand.model.RegionMaster
+import kr.co.metisinfo.iotbadsmellmonitoringand.model.UserModel
 import kr.co.metisinfo.iotbadsmellmonitoringand.model.WeatherModel
 import kr.co.metisinfo.iotbadsmellmonitoringand.util.Utils.Companion.convertToDp
 import kr.co.metisinfo.iotbadsmellmonitoringand.util.Utils.Companion.getPercentWidth
 import kr.co.metisinfo.iotbadsmellmonitoringand.util.Utils.Companion.ymdFormatter
 import me.relex.circleindicator.CircleIndicator3
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.util.*
 
 class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -105,6 +113,42 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
      */
     override fun callback(apiName: String, data: Any) {
 
+        if (apiName == "checkAccount") {
+            if (data == "success") {
+                if (checkFoldedDisplay() < 900) {
+                    fontSize = 14F
+                } else {
+                    fontSize = 16F
+                }
+
+                //알람 허용
+                if (NotificationManagerCompat.from(this@MainActivity).areNotificationsEnabled()) {
+                    val pushStatus = MainApplication.prefs.getBoolean("pushStatus", false)
+                    if (pushStatus) {
+                        instance.setAlarm()
+                    } else {
+                        instance.cancelAlarm()
+                    }
+                }
+
+                //알람 거부 -> 푸시 허용하든 거부하든 알람 취소
+                else {
+                    MainApplication.prefs.setBoolean("pushStatus", false)
+                    MainApplication.instance.cancelAlarm()
+                }
+
+                showLoading(binding.loading)
+
+                Log.d("isLogin", "485 :isLogin : " + MainApplication.prefs.getBoolean("isLogin", false))
+                Log.d("isLogin", "485 :userId : " + MainApplication.prefs.getString("userId", ""))
+
+                getApiData()
+            } //API 응답 실패
+            else if (data == "fail") {
+                instance.finish(this@MainActivity)
+            }
+        }
+        else
         if (apiName == "baseData") {
 
             if (data == "success") {
@@ -406,31 +450,84 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     override fun onResume() {
         super.onResume()
 
-        if (checkFoldedDisplay() < 900) {
-            fontSize = 14F
-        } else {
-            fontSize = 16F
-        }
 
-        //알람 허용
-        if (NotificationManagerCompat.from(this@MainActivity).areNotificationsEnabled()) {
-            val pushStatus = MainApplication.prefs.getBoolean("pushStatus", false)
-            if (pushStatus) {
-                instance.setAlarm()
-            } else {
-                instance.cancelAlarm()
-            }
-        }
 
-        //알람 거부 -> 푸시 허용하든 거부하든 알람 취소
-        else {
-            MainApplication.prefs.setBoolean("pushStatus", false)
-            MainApplication.instance.cancelAlarm()
-        }
+//        val userId = MainApplication.prefs.getString("userId","")
+//        val userPassword = MainApplication.prefs.getString("userPassword", "")
+//        val data = UserModel(userId,userPassword,"","","","","","","","","","","")
+//
+//        showLoading(binding.loading)
+//
+//        instance.apiService.userLogin(data).enqueue(object : Callback<LoginResult> {
+//            override fun onResponse(call: Call<LoginResult>, response: Response<LoginResult>) {
+//
+//                hideLoading(binding.loading)
+//
+//                val result = response.body()?.result
+//
+//                if (result != "success") {
+//
+//                    MainApplication.prefs.setBoolean("isLogin", false)
+//                    MainApplication.prefs.setString("userId", "")
+//                    MainApplication.prefs.setString("userName", "")
+//                    MainApplication.prefs.setString("userPassword", "")
+//                    MainApplication.prefs.setString("userRegionMaster", "")
+//                    MainApplication.prefs.setString("userRegionMasterName", "")
+//                    MainApplication.prefs.setString("userRegionDetail", "")
+//
+//                    Toast.makeText(this@MainActivity, resource.getString(R.string.sign_in_status), Toast.LENGTH_LONG).show()
+//
+//                    Log.d("isLogin", "442 : isLogin : " + MainApplication.prefs.getBoolean("isLogin", false))
+//                    Log.d("isLogin", "442 : userId : " + MainApplication.prefs.getString("userId", ""))
+//
+//
+//
+//
+//
+//                } else {
+//                    if (checkFoldedDisplay() < 900) {
+//                        fontSize = 14F
+//                    } else {
+//                        fontSize = 16F
+//                    }
+//
+//                    //알람 허용
+//                    if (NotificationManagerCompat.from(this@MainActivity).areNotificationsEnabled()) {
+//                        val pushStatus = MainApplication.prefs.getBoolean("pushStatus", false)
+//                        if (pushStatus) {
+//                            instance.setAlarm()
+//                        } else {
+//                            instance.cancelAlarm()
+//                        }
+//                    }
+//
+//                    //알람 거부 -> 푸시 허용하든 거부하든 알람 취소
+//                    else {
+//                        MainApplication.prefs.setBoolean("pushStatus", false)
+//                        MainApplication.instance.cancelAlarm()
+//                    }
+//
+//                    showLoading(binding.loading)
+//
+//                    Log.d("isLogin", "485 :isLogin : " + MainApplication.prefs.getBoolean("isLogin", false))
+//                    Log.d("isLogin", "485 :userId : " + MainApplication.prefs.getString("userId", ""))
+//
+//                    getApiData()
+//                }
+//            }
+//
+//            override fun onFailure(call: Call<LoginResult>, t: Throwable) {
+//                hideLoading(binding.loading)
+//                Log.d("metis", "onFailure : " + t.message.toString())
+//            }
+//        })
 
-        showLoading(binding.loading)
+        checkAccount()
 
-        getApiData()
+
+
+
+
     }
 
     override fun onPause() {

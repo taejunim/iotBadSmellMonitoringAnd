@@ -14,6 +14,8 @@ import android.location.LocationManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.View
 import android.view.View.OnFocusChangeListener
@@ -24,6 +26,7 @@ import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import kr.co.metisinfo.iotbadsmellmonitoringand.Constants.TIME_00
 import kr.co.metisinfo.iotbadsmellmonitoringand.Constants.TIME_06
@@ -128,6 +131,54 @@ abstract class BaseActivity : AppCompatActivity() {
             locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,0L,0f,locationListener)
         } catch (ex: SecurityException) {
         }
+    }
+
+    fun checkAccount() {
+
+        val userId = MainApplication.prefs.getString("userId","")
+        val userPassword = MainApplication.prefs.getString("userPassword", "")
+        val data = UserModel(userId,userPassword,"","","","","","","","","","","")
+
+
+        instance.apiService.userLogin(data).enqueue(object : Callback<LoginResult> {
+            override fun onResponse(call: Call<LoginResult>, response: Response<LoginResult>) {
+
+
+                val result = response.body()?.result
+
+                if (result != "success") {
+
+                    MainApplication.prefs.setBoolean("isLogin", false)
+                    MainApplication.prefs.setString("userId", "")
+                    MainApplication.prefs.setString("userName", "")
+                    MainApplication.prefs.setString("userPassword", "")
+                    MainApplication.prefs.setString("userRegionMaster", "")
+                    MainApplication.prefs.setString("userRegionMasterName", "")
+                    MainApplication.prefs.setString("userRegionDetail", "")
+
+                    Toast.makeText(applicationContext, resource.getString(R.string.sign_in_status), Toast.LENGTH_LONG).show()
+
+                    Log.d("isLogin", "442 : isLogin : " + MainApplication.prefs.getBoolean("isLogin", false))
+                    Log.d("isLogin", "442 : userId : " + MainApplication.prefs.getString("userId", ""))
+
+
+
+                    val handler = Handler(Looper.getMainLooper())
+                    handler.postDelayed ({
+                        var intent = Intent(applicationContext, LoginActivity::class.java)
+                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                        startActivity(intent)
+                    }, 1000)
+
+                } else {
+                    callback("checkAccount", "success")
+                }
+            }
+
+            override fun onFailure(call: Call<LoginResult>, t: Throwable) {
+                Log.d("metis", "onFailure : " + t.message.toString())
+            }
+        })
     }
 
     //코드 API

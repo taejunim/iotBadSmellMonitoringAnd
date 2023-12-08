@@ -32,7 +32,9 @@ import kr.co.metisinfo.iotbadsmellmonitoringand.adapter.MultiImageAdapter
 import kr.co.metisinfo.iotbadsmellmonitoringand.databinding.ActivityRegisterBinding
 import kr.co.metisinfo.iotbadsmellmonitoringand.dialog.SmellTypeDialog
 import kr.co.metisinfo.iotbadsmellmonitoringand.model.CurrentDateResult
+import kr.co.metisinfo.iotbadsmellmonitoringand.model.LoginResult
 import kr.co.metisinfo.iotbadsmellmonitoringand.model.ResponseResult
+import kr.co.metisinfo.iotbadsmellmonitoringand.model.UserModel
 import kr.co.metisinfo.iotbadsmellmonitoringand.model.WeatherModel
 import kr.co.metisinfo.iotbadsmellmonitoringand.util.Utils.Companion.convertToDp
 import kr.co.metisinfo.iotbadsmellmonitoringand.util.Utils.Companion.dateFormatter
@@ -301,6 +303,25 @@ class RegisterActivity : BaseActivity(), SmellTypeDialog.SmellTypeDialogListener
      */
     override fun callback(apiName: String, data: Any) {
 
+        if (apiName == "checkAccount") {
+            if (data == "success") {
+
+                if (checkFoldedDisplay() < 900) {
+                    binding.intensityButton.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14F)
+                } else {
+                    binding.intensityButton.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16F)
+                }
+
+                binding.registerBlankLayout.isEnabled = true
+                binding.registrationButton.isEnabled = true
+
+                checkCurrentDate()
+            } //API 응답 실패
+            else if (data == "fail") {
+                instance.finish(this@RegisterActivity)
+            }
+        }
+
         when (apiName) {
             "serverDateReceived" -> {
                 val currentDate = data as Date
@@ -508,6 +529,8 @@ class RegisterActivity : BaseActivity(), SmellTypeDialog.SmellTypeDialogListener
         return registerTime
     }
 
+
+
     private fun checkCurrentDate() {
 
         instance.apiService.getCurrentDate().enqueue(object : Callback<CurrentDateResult> {
@@ -568,16 +591,8 @@ class RegisterActivity : BaseActivity(), SmellTypeDialog.SmellTypeDialogListener
     override fun onResume() {
         super.onResume()
 
-        if (checkFoldedDisplay() < 900) {
-            binding.intensityButton.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14F)
-        } else {
-            binding.intensityButton.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16F)
-        }
+        checkAccount() // 로그인 인증
 
-        binding.registerBlankLayout.isEnabled = true
-        binding.registrationButton.isEnabled = true
-
-        checkCurrentDate()
     }
 
     override fun onRequestPermissionsResult(

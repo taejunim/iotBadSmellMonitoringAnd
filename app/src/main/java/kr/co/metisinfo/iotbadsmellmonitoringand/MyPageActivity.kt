@@ -1,5 +1,6 @@
 package kr.co.metisinfo.iotbadsmellmonitoringand
 
+import android.content.Intent
 import android.os.Handler
 import android.os.Looper
 import android.provider.Settings
@@ -9,6 +10,7 @@ import android.widget.Toast
 import androidx.core.app.NotificationManagerCompat
 import androidx.databinding.DataBindingUtil
 import kr.co.metisinfo.iotbadsmellmonitoringand.databinding.ActivityMyPageBinding
+import kr.co.metisinfo.iotbadsmellmonitoringand.model.LoginResult
 import kr.co.metisinfo.iotbadsmellmonitoringand.model.ResponseResult
 import kr.co.metisinfo.iotbadsmellmonitoringand.model.UserModel
 import retrofit2.Call
@@ -37,7 +39,8 @@ class MyPageActivity : BaseActivity() {
     override fun onResume() {
         super.onResume()
 
-        checkPushStatus()
+        checkAccount() // 로그인 인증
+
     }
 
     fun checkPushStatus() {
@@ -177,6 +180,14 @@ class MyPageActivity : BaseActivity() {
      * DATA CALLBACK
      */
     override fun callback(apiName: String, data: Any) {
-
+        if (apiName == "checkAccount") {
+            if (data == "success")   {
+                checkPushStatus()
+            }
+            //API 응답 실패
+            else if (data == "fail") {
+                instance.finish(this@MyPageActivity)
+            }
+        }
     }
 }

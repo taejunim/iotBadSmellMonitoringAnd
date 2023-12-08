@@ -85,13 +85,12 @@ class LoginActivity : BaseActivity() {
                     MainApplication.prefs.setString("userRegionDetail", userData.userRegionDetail)
 
                     Toast.makeText(this@LoginActivity, resource.getString(R.string.sign_in_welcome_text), Toast.LENGTH_SHORT).show()
-
                     val handler = Handler(Looper.getMainLooper())
                     handler.postDelayed ({
                         val intent = Intent(this@LoginActivity, MainActivity::class.java)
                         startActivity(intent)
                         finish()
-                    }, 1000)
+                    }, 2000)
 
                 } else if (result == "fail") {
                     Toast.makeText(this@LoginActivity, resource.getString(R.string.incorrect_data), Toast.LENGTH_SHORT).show()
