@@ -133,6 +133,9 @@
     <string name="my_page_blank_new_password_confirm_text">새 비밀번호 확인을 입력해주세요.</string>
     <string name="my_page_incorrect_new_password_text">새 비밀번호가 서로 일치하지 않습니다.</string>
     <string name="my_page_password_change_fail_text">새 비밀번호가 서로 일치하지 않습니다.</string>
+    <string name="my_page_isDelete">회원 탈퇴를 하시겠습니까?</string>
+    <string name="my_page_deleteUser">회원 탈퇴가 완료되었습니다.</string>
+    <string name="my_page_notFoundUser">회원이 존재하지 않습니다.</string>
 
     <string name="notice_text">공지사항</string>
     <string name="notice_title">제목</string>
@@ -283,5 +286,6 @@
 \n
 \n
 ① 이 개인정보처리방침은 2022년 3월 21부터 적용됩니다.\n</string>
+    <string name="delete_user">회원 탈퇴</string>
 
 </resources>

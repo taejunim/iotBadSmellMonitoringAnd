@@ -1,11 +1,14 @@
 package kr.co.metisinfo.iotbadsmellmonitoringand
 
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Handler
 import android.os.Looper
 import android.provider.Settings
 import android.util.Log
 import android.view.View
+import android.widget.Button
 import android.widget.Toast
 import androidx.core.app.NotificationManagerCompat
 import androidx.databinding.DataBindingUtil
@@ -34,6 +37,7 @@ class MyPageActivity : BaseActivity() {
 
         binding.myPageUserInformation.navigationUserName.text = MainApplication.prefs.getString("userName", "")
         binding.myPageUserInformation.navigationUserId.text = MainApplication.prefs.getString("userId", "")
+        binding.deleteUserButton.setText("회원 탈퇴")
     }
 
     override fun onResume() {
@@ -93,6 +97,29 @@ class MyPageActivity : BaseActivity() {
 
                 changePassword(data)
             }
+        }
+        // 기본 형태의 다이얼로그
+        binding.deleteUserButton.setOnClickListener {
+            // 다이얼로그를 생성하기 위해 Builder 클래스 생성자를 이용해 줍니다.
+            val builder = AlertDialog.Builder(this)
+            builder.setTitle(R.string.delete_user)
+            builder.setMessage(R.string.my_page_isDelete)
+            builder
+                .setNegativeButton("확인",
+                    DialogInterface.OnClickListener { dialog, id ->
+                        val userId = MainApplication.prefs.getString("userId", "")
+                        val data = UserModel(userId,"","","","","","","","", "", "","","")
+
+                        deleteUser(data)
+                        Log.d("metis_confirm","확인")
+
+                    })
+                .setPositiveButton("취소",
+                    DialogInterface.OnClickListener {dialog, id ->
+                        Log.d("metis_confirm","취소")
+                    })
+            // 다이얼로그를 띄워주기
+            builder.show()
         }
     }
 
@@ -163,6 +190,42 @@ class MyPageActivity : BaseActivity() {
 
                 } else if (result == "fail") {
                     Toast.makeText(this@MyPageActivity, resource.getString(R.string.my_page_password_change_fail_text), Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(this@MyPageActivity, resource.getString(R.string.server_no_response), Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseResult>, t: Throwable) {
+                Log.d("metis", t.message.toString())
+                hideLoading(binding.loading)
+                Toast.makeText(this@MyPageActivity, resource.getString(R.string.server_no_response), Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
+    private fun deleteUser(data : UserModel) {
+
+        showLoading(binding.loading);
+
+        MainApplication.instance.apiService.deleteUser(data).enqueue(object :Callback<ResponseResult> {
+            override fun onResponse(call: Call<ResponseResult>, response: Response<ResponseResult>) {
+
+                hideLoading(binding.loading)
+
+                val result = response.body()?.result
+
+                if (result == "success") {
+
+                    MainApplication.prefs.setString("userPassword", data.userPassword)
+                    Toast.makeText(this@MyPageActivity, resource.getString(R.string.my_page_deleteUser), Toast.LENGTH_SHORT).show()
+
+                    val handler = Handler(Looper.getMainLooper())
+                    handler.postDelayed ({
+                        finish()
+                    }, 2000)
+
+                } else if (result == "fail") {
+                    Toast.makeText(this@MyPageActivity, resource.getString(R.string.my_page_notFoundUser), Toast.LENGTH_SHORT).show()
                 } else {
                     Toast.makeText(this@MyPageActivity, resource.getString(R.string.server_no_response), Toast.LENGTH_SHORT).show()
                 }

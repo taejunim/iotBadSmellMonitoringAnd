@@ -10,8 +10,8 @@ android {
         applicationId "kr.co.metisinfo.iotbadsmellmonitoringand"
         minSdk = 26
         targetSdk = 34
-        versionCode 16
-        versionName "2.0.7"
+        versionCode 17
+        versionName "2.0.8"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
@@ -45,7 +45,7 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.0.1' //2.0.2 이상부터 이미지 다중 선택 라이브러리 적용시 디테일 이미지 안나오는 이슈있어서 2.0.1로 downgrade
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 
     compileOnly 'org.projectlombok:lombok:1.18.20'
     annotationProcessor 'org.projectlombok:lombok:1.18.20'

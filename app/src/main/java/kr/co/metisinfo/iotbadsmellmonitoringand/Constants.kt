@@ -3,8 +3,8 @@ package kr.co.metisinfo.iotbadsmellmonitoringand
 object Constants {
 
     //Server Url
-    //const val serverUrl = "http://172.30.1.61:8080" // 로컬 서버 IP
-    //const val serverUrl = "http://14.49.221.213:9999" // 개발 서버 IP
+//    const val serverUrl = "http://172.30.1.6:8080" // 로컬 서버 IP
+//    const val serverUrl = "http://14.49.221.213:9999" // 개발 서버 IP
     const val serverUrl = "http://49.50.172.217:8080" // 운영 서버 IP
 
     //Weather API
